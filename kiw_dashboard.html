@@ -1822,6 +1822,20 @@ select.lp-input{cursor:pointer}
   <div class="cs-shell" id="cs-content" style="display:none">
     <div class="cs-title">⚙️ Curriculum Settings</div>
     <div class="cs-sub">Manage the books and materials for each level. Changes are saved immediately and reflected across the dashboard. 원장 access only.</div>
+
+    <!-- School Year Setting -->
+    <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:16px">
+      <div style="font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:10px">📅 School Year</div>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <input type="text" id="cs-year-input" class="cs-add-input" style="max-width:140px;font-size:14px;font-weight:600" placeholder="e.g. 2027-2028">
+        <button class="cs-add-btn" onclick="csSetYear()">Set Year</button>
+        <span style="font-size:12px;color:var(--muted)">Current: <strong id="cs-year-display"></strong></span>
+      </div>
+      <div style="font-size:11.5px;color:var(--muted);margin-top:8px;line-height:1.6">
+        ⚠️ Changing the school year starts fresh progress trackers and notes for the new year. Previous year data is preserved and can be restored by entering the old year.
+      </div>
+    </div>
+
     <div id="cs-levels-list"></div>
     <div class="cs-save-bar">
       <span class="cs-save-note" id="cs-save-note">Changes save automatically.</span>
@@ -1853,6 +1867,17 @@ select.lp-input{cursor:pointer}
 </div><!-- /app -->
 
 <script>
+// ══════════════════════════════════════════════════
+// ANTHROPIC API KEY — paste your key below
+// ══════════════════════════════════════════════════
+const ANTHROPIC_API_KEY = 'paste-your-key-here';
+
+// ══════════════════════════════════════════════════
+// SCHOOL YEAR — update this each year in Settings
+// ══════════════════════════════════════════════════
+const DEFAULT_SCHOOL_YEAR = '2026-2027';
+let currentYear = DEFAULT_SCHOOL_YEAR; // loaded from storage on init
+
 // ══ STORAGE (must be first — used by all async init functions) ══
 const useWS = typeof window !== 'undefined' && window.storage;
 async function stGet(k) {
@@ -1863,6 +1888,9 @@ async function stSet(k, v) {
   if (useWS) { try { await window.storage.set(k, v); } catch(e){} return; }
   try { localStorage.setItem(k, v); } catch(e){}
 }
+
+// Year-scoped key — appends school year to progress/notes keys
+function yk(k) { return k + '_' + (currentYear || DEFAULT_SCHOOL_YEAR); }
 
 // ── Add to Home Screen banner ──
 function a2hsInit() {
@@ -2039,11 +2067,38 @@ function csCheckPin() {
     csUnlocked = true;
     document.getElementById('cs-pin-overlay').style.display = 'none';
     document.getElementById('cs-content').style.display = 'block';
+    document.getElementById('cs-year-display').textContent = currentYear;
+    document.getElementById('cs-year-input').placeholder = currentYear;
     csRender();
   } else {
     document.getElementById('cs-pin-err').textContent = 'Incorrect PIN. Try again.';
     document.getElementById('cs-pin-input').value = '';
   }
+}
+
+async function csSetYear() {
+  const input = document.getElementById('cs-year-input');
+  const val = input.value.trim();
+  if (!val) { input.focus(); return; }
+  if (!confirm('Change school year to ' + val + '? Progress trackers and notes will start fresh for the new year. Previous data is preserved.')) return;
+  currentYear = val;
+  await stSet('kiw_school_year', val);
+  // Update header badge
+  const badge = document.querySelector('.hdr-badge');
+  if (badge) badge.textContent = currentYear;
+  // Reload state for new year (all empty)
+  for (const lvl of ['gs1','gs2','gs3','gs4']) {
+    progState[lvl] = {};
+    rcState[lvl] = [];
+    erState[lvl] = [];
+    buildGrammarBlocks(lvl);
+    buildRcUnits(lvl);
+  }
+  notesData = {};
+  input.value = '';
+  document.getElementById('cs-year-display').textContent = currentYear;
+  document.getElementById('cs-save-note').textContent = '✅ Year set to ' + currentYear;
+  setTimeout(() => { document.getElementById('cs-save-note').textContent = 'Changes save automatically.'; }, 3000);
 }
 
 function csRender() {
@@ -2142,12 +2197,12 @@ function csDeleteBook(lvlId, idx) {
 let notesData = {}; // { 'gs1-b1-c0': 'note text', 'gs1-rc-RB1-U01': 'note', 'gs1-er-1': 'note' }
 
 async function notesLoad() {
-  const raw = await stGet('kiw_notes');
+  const raw = await stGet(yk('kiw_notes'));
   notesData = raw ? JSON.parse(raw) : {};
 }
 
 async function notesSave() {
-  await stSet('kiw_notes', JSON.stringify(notesData));
+  await stSet(yk('kiw_notes'), JSON.stringify(notesData));
 }
 
 function notesToggle(id) {
@@ -2627,7 +2682,7 @@ function toggleCard(lvl, cbId, row) {
   card.classList.toggle('checked', cb.checked);
   if (!progState[lvl]) progState[lvl] = {};
   progState[lvl][cbId] = cb.checked;
-  stSet('kiw_prog_' + lvl, JSON.stringify(progState[lvl]));
+  stSet(yk('kiw_prog_' + lvl), JSON.stringify(progState[lvl]));
   updateProgBar(lvl);
 }
 
@@ -2646,7 +2701,7 @@ function updateProgBar(lvl) {
 async function resetProgress(lvl) {
   if (!confirm('Reset all teaching progress for this level?')) return;
   progState[lvl] = {};
-  await stSet('kiw_prog_' + lvl, JSON.stringify({}));
+  await stSet(yk('kiw_prog_' + lvl), JSON.stringify({}));
   document.getElementById(lvl + '-blocks').querySelectorAll('input[type=checkbox]').forEach(cb => {
     cb.checked = false;
     cb.closest('.card').classList.remove('checked');
@@ -2773,7 +2828,7 @@ async function toggleErSession(lvl, n, cb) {
   if (!erState[lvl]) erState[lvl] = [];
   if (cb.checked) { if (!erState[lvl].includes(n)) erState[lvl].push(n); }
   else erState[lvl] = erState[lvl].filter(k => k !== n);
-  await stSet('kiw_er_' + lvl, JSON.stringify(erState[lvl]));
+  await stSet(yk('kiw_er_' + lvl), JSON.stringify(erState[lvl]));
 }
 
 async function toggleRcText(lvl, key, row) {
@@ -2784,7 +2839,7 @@ async function toggleRcText(lvl, key, row) {
   if (!rcState[lvl]) rcState[lvl] = [];
   if (isDone) { if (!rcState[lvl].includes(key)) rcState[lvl].push(key); }
   else rcState[lvl] = rcState[lvl].filter(k => k !== key);
-  await stSet('kiw_rc_' + lvl, JSON.stringify(rcState[lvl]));
+  await stSet(yk('kiw_rc_' + lvl), JSON.stringify(rcState[lvl]));
   updateRcProgBar(lvl);
 }
 
@@ -2803,7 +2858,7 @@ function updateRcProgBar(lvl) {
 async function resetRcProgress(lvl) {
   if (!confirm('Reset all R&C progress for this level?')) return;
   rcState[lvl] = [];
-  await stSet('kiw_rc_' + lvl, JSON.stringify([]));
+  await stSet(yk('kiw_rc_' + lvl), JSON.stringify([]));
   const container = document.getElementById(lvl + '-rc-units');
   container.querySelectorAll('.text-item').forEach(row => {
     row.classList.remove('done');
@@ -3204,7 +3259,7 @@ function voiceToField(fieldId, btnId) {
 // ══════════════════════════════════════════════════
 // API KEY MODAL
 // ══════════════════════════════════════════════════
-function getApiKey() { return localStorage.getItem('kiw_api_key') || ''; }
+function getApiKey() { return ANTHROPIC_API_KEY && ANTHROPIC_API_KEY !== "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" ? ANTHROPIC_API_KEY : null; }
 function apikeyToggleVis() { const i = document.getElementById('apikey-input'); i.type = i.type==='password'?'text':'password'; }
 function apikeySave() {
   const val = document.getElementById('apikey-input').value.trim();
@@ -3223,15 +3278,21 @@ function apikeyPrompt() { document.getElementById('apikey-modal').style.display=
 // INIT
 // ══════════════════════════════════════════════════
 async function initApp() {
+  // Load school year setting
+  const savedYear = await stGet('kiw_school_year');
+  if (savedYear) currentYear = savedYear;
+  // Update year badge in header
+  const badge = document.querySelector('.hdr-badge');
+  if (badge) badge.textContent = currentYear;
   // Load persisted state
   await csLoadBooks();
   await notesLoad();
   for (const lvl of ['gs1','gs2','gs3','gs4']) {
-    const pg = await stGet('kiw_prog_' + lvl);
+    const pg = await stGet(yk('kiw_prog_' + lvl));
     progState[lvl] = pg ? JSON.parse(pg) : {};
-    const rc = await stGet('kiw_rc_' + lvl);
+    const rc = await stGet(yk('kiw_rc_' + lvl));
     rcState[lvl] = rc ? JSON.parse(rc) : [];
-    const er = await stGet('kiw_er_' + lvl);
+    const er = await stGet(yk('kiw_er_' + lvl));
     erState[lvl] = er ? JSON.parse(er) : [];
   }
   for (const lvl of ['gs1','gs2','gs3','gs4']) {
@@ -3252,6 +3313,7 @@ async function initApp() {
     }
   }
   rpInit();
+  // API key is hardcoded — modal only shown if key is not set
   if (!getApiKey()) document.getElementById('apikey-modal').style.display='flex';
 }
 
