@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Kids in Wonder — Teacher Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
-<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src="https://accounts.google.com/gsi/client" async></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -52,34 +52,13 @@ body{font-family:'DM Sans',sans-serif;background:var(--surface);color:var(--txt)
 .hdr-badge{font-size:10px;font-weight:700;letter-spacing:.06em;color:rgba(255,255,255,.45);background:rgba(255,255,255,.08);padding:3px 10px;border-radius:20px}
 .hdr-lock{background:none;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.55);padding:5px 12px;border-radius:6px;font-size:11px;cursor:pointer;transition:all .15s}
 .hdr-lock:hover{background:rgba(255,255,255,.1);color:#fff}
-
-/* ══ DRIVE SYNC ══ */
-.sync-btn{background:none;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.55);padding:5px 12px;border-radius:6px;font-size:11px;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:5px;white-space:nowrap}
-.sync-btn:hover{background:rgba(255,255,255,.1);color:#fff}
-.sync-btn.signed-in{border-color:rgba(80,200,140,.4);color:rgba(80,200,140,.85)}
-.sync-btn.signed-in:hover{background:rgba(80,200,140,.1)}
-.sync-btn.syncing{opacity:.6;pointer-events:none}
-.sync-dot{width:6px;height:6px;border-radius:50%;background:currentColor;flex-shrink:0}
-.sync-status{font-size:10px;color:rgba(255,255,255,.35);max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:none}
-.sync-status.show{display:block}
-
-/* ══ RC WRITING GUIDE ══ */
-.rc-writing-guide{background:var(--surface);border-top:1px solid var(--border);padding:12px 14px;border-radius:0 0 8px 8px}
-.rcw-title{font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin-bottom:8px}
-.rcw-phase{font-size:10.5px;font-weight:600;color:var(--warn);background:var(--warnbg);border:1px solid #E8C870;border-radius:6px;padding:4px 10px;margin-bottom:8px;display:inline-block}
-.rcw-row{display:flex;gap:10px;margin-bottom:7px;align-items:flex-start}
-.rcw-label{font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--light);min-width:60px;padding-top:2px;flex-shrink:0}
-.rcw-val{font-size:12px;color:var(--txt);font-weight:600}
-.rcw-prompt{font-size:12px;color:var(--txt);line-height:1.5;font-style:italic}
-.rcw-note{font-size:11.5px;color:var(--muted);line-height:1.55}
-.rcw-spot{font-size:11px;padding:3px 8px;border-radius:6px;line-height:1.4}
-
-/* ══ ER MARKER ══ */
-.er-marker{grid-column:1/-1;margin:4px 0}
-.er-marker-inner{display:flex;align-items:center;gap:12px;background:var(--warnbg);border:1px dashed #E8C870;border-radius:8px;padding:10px 14px}
-.er-marker-icon{font-size:18px;flex-shrink:0}
-.er-marker-title{font-size:12px;font-weight:700;color:var(--warn)}
-.er-marker-sub{font-size:11px;color:var(--muted);margin-top:1px}
+.hdr-gsign{background:none;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.55);padding:5px 12px;border-radius:6px;font-size:11px;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:6px}
+.hdr-gsign:hover{background:rgba(255,255,255,.1);color:#fff}
+.hdr-gsign.signed-in{border-color:rgba(100,220,130,.4);color:rgba(100,220,130,.9)}
+.hdr-gsign.signed-in:hover{background:rgba(100,220,130,.1)}
+.ws-gdoc-btn{background:#1a73e8;color:#fff;border:none;border-radius:6px;padding:8px 16px;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .15s}
+.ws-gdoc-btn:hover{background:#1557b0}
+.ws-gdoc-btn:disabled{background:#aaa;cursor:not-allowed}
 
 /* ══ MODULE NAV ══ */
 .mod-nav{background:var(--txt);border-top:1px solid rgba(255,255,255,.07);padding:0 24px;display:flex;gap:2px;align-items:flex-end;overflow-x:auto}
@@ -541,11 +520,11 @@ select.lp-input{cursor:pointer}
   <header class="hdr">
     <div class="brand">Kids in Wonder<span>Teacher Dashboard</span></div>
     <div class="hdr-right">
-      <span class="sync-status" id="sync-status"></span>
-      <button class="sync-btn" id="sync-btn" onclick="driveSignIn()" title="Sync student data to Google Drive">
-        <span class="sync-dot"></span><span id="sync-btn-label">Sign in to sync</span>
-      </button>
       <div class="hdr-badge">2026–2027</div>
+      <button class="hdr-gsign" id="hdr-gsign" onclick="gSignIn()">
+        <svg width="14" height="14" viewBox="0 0 24 24"><path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+        Sign in
+      </button>
       <button class="hdr-lock" onclick="lockApp()">🔒 Lock</button>
     </div>
   </header>
@@ -564,7 +543,7 @@ select.lp-input{cursor:pointer}
     <!-- Level tabs -->
     <div class="lvl-bar" id="m1-lvl-bar">
       <button class="lvl-btn st active" onclick="switchLvl('st',this)">⭐ Starters</button>
-      <button class="lvl-btn lo" onclick="switchLvl('lo',this)">🌱 Levels 1–3</button>
+      <button class="lvl-btn lo" onclick="switchLvl('lo',this)">🌱 Low 1</button>
       <button class="lvl-btn gs1" onclick="switchLvl('gs1',this)">G&S 1</button>
       <button class="lvl-btn gs2" onclick="switchLvl('gs2',this)">G&S 2</button>
       <button class="lvl-btn gs3" onclick="switchLvl('gs3',this)">G&S 3</button>
@@ -614,7 +593,7 @@ select.lp-input{cursor:pointer}
           <div class="info-card">
             <div class="ic-label">Assessment</div>
             <div class="ic-title">Observation Only</div>
-            <div class="ic-body">No formal tests. Teachers observe listening response, engagement, and social interaction. 원장 approves readiness for Level 1.</div>
+            <div class="ic-body">No formal tests. Teachers observe listening response, engagement, and social interaction. 원장 approves readiness for Low 1.</div>
             <span class="ic-tag" style="background:var(--gs2bg);color:var(--gs2dark)">Continuous</span>
           </div>
         </div>
@@ -637,17 +616,17 @@ select.lp-input{cursor:pointer}
           <div class="info-card"><div class="ic-label">Starter 1 Goals</div><div class="ic-body">Open listening. Minimal verbal responses: water, hungry, sleepy, yes/no. Comfort in the English classroom environment.</div></div>
           <div class="info-card"><div class="ic-label">Starter 2 Goals</div><div class="ic-body">Respond to daily routines. Begin simple requests and interactions with the teacher. Build on Starter 1 vocabulary.</div></div>
           <div class="info-card"><div class="ic-label">Key Activities</div><div class="ic-body">Creative play · Outdoor play · Crafts · Circle time read-alouds · Songs and movement · Simple games</div></div>
-          <div class="info-card"><div class="ic-label">Readiness for Level 1</div><div class="ic-body">Responds to classroom routines. Shows comfort and engagement. Attempts to communicate with teacher. 원장 approves promotion.</div></div>
+          <div class="info-card"><div class="ic-label">Readiness for Low 1</div><div class="ic-body">Responds to classroom routines. Shows comfort and engagement. Attempts to communicate with teacher. 원장 approves promotion.</div></div>
         </div>
       </div>
     </div>
 
-    <!-- ── LEVELS 1-3 ── -->
+    <!-- ── LOW 1 ── -->
     <div id="lvl-lo" class="lvl-panel" style="--lc:var(--lo);--lcdark:var(--lodark);--lcmid:var(--lomid);--lcbg:var(--lobg);--lclight:var(--lolight)">
       <div class="lvl-banner">
         <div class="lvl-banner-inner">
-          <div class="lvl-badge">Levels 1–3 · Early Elementary</div>
-          <div class="lvl-title">Levels 1–3 — Phonics, Speaking & Early Reading</div>
+          <div class="lvl-badge">Low 1 · Early Elementary</div>
+          <div class="lvl-title">Low 1 — Phonics, Speaking & Early Reading</div>
           <div class="lvl-intro">Four levels (Level 1, Phonics Bridge, Level 2, Level 3) taking students from first phonics sounds through to grammar-aware reading and free speech. A transition point into G&S.</div>
           <div class="lvl-meta">
             <div class="lvl-meta-item">📅 <strong>Schedule:</strong> 3–5x/week · 2 hrs/session</div>
@@ -691,7 +670,7 @@ select.lp-input{cursor:pointer}
       </div>
       <div id="lo-books" class="sub-panel">
         <div class="sec-title">Books & Materials</div>
-        <div class="sec-sub">Materials for all Levels 1–3</div>
+        <div class="sec-sub">Materials for all Low 1 levels</div>
         <table class="books-table">
           <tr><th>Level</th><th>Book</th><th>Days/Sessions</th><th>Notes</th></tr>
           <tr><td>Level 1</td><td>Jolly Phonics 1 & 2</td><td>MWF · 2 hrs</td><td>New students from March 2026</td></tr>
@@ -709,7 +688,7 @@ select.lp-input{cursor:pointer}
         <div class="info-card" style="max-width:680px">
           <div class="ic-label">Context</div>
           <div class="ic-body" style="font-size:13px;line-height:1.7">
-            <p style="margin-bottom:10px">Beginning March 2026, KiW adopted a new phonics sequencing for Levels 1–3. New students begin with JP1 & JP2 (Level 1), then move to JP3 (Level 2).</p>
+            <p style="margin-bottom:10px">Beginning March 2026, KiW adopted a new phonics sequencing for Low 1. New students begin with JP1 & JP2 (Level 1), then move to JP3 (Level 2).</p>
             <p style="margin-bottom:10px"><strong>The gap:</strong> Returning students from the old system completed only JP1 last year. They need JP2 before they can join the standard Level 2 (JP3) class alongside new students.</p>
             <p style="margin-bottom:10px"><strong>The Phonics Bridge is not remediation.</strong> It fills exactly one gap. Once these students complete JP2, they move into the regular Level 2 class.</p>
             <p>This level will phase out naturally once no more old-system students remain. Both cohorts converge at Level 2 and proceed together from that point.</p>
@@ -736,7 +715,6 @@ select.lp-input{cursor:pointer}
         <button class="sub-btn active" onclick="switchSub('gs1','overview',this)">Overview</button>
         <button class="sub-btn" onclick="switchSub('gs1','grammar',this)">Grammar Blocks</button>
         <button class="sub-btn" onclick="switchSub('gs1','rc',this)">R&C · Reader's Bank</button>
-        <button class="sub-btn" onclick="switchSub('gs1','er',this)">🔄 Extended Review</button>
         <button class="sub-btn" onclick="switchSub('gs1','pacing',this)">Pacing</button>
       </div>
       <div id="gs1-overview" class="sub-panel active">
@@ -765,11 +743,6 @@ select.lp-input{cursor:pointer}
           <button class="prog-reset" onclick="resetRcProgress('gs1')">Reset</button>
         </div>
         <div style="padding:20px 24px 40px" id="gs1-rc-units"></div>
-      </div>
-      <div id="gs1-er" class="sub-panel">
-        <div id="gs1-er-content" style="padding:20px 24px 40px">
-          <div style="color:var(--muted);font-size:13px">Loading Extended Review...</div>
-        </div>
       </div>
       <div id="gs1-pacing" class="sub-panel">
         <div class="sec-title">G&S 1 — Pacing Guide</div>
@@ -807,7 +780,6 @@ select.lp-input{cursor:pointer}
         <button class="sub-btn active" onclick="switchSub('gs2','overview',this)">Overview</button>
         <button class="sub-btn" onclick="switchSub('gs2','grammar',this)">Grammar Blocks</button>
         <button class="sub-btn" onclick="switchSub('gs2','rc',this)">R&C · Reader's Bank</button>
-        <button class="sub-btn" onclick="switchSub('gs2','er',this)">🔄 Extended Review</button>
         <button class="sub-btn" onclick="switchSub('gs2','pacing',this)">Pacing</button>
       </div>
       <div id="gs2-overview" class="sub-panel active">
@@ -836,11 +808,6 @@ select.lp-input{cursor:pointer}
           <button class="prog-reset" onclick="resetRcProgress('gs2')">Reset</button>
         </div>
         <div style="padding:20px 24px 40px" id="gs2-rc-units"></div>
-      </div>
-      <div id="gs2-er" class="sub-panel">
-        <div id="gs2-er-content" style="padding:20px 24px 40px">
-          <div style="color:var(--muted);font-size:13px">Loading Extended Review...</div>
-        </div>
       </div>
       <div id="gs2-pacing" class="sub-panel">
         <div class="sec-title">G&S 2 — Pacing Guide</div>
@@ -879,7 +846,6 @@ select.lp-input{cursor:pointer}
         <button class="sub-btn active" onclick="switchSub('gs3','overview',this)">Overview</button>
         <button class="sub-btn" onclick="switchSub('gs3','grammar',this)">Grammar Blocks</button>
         <button class="sub-btn" onclick="switchSub('gs3','rc',this)">R&C · Reader's Bank</button>
-        <button class="sub-btn" onclick="switchSub('gs3','er',this)">🔄 Extended Review</button>
         <button class="sub-btn" onclick="switchSub('gs3','pacing',this)">Pacing</button>
       </div>
       <div id="gs3-overview" class="sub-panel active">
@@ -909,11 +875,6 @@ select.lp-input{cursor:pointer}
           <button class="prog-reset" onclick="resetRcProgress('gs3')">Reset</button>
         </div>
         <div style="padding:20px 24px 40px" id="gs3-rc-units"></div>
-      </div>
-      <div id="gs3-er" class="sub-panel">
-        <div id="gs3-er-content" style="padding:20px 24px 40px">
-          <div style="color:var(--muted);font-size:13px">Loading Extended Review...</div>
-        </div>
       </div>
       <div id="gs3-pacing" class="sub-panel">
         <div class="sec-title">G&S 3 — Pacing Guide</div>
@@ -954,7 +915,6 @@ select.lp-input{cursor:pointer}
         <button class="sub-btn active" onclick="switchSub('gs4','overview',this)">Overview</button>
         <button class="sub-btn" onclick="switchSub('gs4','grammar',this)">Grammar Blocks</button>
         <button class="sub-btn" onclick="switchSub('gs4','rc',this)">R&C · Reader's Bank</button>
-        <button class="sub-btn" onclick="switchSub('gs4','er',this)">🔄 Extended Review</button>
         <button class="sub-btn" onclick="switchSub('gs4','pacing',this)">Pacing</button>
       </div>
       <div id="gs4-overview" class="sub-panel active">
@@ -983,11 +943,6 @@ select.lp-input{cursor:pointer}
           <button class="prog-reset" onclick="resetRcProgress('gs4')">Reset</button>
         </div>
         <div style="padding:20px 24px 40px" id="gs4-rc-units"></div>
-      </div>
-      <div id="gs4-er" class="sub-panel">
-        <div id="gs4-er-content" style="padding:20px 24px 40px">
-          <div style="color:var(--muted);font-size:13px">Loading Extended Review...</div>
-        </div>
       </div>
       <div id="gs4-pacing" class="sub-panel">
         <div class="sec-title">G&S 4 — Pacing Guide</div>
@@ -1048,10 +1003,10 @@ select.lp-input{cursor:pointer}
                 <option value="starter1">Starters 1</option>
                 <option value="starter2">Starters 2</option>
               </optgroup>
-              <optgroup label="Levels 1–3">
-                <option value="low1-lv1">Level 1</option>
-                <option value="low1-lv2">Level 2</option>
-                <option value="low1-lv3">Level 3</option>
+              <optgroup label="Low 1">
+                <option value="low1-lv1">Low 1 · Level 1</option>
+                <option value="low1-lv2">Low 1 · Level 2</option>
+                <option value="low1-lv3">Low 1 · Level 3</option>
               </optgroup>
               <optgroup label="G&S">
                 <option value="gs1">G&S 1</option>
@@ -1142,8 +1097,8 @@ select.lp-input{cursor:pointer}
             <select id="ws-level" class="ws-input" onchange="wsLevelChange()">
               <option value="">— Select level —</option>
               <option value="starters">Starters 1 &amp; 2</option>
-              <option value="phonics">Phonics Bridge</option>
-              <option value="low1lv3">Level 3</option>
+              <option value="phonics">Low 1 — Phonics Bridge</option>
+              <option value="low1lv3">Low 1 — Level 3</option>
               <option value="gs1">G&amp;S 1</option>
               <option value="gs2">G&amp;S 2</option>
               <option value="gs3">G&amp;S 3</option>
@@ -1151,7 +1106,7 @@ select.lp-input{cursor:pointer}
             </select>
           </div>
 
-          <!-- Word list (Level 3 + G&S 1–4) -->
+          <!-- Word list (Low 1 Lv3 + G&S 1–4) -->
           <div class="ws-field" id="ws-wordlist-field" style="display:none">
             <label class="ws-label">Word List</label>
             <div class="voice-field-wrap">
@@ -1160,13 +1115,13 @@ select.lp-input{cursor:pointer}
             </div>
           </div>
 
-          <!-- Phonics focus (Phonics Bridge) -->
+          <!-- Phonics focus (Low 1 Phonics) -->
           <div class="ws-field" id="ws-phonics-field" style="display:none">
             <label class="ws-label">Phonics Focus</label>
             <input type="text" id="ws-phonics" class="ws-input" placeholder="e.g. JP1 sounds s, a, t, p">
           </div>
 
-          <!-- Topic / theme (Starters + Levels 1-3) -->
+          <!-- Topic / theme (Starters + Low 1) -->
           <div class="ws-field" id="ws-topic-field" style="display:none">
             <label class="ws-label">Topic / Theme</label>
             <input type="text" id="ws-topic" class="ws-input" placeholder="e.g. fruit · animals · colours">
@@ -1203,6 +1158,7 @@ select.lp-input{cursor:pointer}
             <div class="ws-action-row" id="ws-action-row">
               <button class="ws-action-btn" onclick="wsPrint()">🖨 Print</button>
               <button class="ws-action-btn" onclick="wsCopy()">📋 Copy Answer Key</button>
+              <button class="ws-gdoc-btn" id="ws-gdoc-btn" onclick="wsSaveToDoc()" style="display:none">📄 Save to Google Docs</button>
             </div>
             <div id="ws-sheet-render"></div>
             <!-- Refinement bar (shown after generation) -->
@@ -1321,8 +1277,8 @@ select.lp-input{cursor:pointer}
           <select id="rp-modal-level" class="rp-modal-input">
             <option value="Starters 1">Starters 1</option>
             <option value="Starters 2">Starters 2</option>
-            <option value="Phonics Bridge">Phonics Bridge</option>
-            <option value="Level 3">Level 3</option>
+            <option value="Low 1 — Phonics">Low 1 — Phonics Bridge</option>
+            <option value="Low 1 — Level 3">Low 1 — Level 3</option>
             <option value="G&S 1">G&amp;S 1</option>
             <option value="G&S 2">G&amp;S 2</option>
             <option value="G&S 3">G&amp;S 3</option>
@@ -1430,7 +1386,6 @@ function switchSub(lvl, sub, btn) {
   panel.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
   document.getElementById(lvl + '-' + sub).classList.add('active');
   btn.classList.add('active');
-  if (sub === 'er') buildErPanel(lvl);
 }
 function switchBlock(lvl, blockNum, clickedNode) {
   const arcNodes = Array.from(document.querySelectorAll('#arc-' + lvl + ' .arc-node'));
@@ -1619,246 +1574,6 @@ gs4:[
 };
 
 // ══════════════════════════════════════════════════
-// ══════════════════════════════════════════════════
-// WRITING DATA & ER DATA (from kiw_rc_local.html)
-// ══════════════════════════════════════════════════
-const WRITING_DATA = {
-
-// ── G&S 1 ─────────────────────────────────
-gs1: {
-  howto: "This guide covers all texts in RB 1 and RB 2 — but you don't have to teach every one. <strong>Skipping 1–2 texts is normal.</strong> Writing tasks <strong>recycle skills across units</strong> so skipping one won't leave a gap. A new writing skill may take <strong>3 or more sessions</strong> before going home as homework — that is expected. Only assign homework once students can do it confidently in class. When reviewing homework: <strong>10–15 min</strong>, students write on the board, class improves within the frame — not full correction.",
-  phases: {
-    "RB1-U01": "📝 Phase 1 — Copy + Complete · U01–03 · No homework yet",
-    "RB1-U04": "📝 Phase 2 — Frame + Fill · U04–08 · First homework candidates from U04",
-    "RB1-U09": "📝 Phase 3 — Frame + Short Response · U09–12 · First connectors introduced",
-    "RB2-U01": "📝 Phase 4 — Guided Short Paragraph · U01–06 · Big step up — take the time needed",
-    "RB2-U07": "📝 Phase 5 — Paragraph + Opinion · U07–12 · Lighter frame, more student voice",
-  },
-  units: {
-    "RB1-U01": { skill:"Copy + Complete", prompt:"Complete the sentences together: My favourite story is ___. I like it because ___. Do you like ___?", note:"<strong>Do entirely on the board together.</strong> Students copy the class version, then fill in one more sentence with support. No independence expected. First writing task of the year — keep it celebratory, not corrective.", spotlight:"REINFORCEMENT — question forms (do/does). Notice in text. Students make one question orally.", spotMode:"R", hw:"no" },
-    "RB1-U02": { skill:"Copy + Complete", prompt:"Complete the predictions: I think ___ will get bigger. I think ___ will change. I think ___ will stay the same.", note:"<strong>Write two examples together on board.</strong> Students copy, then complete one more. Treat <em>will</em> as a useful phrase chunk — no grammar analysis.", spotlight:"EXPOSURE — will. Point it out, name it briefly (\"this is how we talk about the future\"), move on.", spotMode:"E", hw:"no" },
-    "RB1-U03": { skill:"Copy + Complete — adjective focus", prompt:"Describe something using senses. Fill in the adjectives only: It looks ___. It smells ___. It tastes ___. It sounds ___. It feels ___.", note:"<strong>Do together using a food everyone knows</strong> (e.g. 떡볶이). Introduce 6–8 adjectives as vocabulary first — students choose from those. Focus on adjective selection, not sentence structure.", spotlight:"EXPOSURE — sensory verbs. Use as vocabulary (\"look, smell, taste, feel\"), not grammar analysis.", spotMode:"E", hw:"no" },
-    "RB1-U04": { skill:"Frame + Fill — There is / There are", prompt:"Write 3 sentences about your classroom or bedroom: There is ___. There are ___. There is no ___.", note:"<strong>Reinforcement — push slightly more.</strong> Write two sentences together, release one. Needs at least 2 sessions before going home as homework. When reviewing: students write on board, class suggests one improvement within the frame.", spotlight:"REINFORCEMENT — there is/are (Block 2). Find in text. Students produce orally before writing.", spotMode:"R", hw:"maybe" },
-    "RB1-U05": { skill:"Frame + Fill — imperatives", prompt:"Write 3 rules for a place of your choice: Always ___. Never ___. Don't ___.", note:"<strong>Brainstorm rules together first.</strong> Students pick 3 and fill in the frame. Fun and low pressure. Good session to assign first homework if U04 is already solid.", spotlight:"EXPOSURE — imperatives. Functional and natural — don't explain the grammar rule.", spotMode:"E", hw:"maybe" },
-    "RB1-U06": { skill:"Frame + Fill — advice sentences", prompt:"A friend is worried. Write 2 sentences of advice: You should ___. You can ___.", note:"<strong>Give a situation on board</strong> (e.g. \"my friend is nervous about a test\"). Brainstorm advice together. Students write for their own situation. Review U04/U05 homework at start of session if assigned.", spotlight:"EXPOSURE — must/should/may. Name them briefly (\"these are advice words\"), move on.", spotMode:"E", hw:"yes" },
-    "RB1-U07": { skill:"Frame + Fill — contrast (now vs. always)", prompt:"Write 2 sentences: I usually ___. Right now, I am ___.", note:"<strong>Write both on board side by side</strong> with a clear visual contrast. Present continuous is reinforcement — push accuracy gently. May need 2 sessions before homework.", spotlight:"PARTIAL — present continuous = REINFORCEMENT (Block 3). Past continuous = EXPOSURE only, name it if it appears.", spotMode:"P", hw:"maybe" },
-    "RB1-U08": { skill:"Frame + Fill → first opinion sentences", prompt:"Write 2 opinions about the text topic: I think ___. I also think ___.", note:"<strong>First opinion writing.</strong> Model two contrasting opinions on board. Make it feel safe — their opinion is valid and welcome. Keep each to 1 sentence. Don't correct ideas, only support structure.", spotlight:"EXPOSURE — noun clause \"that\" (I think that…). Show in text, name briefly, move on.", spotMode:"E", hw:"yes" },
-    "RB1-U09": { skill:"Frame + Short Response — first \"because\"", prompt:"Write 2 things you want to do this year: I want to ___ because ___. I hope to ___.", note:"<strong>First time adding \"because\" in writing — new skill, give it time.</strong> Do together on board first. Students may struggle to connect the two parts. May need 2–3 sessions before homework. This connector is the foundation for everything in RB 2 — don't rush it.", spotlight:"EXPOSURE — to-infinitive. Treat \"want to / hope to\" as vocabulary chunks, not grammar rules.", spotMode:"E", hw:"maybe" },
-    "RB1-U10": { skill:"Frame + Short Response — consolidates \"because\"", prompt:"Write 2 sentences: ___ is fun because ___. ___ is boring because ___.", note:"<strong>Recycles \"because\" from U09.</strong> Good consolidation session. If students struggled with U09, use this unit to practise more in class before assigning homework again. Don't introduce anything new here.", spotlight:"EXPOSURE — gerund as subject. Teach \"Swimming is fun\" as a vocabulary chunk.", spotMode:"E", hw:"yes" },
-    "RB1-U11": { skill:"Frame + Short Response — third use of \"because\"", prompt:"Write 2 sentences: I enjoy ___ because ___. I don't like ___ because ___.", note:"<strong>Third time using \"because\"</strong> — most students should be comfortable now. Good homework candidate. Review previous homework at session start: students write on board, class suggests one improvement to the \"because\" part.", spotlight:"EXPOSURE — gerund as object. \"I enjoy swimming.\" Teach as a chunk.", spotMode:"E", hw:"yes" },
-    "RB1-U12": { skill:"Frame + Short Response — sequence with connector", prompt:"Write your morning or after-school routine in 3 sentences. Use \"before\" or \"after\" at least once.", note:"<strong>Reinforcement — push accuracy.</strong> Model a full 3-sentence sequence on board first. This is the most structured writing task of RB 1 and a natural end-of-phase milestone. May take 2 sessions. Strong homework candidate.", spotlight:"REINFORCEMENT — before/after conjunctions (Block 3). Find in text, produce orally first, then in writing.", spotMode:"R", hw:"yes" },
-    "RB2-U01": { skill:"Guided Paragraph — first paragraph attempt", prompt:"Write 3 sentences about something interesting you learned: I learned that ___. This surprised me because ___. I think ___.", note:"<strong>BIG step up from RB 1.</strong> Do the entire paragraph together on board first. Students copy, then try to change one sentence only. Expect 3+ sessions before homework is appropriate. That is expected and correct — do not rush this transition.", spotlight:"EXPOSURE — -thing pronouns (something, anything). Point out in text, move on.", spotMode:"E", hw:"no" },
-    "RB2-U02": { skill:"Guided Paragraph — past + reason", prompt:"Write about something you did recently and why: I ___ because I wanted to ___. It was ___ because ___.", note:"<strong>Recycles paragraph structure + adds past tense.</strong> Check — have students covered simple past in Grammar class? If yes, this is a reinforcement writing moment. If not, accept tense errors without correction.", spotlight:"EXPOSURE — adverbial to-infinitive. Brief mention only.", spotMode:"E", hw:"maybe" },
-    "RB2-U03": { skill:"Guided Paragraph — wants & needs", prompt:"Write about something you want or need: I need ___. I want ___. This is important to me because ___.", note:"<strong>Third paragraph attempt.</strong> Students should be getting more comfortable with 3-sentence structure. Push one free sentence at the end. Review U01 or U02 homework at start of session if assigned — 10–15 min on board.", spotlight:"EXPOSURE — to-infinitive modifying nouns. Brief.", spotMode:"E", hw:"yes" },
-    "RB2-U04": { skill:"Guided Paragraph — first problem → reason → solution", prompt:"Write about a small problem: The problem is ___. This happens because ___. I think we should ___.", note:"<strong>Significant new skill — 3-part structure.</strong> Model the full paragraph on board. This same structure comes back in the Extended Review class — worth taking all the time it needs. Expect 3+ sessions. Very strong homework once secure.", spotlight:"REINFORCEMENT — because (Block 3). Push accuracy. Connect writing to the grammar they know.", spotMode:"R", hw:"yes" },
-    "RB2-U05": { skill:"Guided Paragraph — first comparison", prompt:"Compare two things: ___ is ___ but ___ is ___. I think ___ is better because ___.", note:"<strong>First comparison writing.</strong> Recycles \"because\". Use topics students care about for the model (cats vs. dogs, summer vs. winter). New structure — give it time in class before homework.", spotlight:"EXPOSURE — comparatives. Students probably use some in speech already — connect to those.", spotMode:"E", hw:"yes" },
-    "RB2-U06": { skill:"Guided Paragraph — giving & sharing", prompt:"Write about giving or sharing: I gave/showed ___ to ___. They felt ___ because ___. I felt ___ too.", note:"<strong>Recycles paragraph structure.</strong> By now students should attempt this more independently in class. Teacher circulates. Strong session to review previous homework on board together.", spotlight:"EXPOSURE — ditransitive verbs (give, show, send). Show the pattern briefly in text.", spotMode:"E", hw:"yes" },
-    "RB2-U07": { skill:"Paragraph + Opinion — \"at first… but then\"", prompt:"Write about something that surprised you: At first I thought ___. But then I learned ___. Now I think ___ because ___.", note:"<strong>Step up — 4 sentences with a shift in thinking.</strong> This is new and may feel unfamiliar. Model fully on board. Give multiple sessions before assigning homework.", spotlight:"EXPOSURE — make/keep + adjective. Brief.", spotMode:"E", hw:"maybe" },
-    "RB2-U08": { skill:"Paragraph + Opinion — \"before… after\" revisited", prompt:"Write about a time something helped you: ___ helped me ___. Before that, I ___. After that, I ___. I felt ___ because ___.", note:"<strong>Recycles before/after from RB 1 U12</strong> in a richer context. Also recycles because. Students gaining confidence. Review previous homework on board at session start.", spotlight:"EXPOSURE — causative make/help. Brief.", spotMode:"E", hw:"yes" },
-    "RB2-U09": { skill:"Paragraph + Opinion — importance + first \"if\" stretch", prompt:"Write about something important: I think ___ is important because ___. I want ___ to ___. If this happens, ___.", note:"<strong>\"If\" introduced gently as a stretch goal.</strong> Don't force it — if students aren't ready, skip that last sentence. It's a preview of what's coming, not a requirement.", spotlight:"EXPOSURE — ask/want + object + infinitive. Brief.", spotMode:"E", hw:"yes" },
-    "RB2-U10": { skill:"Paragraph + Opinion — observation writing", prompt:"Write about something you noticed: I noticed that ___. This made me feel ___ because ___. I think ___.", note:"<strong>Recycles I think / because.</strong> By now this should feel familiar. Push students to go beyond the frame if they can. Share interesting observations on board together.", spotlight:"EXPOSURE — causative/perception verbs. Brief.", spotMode:"E", hw:"yes" },
-    "RB2-U11": { skill:"Paragraph + Opinion — wonder writing", prompt:"Write about something you wonder about: I wonder ___. I think this happens because ___. If I could find out, I would ___.", note:"<strong>Most open task in RB 2.</strong> Some students will write freely — let them. Others still need the frame — that's fine. Good pre-Extended Review task: wondering about problems leads naturally into the ER class format.", spotlight:"EXPOSURE — indirect questions. Brief.", spotMode:"E", hw:"yes" },
-    "RB2-U12": { skill:"Paragraph + Opinion — choice & reasoning (end of year)", prompt:"Write about a choice: You can ___ or you can ___. I think ___ is better because ___. In the end, ___.", note:"<strong>End of RB 2 — students have come a long way.</strong> Let them write as freely as they can. Frame is available but not pushed. A good final class: read some aloud, celebrate how much they've grown since Unit 01.", spotlight:"EXPOSURE — until/while. Brief mention if they appear in text.", spotMode:"E", hw:"yes" },
-  }
-},
-
-// ── G&S 2 ─────────────────────────────────
-gs2: {
-  howto: "G&S 2 writing moves from supported sentences to <strong>summarising in your own words</strong>. The key shift: students no longer just react to the text — they retell it. Model what \"in your own words\" means clearly and repeatedly. Sentence frames remain available but the goal is to wean students off them by the end of RB 4. Homework reviews: <strong>10–15 min</strong>, student writes on board, class improves one element together.",
-  phases: {
-    "RB3-U01": "📝 Phase 1 — Retell the main idea · U01–04 · Transition from G&S 1 paragraph",
-    "RB3-U05": "📝 Phase 2 — Summarise key points · U05–08 · First real summarising",
-    "RB3-U09": "📝 Phase 3 — Summarise + personal response · U09–12 · Adding the student's voice",
-    "RB4-U01": "📝 Phase 4 — Summary + so what? · U01–06 · Explain why it matters",
-    "RB4-U07": "📝 Phase 5 — Structured summary · U07–12 · Looser frame, more independence",
-  },
-  units: {
-    "RB3-U01": { skill:"Retell — what is this text about?", prompt:"Write 2 sentences: This text is about ___. The most important idea is ___.", note:"<strong>Bridge from G&S 1 paragraph writing.</strong> Many students will want to copy sentences from the text — gently redirect: close the book, tell me in your own words. Do on board together first. This skill is the whole goal of G&S 2 — take it slowly.", spotlight:"EXPOSURE — causative/linking verb patterns. Name briefly in text, move on.", spotMode:"E", hw:"no" },
-    "RB3-U02": { skill:"Retell — two key ideas", prompt:"Write 2 ideas from the text in your own words: One thing I learned is ___. Another thing is ___.", note:"<strong>Second retell attempt.</strong> Model the difference between copying and retelling on board with a clear visual. Students should attempt without looking at the text. Accept imperfect sentences — accuracy of retelling matters more than grammar here.", spotlight:"EXPOSURE — equality comparison / noun clause. Brief.", spotMode:"E", hw:"maybe" },
-    "RB3-U03": { skill:"Retell — main idea + one detail", prompt:"Write 3 sentences: The main idea is ___. One important detail is ___. I think this is ___ because ___.", note:"<strong>First time adding a detail sentence.</strong> Distinguish \"main idea\" from \"interesting detail\" on board — draw a tree: trunk = main idea, branch = detail. This structure is the backbone of all summarising at G&S 2.", spotlight:"PARTIAL — relative 'that' = check if covered in Grammar; conjunction 'when' = EXPOSURE. Use accordingly.", spotMode:"P", hw:"maybe" },
-    "RB3-U04": { skill:"Summary frame — topic + reason + example", prompt:"Write about the text topic: ___ is ___. This is because ___. For example, ___.", note:"<strong>First structured summary frame.</strong> Model all 3 parts on board. \"For example\" is new — show how it connects to the claim. Reinforce because — students know this from G&S 1. Strong homework once the frame is understood.", spotlight:"REINFORCEMENT — because of / because. Connect writing directly: 'because of this fact' vs 'because + clause'.", spotMode:"R", hw:"yes" },
-    "RB3-U05": { skill:"Summary — describe + explain", prompt:"Describe what you read: ___ is a type of ___. It is special because ___. One example is ___.", note:"<strong>Summary focus shifts to describing and explaining.</strong> Good for science and animal texts. Students can use the text for reference but must change the wording. Review U04 homework on board at session start.", spotlight:"EXPOSURE — passive / reflexive pronouns. Show in text, name briefly.", spotMode:"E", hw:"yes" },
-    "RB3-U06": { skill:"Summary — compare two things from the text", prompt:"Write a comparison: ___ and ___ are both ___. But ___ is ___ while ___ is ___. In my opinion, ___ because ___.", note:"<strong>First comparison summary.</strong> Show students how to find two things in the text that can be compared. The comparison + opinion structure recycles directly from G&S 1 RB2. Good session to be playful — give a silly comparison first as a model.", spotlight:"PARTIAL — comparatives = reinforce if covered; superlatives = check teaching status.", spotMode:"P", hw:"yes" },
-    "RB3-U07": { skill:"Summary — sequence / process", prompt:"Explain how something happens in 3 steps: First, ___. Then, ___. Finally, ___.", note:"<strong>Sequence connectors introduced.</strong> Model a familiar process first (how to make ramyeon). Then ask: can we describe something from the text the same way? Good for science texts. This connector set is essential for G&S 3 argumentative writing.", spotlight:"EXPOSURE — help + object / indirect questions. Brief.", spotMode:"E", hw:"yes" },
-    "RB3-U08": { skill:"Summary + opinion — is this a good idea?", prompt:"Summarise and evaluate: The text says ___. I think this is a good/bad idea because ___. One problem/benefit is ___.", note:"<strong>First evaluative summary.</strong> Students summarise AND judge. Show the difference between neutral summary and opinion. Start neutral (\"the text says\"), then add opinion. Strong homework — the added judgment makes it personal.", spotlight:"REINFORCEMENT — have to / relative adverb where. Push accuracy on 'have to' if covered in Grammar.", spotMode:"R", hw:"yes" },
-    "RB3-U09": { skill:"Summary + personal connection", prompt:"Write a summary with a personal connection: This text is about ___. The key point is ___. This reminds me of ___ because ___.", note:"<strong>Personal connection added to the summary.</strong> The third sentence is where students make it their own — accept any genuine connection. Validate creative links: \"I've never thought about it that way, that's interesting.\"", spotlight:"EXPOSURE — wish + past / question tags. Brief.", spotMode:"E", hw:"yes" },
-    "RB3-U10": { skill:"Summary — cause and effect", prompt:"Explain a cause and effect from the text: ___ happens because ___. This causes ___. As a result, ___.", note:"<strong>Cause-effect chain introduced.</strong> Draw an arrow diagram on board: A → B → C. Students find the chain in the text, then write it in their own words. \"As a result\" is new vocabulary — treat as a chunk.", spotlight:"EXPOSURE — past perfect. Name briefly if it appears, no deep instruction yet.", spotMode:"E", hw:"yes" },
-    "RB3-U11": { skill:"Summary — problem and solution", prompt:"Write a problem-solution summary: The problem is ___. This is caused by ___. One solution is ___. I think ___ because ___.", note:"<strong>Recycles problem-solution from G&S 1 RB2 U04</strong> — now with more precision and a full causal chain. Strong pre-Extended Review task. Good homework because the structure is familiar but now more demanding.", spotlight:"EXPOSURE — before/after/when + clause. Show in text as reading comprehension.", spotMode:"E", hw:"yes" },
-    "RB3-U12": { skill:"Summary — free paragraph (end of RB 3)", prompt:"Write a 4-sentence summary in your own words. No frame — just write what the text was about and what you think.", note:"<strong>First free summary — no frame provided.</strong> This is a milestone. Students who struggle can still use the main idea + detail + opinion structure from memory. Celebrate any attempt. Read some aloud and name what they did well specifically.", spotlight:"EXPOSURE — unless / otherwise. Brief.", spotMode:"E", hw:"yes" },
-    "RB4-U01": { skill:"Summary + so what? — why does this matter?", prompt:"Write a summary with significance: This text is about ___. The main point is ___. This matters because ___.", note:"<strong>Adding \"so what?\" — why does this information matter to real life?</strong> Model the shift from neutral retell to significance. This is the bridge toward G&S 3 argumentative writing. Expect students to find this difficult — the \"why it matters\" sentence is hard.", spotlight:"EXPOSURE — wh-clause as subject/object. Brief.", spotMode:"E", hw:"no" },
-    "RB4-U02": { skill:"Summary + significance — people and ideas", prompt:"Write about a person or idea from the text: ___ is ___. They/It is important because ___. Without ___, ___.", note:"<strong>Significance extended to people and ideas.</strong> The \"without\" sentence is a stretch goal — don't push if not ready. Good model on board: \"Without the internet, students couldn't...\" Students connect to their own lives.", spotlight:"EXPOSURE — would / had better. Brief.", spotMode:"E", hw:"maybe" },
-    "RB4-U03": { skill:"Summary — sequence + significance", prompt:"Describe a process and explain why it matters: First ___. Then ___. Finally ___. This is important because ___.", note:"<strong>Sequence connectors revisited + significance added.</strong> Recycles first/then/finally from RB3. The significance sentence pushes beyond description into meaning. Good homework — familiar structure with one new demand.", spotlight:"EXPOSURE — relative clause + present perfect. Brief.", spotMode:"E", hw:"yes" },
-    "RB4-U04": { skill:"Summary + two perspectives", prompt:"Write a balanced summary: Some people think ___. Others think ___. The text says ___. I think ___ because ___.", note:"<strong>First time holding two perspectives.</strong> Model with a familiar debate (phones in school, homework). Show students how to use \"some people / others\" as a neutral framing before giving their own view. This is a big step toward G&S 3 persuasive writing.", spotlight:"EXPOSURE — reported speech. Brief — \"The text says (that)...\" is the writing application.", spotMode:"E", hw:"yes" },
-    "RB4-U05": { skill:"Summary — comparison + judgment", prompt:"Compare two things from the text and make a judgment: ___ and ___ are both ___. However, ___ is more ___ because ___. In my view, ___.", note:"<strong>Comparison summary with explicit judgment.</strong> \"However\" introduced as an academic contrast connector. Model it: write two contrasting sentences, then add the connector. Strong homework — familiar content, one new connector.", spotlight:"PARTIAL — comparatives = reinforce; superlatives = check status.", spotMode:"P", hw:"yes" },
-    "RB4-U06": { skill:"Summary + counter-argument introduction", prompt:"Write about the text topic: ___ is good/important because ___. However, some people think ___. I still believe ___ because ___.", note:"<strong>First counter-argument structure.</strong> Students state their view, acknowledge the other side briefly, then return to their own view. This is the most advanced writing at G&S 2 and directly prepares for G&S 3. Model it slowly — this takes several sessions.", spotlight:"EXPOSURE — too/enough + infinitive. Brief.", spotMode:"E", hw:"maybe" },
-    "RB4-U07": { skill:"Summary — news report style", prompt:"Write as if you are reporting: According to the text, ___. The reason is ___. Experts say ___. In my opinion, ___.", note:"<strong>Reporting language introduced.</strong> \"According to\" and \"experts say\" are new chunks — teach as vocabulary. Good for science texts. Connects naturally to future paraphrasing work in G&S 3.", spotlight:"EXPOSURE — passive advanced forms. Brief.", spotMode:"E", hw:"yes" },
-    "RB4-U08": { skill:"Summary — problem, cause, effect, solution", prompt:"Write a full chain: The problem is ___. It is caused by ___. This leads to ___. One solution is ___.", note:"<strong>Full causal chain — most ambitious structure in G&S 2.</strong> Connect to U10/U11 of RB3 where cause-effect and problem-solution were introduced separately. Now combine them. Expect 2+ in-class sessions before homework.", spotlight:"REINFORCEMENT — have to / relative adverb. Deepen with writing application.", spotMode:"R", hw:"yes" },
-    "RB4-U09": { skill:"Summary — story retelling", prompt:"Retell a story or event from the text: First, ___. Then ___. In the end, ___. The lesson is ___.", note:"<strong>Story retelling with lesson/moral extracted.</strong> Good for fable and tale texts. \"The lesson is\" is new — discuss what a lesson or moral means. Fun session: write the lesson as a proverb and see if students can relate it to something in Korean culture.", spotlight:"EXPOSURE — past perfect advanced. Brief.", spotMode:"E", hw:"yes" },
-    "RB4-U10": { skill:"Summary — data or fact summary", prompt:"Write about facts from the text: According to the text, ___. This shows that ___. I find this ___ because ___.", note:"<strong>Fact-based summary — good for science and environment texts.</strong> \"This shows that\" is new academic language — teach as a chunk. Students who are ready can begin weaning off sentence frames.", spotlight:"EXPOSURE — noun clause advanced. Brief.", spotMode:"E", hw:"yes" },
-    "RB4-U11": { skill:"Summary — free writing (almost no frame)", prompt:"Write 4–5 sentences summarising the text in your own words. Include: main idea, one detail, and your opinion.", note:"<strong>Near-independent summary.</strong> Give the three elements (main idea / detail / opinion) as guidance only — not as a strict frame. Celebrate students who go beyond. This is where G&S 2 tops out and G&S 3 picks up.", spotlight:"EXPOSURE — indirect questions advanced. Brief.", spotMode:"E", hw:"yes" },
-    "RB4-U12": { skill:"Summary — full independent paragraph (end of year)", prompt:"Write a paragraph about the text. No frame. Just write.", note:"<strong>End of G&S 2 milestone.</strong> Students should write freely. Those who need support can use any previous frame from memory. Read 2–3 aloud and name specifically what each student did well. A good session to show students how far they've come from their first retell in RB3 U01.", spotlight:"EXPOSURE — until/while advanced. Brief.", spotMode:"E", hw:"yes" },
-  }
-},
-
-// ── G&S 3 ─────────────────────────────────
-gs3: {
-  howto: "G&S 3 writing has two tracks running simultaneously: <strong>paraphrasing</strong> (rewriting source text in different words and structure) and <strong>persuasive writing</strong> (arguing a position using evidence from the text). Both build across the year. Paraphrasing comes first — students must be able to restate before they can argue. Homework is expected from the first unit onward, but independence takes time. Model each task on the board before releasing.",
-  phases: {
-    "RB5-U01": "📝 Phase 1 — Paraphrase one sentence · U01–03 · Core paraphrasing skill",
-    "RB5-U04": "📝 Phase 2 — Paraphrase + explain · U04–06 · Add your interpretation",
-    "RB5-U07": "📝 Phase 3 — Argue a position · U07–09 · First persuasive paragraphs",
-    "RB5-U10": "📝 Phase 4 — Evidence-based argument · U10–12 · Use the text to support",
-    "RB6-U01": "📝 Phase 5 — Paraphrase + counter-argument · U01–04 · Acknowledge other views",
-    "RB6-U05": "📝 Phase 6 — Full persuasive paragraph · U05–08 · Claim, evidence, conclusion",
-    "RB6-U09": "📝 Phase 7 — Extended argument · U09–12 · Multi-point persuasion",
-  },
-  units: {
-    "RB5-U01": { skill:"Paraphrase — one key sentence", prompt:"Find one important sentence in the text. Rewrite it completely in your own words without looking.", note:"<strong>Paraphrasing starts here.</strong> Show on board: copy a sentence, then replace every content word with a synonym or reorder the structure. \"Different words, same meaning.\" Students need to understand this is a skill — it takes sustained practice. Don't accept near-copies.", spotlight:"REINFORCEMENT — present perfect continuous. Find examples in text. Model the form before writing.", spotMode:"R", hw:"yes" },
-    "RB5-U02": { skill:"Paraphrase — main idea sentence", prompt:"Write the main idea of the text in one sentence, using completely different words from the text.", note:"<strong>Main idea paraphrase.</strong> Model: read the text, close it, state the main idea in Korean, then translate your Korean idea into English — this bypasses the temptation to copy. Strong strategy to teach explicitly.", spotlight:"EXPOSURE — passive advanced forms. Brief.", spotMode:"E", hw:"yes" },
-    "RB5-U03": { skill:"Paraphrase — two key ideas", prompt:"Paraphrase the two most important ideas from the text: The main point is ___. Another key idea is ___. Both use your own words.", note:"<strong>Two ideas, both paraphrased.</strong> Check: are the students really using their own words or still close-copying? Show examples of good and bad paraphrasing side by side on board. A strict but important lesson.", spotlight:"EXPOSURE — relative clause advanced. Brief.", spotMode:"E", hw:"yes" },
-    "RB5-U04": { skill:"Paraphrase + interpretation", prompt:"Paraphrase the main idea, then explain what it means: The text argues that ___. This means that ___. In other words, ___.", note:"<strong>\"In other words\" introduced as a paraphrasing connector.</strong> Model the move from the author's words → your restatement → your interpretation. \"The text argues that\" is an academic phrase to teach as a chunk.", spotlight:"REINFORCEMENT — passive voice. Push accuracy — find passive forms in text and restate in paraphrase.", spotMode:"R", hw:"yes" },
-    "RB5-U05": { skill:"Paraphrase + extend", prompt:"Paraphrase the main idea, then extend it: The text says ___. This suggests that ___. I think this also means ___.", note:"<strong>Extending beyond the text.</strong> \"This suggests that\" moves from restatement to inference — a significant cognitive step. Model clearly: inference is reading between the lines. Students who are not ready can stop at the second sentence.", spotlight:"EXPOSURE — modals advanced. Brief.", spotMode:"E", hw:"yes" },
-    "RB5-U06": { skill:"Paraphrase + relevance", prompt:"Paraphrase + connect to real life: The text shows that ___. This is relevant because ___. For example, in real life, ___.", note:"<strong>Paraphrase connected to real-world relevance.</strong> \"For example, in real life\" grounds abstract text in students' experience. Good for science and society texts. Strong homework — the real-life example is engaging and personal.", spotlight:"EXPOSURE — conditionals introduction. Preview — deeper work comes in grammar class.", spotMode:"E", hw:"yes" },
-    "RB5-U07": { skill:"Persuasive — state a position", prompt:"Write your position on the text topic: I believe that ___. This is because ___. One reason is ___.", note:"<strong>First formal persuasive writing.</strong> Model the structure: claim → reason → support. \"I believe that\" is the claim opener — students should state it clearly and confidently. Don't let students sit on the fence here — push for a clear position.", spotlight:"REINFORCEMENT — modals (must/should). Connect to persuasive writing: \"we must / we should\" is argument language.", spotMode:"R", hw:"yes" },
-    "RB5-U08": { skill:"Persuasive — position + evidence from text", prompt:"State a position and support it with the text: I think ___. According to the text, ___. This supports my view because ___.", note:"<strong>Using text evidence to support an argument.</strong> \"According to the text\" is a key academic phrase — teach as a chunk. Model: don't just quote the text, explain why it supports your point. This is the core skill of academic writing.", spotlight:"REINFORCEMENT — reported speech. \"According to the text\" = indirect reporting in writing.", spotMode:"R", hw:"yes" },
-    "RB5-U09": { skill:"Persuasive — two reasons", prompt:"Give two reasons for your position: I believe ___. First, ___. Second, ___. These reasons show that ___.", note:"<strong>Two-reason structure introduced.</strong> \"First / Second\" as argument connectors. Model the difference between listing facts and giving reasons. Strong homework — it's a clear structure that students can follow independently.", spotlight:"EXPOSURE — conjunctions advanced. Preview connecting ideas work coming in grammar.", spotMode:"E", hw:"yes" },
-    "RB5-U10": { skill:"Persuasive — evidence + explanation", prompt:"Support your claim with evidence and explain it: I argue that ___. The text states that ___. This means that ___. Therefore, ___.", note:"<strong>\"Therefore\" introduced as a conclusion connector.</strong> Model the full chain: claim → evidence → explanation → conclusion. This is the most academic structure students have encountered. Expect multiple sessions before it becomes fluent.", spotlight:"REINFORCEMENT — present perfect. Find present perfect in text evidence — model citing it accurately.", spotMode:"R", hw:"yes" },
-    "RB5-U11": { skill:"Persuasive — acknowledge another view", prompt:"Write a balanced argument: I believe ___. Some people think ___. However, I still think ___ because ___.", note:"<strong>Acknowledging counter-arguments.</strong> Students met this in G&S 2 RB4 — now formalise it with the \"however\" pivot. Model: giving the other side doesn't weaken your argument, it strengthens it. This is sophisticated writing — celebrate it.", spotlight:"EXPOSURE — conditionals. Students writing \"if\" clauses in persuasive writing is a natural stretch here.", spotMode:"E", hw:"yes" },
-    "RB5-U12": { skill:"Persuasive — full paragraph (end of RB 5)", prompt:"Write a persuasive paragraph: state your claim, give two reasons with evidence, and write a conclusion. No frame — use what you know.", note:"<strong>End of RB 5 milestone.</strong> Students write independently. Those who need it can mentally use the previous frames. Read 2–3 paragraphs aloud and name one specific persuasive technique each student used well.", spotlight:"REINFORCEMENT — modals (should/must). Students using modals in persuasive writing is a natural application.", spotMode:"R", hw:"yes" },
-    "RB6-U01": { skill:"Paraphrase + counter-argument", prompt:"Paraphrase the text's argument, then challenge it: The text argues that ___. However, one could also say that ___. I think ___ because ___.", note:"<strong>Counter-argument applied to paraphrasing.</strong> Students don't just restate — they push back. Model: a strong thinker can disagree with a text they've read carefully. This is the most intellectually demanding writing task so far.", spotlight:"EXPOSURE — passive adjective. Brief.", spotMode:"E", hw:"yes" },
-    "RB6-U02": { skill:"Paraphrase — style shift (formal → informal)", prompt:"Rewrite the main idea twice: once in formal language, once as if explaining to a younger student.", note:"<strong>Style awareness in paraphrasing.</strong> The same idea can be expressed at different levels of formality. This exercise builds vocabulary flexibility. Good class discussion: which version is clearer? Why does formality matter?", spotlight:"EXPOSURE — indirect questions advanced. Brief.", spotMode:"E", hw:"yes" },
-    "RB6-U03": { skill:"Persuasive — use a specific example", prompt:"Write a persuasive paragraph using a specific example: I believe ___. For instance, ___. This example shows that ___. Therefore, ___.", note:"<strong>Specific examples as evidence.</strong> Show the difference between \"some people think\" (vague) and \"For instance, in Korea in 2023\" (specific). Specificity makes arguments more convincing — model it explicitly.", spotlight:"REINFORCEMENT — relative clause. Strong writing application: use relative clauses to add information in evidence sentences.", spotMode:"R", hw:"yes" },
-    "RB6-U04": { skill:"Persuasive — cause and effect argument", prompt:"Argue using a cause-effect chain: If ___, then ___. This will lead to ___. Therefore, we should ___.", note:"<strong>Cause-effect chain as argument structure.</strong> Connects to G&S 2 RB3 U10 cause-effect work — now in persuasive context. \"If/then\" preview of conditionals. Strong academic writing technique — worth taking multiple sessions.", spotlight:"REINFORCEMENT — conditionals Block 4. Write \"If\" sentences as argument language.", spotMode:"R", hw:"yes" },
-    "RB6-U05": { skill:"Persuasive — full paragraph with hook", prompt:"Write a persuasive paragraph with an opening hook: Imagine ___. [Make a claim.] [Give a reason.] [Use evidence.] [Conclude.]", note:"<strong>Opening hook introduced.</strong> \"Imagine...\" is the simplest hook — a scenario that draws the reader in. Model several hooks and let students choose. The rest of the paragraph uses the full persuasive structure from RB5.", spotlight:"EXPOSURE — negative adverbs. If they appear in text, point them out as rhetorical tools.", spotMode:"E", hw:"yes" },
-    "RB6-U06": { skill:"Persuasive — three-part argument", prompt:"Write a 5-sentence argument: [Hook/claim]. [Reason 1 + evidence]. [Reason 2]. [Counter-argument + rebuttal]. [Conclusion].", note:"<strong>Most complex structure in G&S 3.</strong> Students have all the parts — now assemble them. Model the full structure on board, labelling each sentence's function. Students write their own topic. Allow 2–3 sessions. Strong end-of-semester task.", spotlight:"EXPOSURE — ellipsis to avoid repetition. Teach as a writing sophistication tip.", spotMode:"E", hw:"maybe" },
-    "RB6-U07": { skill:"Paraphrase + persuade", prompt:"Paraphrase the text's main claim, then write your own argument about the same topic.", note:"<strong>Two tracks combined.</strong> First paraphrase (what does the author say?), then persuade (what do YOU say?). This is the highest form of engagement with a text. Model by paraphrasing a famous short text first, then writing a response.", spotlight:"REINFORCEMENT — relative clause whose. Use in sentences that describe evidence: \"the researcher, whose study showed...\"", spotMode:"R", hw:"yes" },
-    "RB6-U08": { skill:"Persuasive — evaluate a claim", prompt:"Evaluate a claim from the text: The text claims that ___. This claim is convincing/unconvincing because ___. The evidence is strong/weak because ___.", note:"<strong>Evaluating rather than just arguing.</strong> Students assess the quality of someone else's argument. Model evaluation language: \"this is convincing because\", \"the evidence is weak because\". A sophisticated move — treat it as an academic achievement.", spotlight:"EXPOSURE — what if / as if. Brief — these appear in academic rhetoric.", spotMode:"E", hw:"yes" },
-    "RB6-U09": { skill:"Extended argument — two paragraphs", prompt:"Write two connected paragraphs: Para 1: [Claim + two reasons]. Para 2: [Counter-argument + rebuttal + conclusion].", note:"<strong>First two-paragraph argument.</strong> Model how the two paragraphs connect. Para 2 should begin with \"However\" or \"On the other hand.\" Expect this to take a full class or more. Strong homework once the structure is understood.", spotlight:"REINFORCEMENT — without + past perfect hypothetical. Teach as argument language: \"Without this, we would have...\"", spotMode:"R", hw:"yes" },
-    "RB6-U10": { skill:"Extended argument — problem, causes, solutions", prompt:"Write a structured argument: [Identify the problem]. [Explain two causes]. [Propose a solution and justify it]. [Conclude].", note:"<strong>Problem-cause-solution-justification structure.</strong> Students at G&S 3 should be able to handle this across two paragraphs. Use real-world topics from the text as content. Good pre-Showcase preparation.", spotlight:"EXPOSURE — partial negation / continuative relative. Show as reading comprehension tools.", spotMode:"E", hw:"yes" },
-    "RB6-U11": { skill:"Extended argument — response to a different view", prompt:"Write a response to someone who disagrees with you. Use: I understand that ___. However, ___. Furthermore, ___. For this reason, ___.", note:"<strong>Formal response register.</strong> \"I understand that\" validates the other view before dismissing it — sophisticated rhetorical move. \"Furthermore\" extends the argument. These are high-register connectors to teach explicitly as vocabulary.", spotlight:"EXPOSURE — reflexive verb use. Brief.", spotMode:"E", hw:"yes" },
-    "RB6-U12": { skill:"Extended argument — free write (end of year)", prompt:"Choose a topic from any text this year. Write a persuasive argument of 6–8 sentences. No frame.", note:"<strong>End of G&S 3 milestone.</strong> Students have a full toolkit: paraphrasing, evidence, counter-argument, hooks, connectors. Let them choose their own topic and write freely. Read aloud and name what each student does well. A celebration of serious growth.", spotlight:"EXPOSURE — negative adverbs. Brief — model their use in conclusion sentences for rhetorical effect.", spotMode:"E", hw:"yes" },
-  }
-},
-
-// ── G&S 4 ─────────────────────────────────
-gs4: {
-  howto: "G&S 4 writing is about <strong>personal voice</strong> — students don't just argue a position, they make it their own. Opinions are backed by personal experience, original reasoning, and careful use of language. The goal is writing that sounds like the student, not a template. Frames are available but pushed aside. Homework should be independent by now. Reviews: share 2–3 pieces aloud and discuss what makes each one convincing and individual.",
-  phases: {
-    "RB7-U01": "📝 Phase 1 — Claim + personal stake · U01–03 · Make the argument personal",
-    "RB7-U04": "📝 Phase 2 — Argument + experience · U04–06 · Personal experience as evidence",
-    "RB7-U07": "📝 Phase 3 — Extended personal argument · U07–09 · Multi-paragraph, personal voice",
-    "RB7-U10": "📝 Phase 4 — Academic voice · U10–12 · Formal + personal in balance",
-    "RB8-U01": "📝 Phase 5 — Nuanced position · U01–04 · Acknowledge complexity",
-    "RB8-U05": "📝 Phase 6 — Synthesise sources · U05–08 · Draw from multiple ideas",
-    "RB8-U09": "📝 Phase 7 — Independent voice · U09–12 · Write as yourself, not a template",
-  },
-  units: {
-    "RB7-U01": { skill:"Opinion + personal stake", prompt:"Write your view and explain why it matters to you personally: I believe ___. This matters to me because ___. In my own experience, ___.", note:"<strong>Personal voice enters the argument.</strong> G&S 4 writing is about ownership — not just \"the text says\" but \"I think, and here is my story.\" Model with your own example. Validate highly personal responses — this is the goal.", spotlight:"EXPOSURE — contrast while / the number of / be used to. Brief.", spotMode:"E", hw:"yes" },
-    "RB7-U02": { skill:"Argument + personal experience as evidence", prompt:"Make a claim and support it with personal experience: I argue that ___. From my own experience, ___. This shows that ___. Therefore, ___.", note:"<strong>Personal experience as formal evidence.</strong> Show that personal experience can be legitimate evidence in an argument — when used carefully. Model: \"From my own experience\" ≠ just storytelling, it must connect to the claim.", spotlight:"EXPOSURE — possessive relative whose. Brief.", spotMode:"E", hw:"yes" },
-    "RB7-U03": { skill:"Opinion — challenge a common belief", prompt:"Challenge something people commonly believe: Many people think ___. However, I believe ___. The reason is ___. In fact, ___.", note:"<strong>Challenging a common belief.</strong> \"In fact\" introduces a rebuttal supported by reasoning. Students find this energising — pick a belief from the text that is genuinely debatable. Model one together before releasing.", spotlight:"EXPOSURE — cleft sentence / one of the + superlative. Brief.", spotMode:"E", hw:"yes" },
-    "RB7-U04": { skill:"Argument — analogy", prompt:"Use an analogy to support your argument: ___ is like ___ because ___. Just as ___, so too ___. This shows that ___.", note:"<strong>Analogy as argument tool.</strong> Analogies make abstract arguments concrete. Model several — use K-pop, food, sports. Show how a strong analogy can replace a paragraph of explanation. G&S 4 students are ready for this kind of rhetorical sophistication.", spotlight:"EXPOSURE — verbs easily confused / with + noun + participle. Brief.", spotMode:"E", hw:"yes" },
-    "RB7-U05": { skill:"Opinion — hypothetical argument", prompt:"Build an argument using a hypothetical: If ___, then ___. Imagine a world where ___. In this scenario, ___. This is why ___.", note:"<strong>Hypothetical scenario as argument.</strong> Students use conditionals (reinforced in G&S 3–4 Grammar) as a rhetorical tool. Model: a strong hypothetical argument invites the reader to imagine, then draws a conclusion. Very advanced — celebrate attempts.", spotlight:"EXPOSURE — as if + indicative / A compared to B. Brief.", spotMode:"E", hw:"yes" },
-    "RB7-U06": { skill:"Opinion — weighing two sides fairly", prompt:"Write a balanced argument: [Acknowledge one side]. [Present your view]. [Explain why your view is stronger]. [Conclude with nuance].", note:"<strong>Balanced argument with nuance.</strong> Students don't dismiss the other side — they explain why their view is better despite it. This is the highest form of argument taught at KiW. Model explicitly: acknowledge ≠ agree. Nuanced conclusion = you understand the complexity.", spotlight:"EXPOSURE — remain/stay/keep + adjective. Brief.", spotMode:"E", hw:"yes" },
-    "RB7-U07": { skill:"Extended personal argument — two paragraphs", prompt:"Write two paragraphs: [Para 1: your claim + reasons + experience]. [Para 2: counter-argument + rebuttal + personal conclusion].", note:"<strong>Two-paragraph personal argument.</strong> The conclusion should sound like the student — not generic. Model: what's the difference between a cliché conclusion (\"In conclusion, I think this is very important\") and a real one? Push for specificity.", spotlight:"EXPOSURE — dummy subject it + to-infinitive / partial negation. Brief.", spotMode:"E", hw:"yes" },
-    "RB7-U08": { skill:"Extended argument — cause, effect, and responsibility", prompt:"Write an argument about who/what is responsible for a problem: The problem is ___. It is caused by ___. The responsibility lies with ___ because ___. We should ___.", note:"<strong>Responsibility argument structure.</strong> \"The responsibility lies with\" is a sophisticated phrase — teach as a chunk. Who is responsible for a problem is more complex than what caused it — model the distinction. Strong content for Showcase preparation.", spotlight:"EXPOSURE — present perfect passive / not A but B. Brief.", spotMode:"E", hw:"yes" },
-    "RB7-U09": { skill:"Opinion — change your mind", prompt:"Write about a time you changed your mind about something from the texts this year: I used to think ___. Now I think ___. What changed my view was ___. This matters because ___.", note:"<strong>Intellectual growth as writing content.</strong> This is rare and powerful — show students that changing your mind is a sign of thinking, not weakness. Model with something you have genuinely reconsidered. Strong personal voice opportunity.", spotlight:"EXPOSURE — percent/fraction + plural / the+comparative. Brief.", spotMode:"E", hw:"yes" },
-    "RB7-U10": { skill:"Academic argument — formal register", prompt:"Write a formal argument paragraph: [Formal claim]. [Evidence with citation phrase]. [Analysis]. [Formal conclusion].", note:"<strong>Academic register explicitly taught.</strong> Show the same argument in informal and formal versions. Point out specific formal features: \"It is argued that\", \"The evidence suggests\", \"One can conclude that\". Students should know both registers and choose deliberately.", spotlight:"EXPOSURE — adverbial clause ellipsis / relative omission. Brief.", spotMode:"E", hw:"yes" },
-    "RB7-U11": { skill:"Argument — what should change?", prompt:"Write an argument for change: Currently, ___. This is problematic because ___. If we changed ___, then ___. I believe this would ___.", note:"<strong>Change argument — practical and civic.</strong> Good preparation for Showcase Day topic development. Model: what needs to change in school, in your community, in the world? Students with strong Showcase ideas may use this as a draft.", spotlight:"EXPOSURE — participial phrase / verb + adverb position. Brief.", spotMode:"E", hw:"yes" },
-    "RB7-U12": { skill:"Opinion — personal manifesto sentence", prompt:"Write one sentence that captures your strongest belief about the topic. Then write 4–5 sentences defending it using everything you know.", note:"<strong>Manifesto writing.</strong> One big sentence that represents your view — then defend it with every tool available. This is the most voice-forward writing task of G&S 4. Model your own. Celebrate bold, specific, surprising sentences.", spotlight:"EXPOSURE — make sure / perfect participial. Brief.", spotMode:"E", hw:"yes" },
-    "RB8-U01": { skill:"Nuanced position — acknowledging complexity", prompt:"Write an argument that holds complexity: ___ is often seen as ___. However, it is more complicated than that. In fact, ___. This suggests that ___.", note:"<strong>Nuance as a writing virtue.</strong> Show students that the best arguments don't oversimplify. Model: find a statement from the text that sounds true but is incomplete — then write a more nuanced version. This is sophisticated intellectual writing.", spotlight:"EXPOSURE — what if + past / subject + present participle / had + p.p. Brief.", spotMode:"E", hw:"yes" },
-    "RB8-U02": { skill:"Opinion + specific language choice", prompt:"Write a paragraph about the topic — but circle one word or phrase you chose deliberately. Explain why you chose it in a note at the bottom.", note:"<strong>Meta-awareness of word choice.</strong> Students make a deliberate language choice and reflect on it. This builds the habit of revision — good writers choose words, they don't just pick them. Model: write a sentence two ways, explain which is stronger and why.", spotlight:"EXPOSURE — subject relative who / being + p.p. Brief.", spotMode:"E", hw:"yes" },
-    "RB8-U03": { skill:"Argument — define your terms first", prompt:"Before arguing, define your key term: When I say ___, I mean ___. With this in mind, I argue that ___. This is because ___.", note:"<strong>Definition as argument strategy.</strong> A strong argument often starts by defining the terms. Model: what does \"success\" mean? What does \"fair\" mean? Defining before arguing avoids talking past each other. Academic writing at its most careful.", spotlight:"EXPOSURE — emotional adj + that / see A as B / dummy subject it. Brief.", spotMode:"E", hw:"yes" },
-    "RB8-U04": { skill:"Argument — what's missing from the text?", prompt:"Identify a gap in the text's argument: The text argues ___. However, it does not consider ___. This is important because ___. A better argument would include ___.", note:"<strong>Critical reading as writing content.</strong> Students evaluate what the text left out. This is the highest level of critical thinking at KiW — appreciating a text's limits. Model with a short, clear example: \"The text says X is good, but doesn't mention Y, which matters because...\"", spotlight:"EXPOSURE — being omitted / to put it differently. Brief.", spotMode:"E", hw:"yes" },
-    "RB8-U05": { skill:"Synthesise — combine ideas from two texts", prompt:"Connect this text to another you've read this year: Both ___ and ___ suggest that ___. However, they differ in ___. Together, they show that ___.", note:"<strong>First synthesis writing.</strong> Students draw from two texts to build one argument — an advanced academic skill. Model with two texts from RB7 or earlier RB8 units. \"Together, they show\" is the synthesis move — teach as a chunk.", spotlight:"EXPOSURE — without + noun phrase / A rather than B. Brief.", spotMode:"E", hw:"maybe" },
-    "RB8-U06": { skill:"Opinion — \"it depends\" argument", prompt:"Write an argument that acknowledges \"it depends\": ___ is good/bad when ___. However, in a different situation, ___. Therefore, whether ___ depends on ___.", note:"<strong>Conditional argument structure.</strong> Not everything is simply good or bad — sometimes it depends on context. Model this move with a clear example. G&S 4 students are ready to hold conditional views. This is real intellectual maturity.", spotlight:"EXPOSURE — no matter how / A referred to as B. Brief.", spotMode:"E", hw:"yes" },
-    "RB8-U07": { skill:"Extended argument — three paragraphs", prompt:"Write a three-paragraph argument: [Para 1: claim + first reason]. [Para 2: second reason + evidence]. [Para 3: counter-argument + rebuttal + personal conclusion].", note:"<strong>Three-paragraph argument — longest sustained writing at KiW.</strong> Model the structure on board as a skeleton first. Students fill in the skeleton. Strong Showcase preparation. Allow multiple in-class sessions before assigning as homework.", spotlight:"EXPOSURE — negative participial / long prepositional subject. Brief.", spotMode:"E", hw:"maybe" },
-    "RB8-U08": { skill:"Opinion — what would you do?", prompt:"Write a personal response: If I were in this situation, I would ___. My reason is ___. I believe this because, in my experience, ___.", note:"<strong>Hypothetical personal response.</strong> Students put themselves in the scenario from the text. \"If I were\" uses the subjunctive — teach as a phrase chunk before the full grammar lesson. Personal and engaging — often produces the most vivid writing.", spotlight:"EXPOSURE — what vs that as noun clause connector / pro-verb do. Brief.", spotMode:"E", hw:"yes" },
-    "RB8-U09": { skill:"Argument — write to persuade someone specific", prompt:"Write your argument as if persuading one specific person — a parent, a friend, a teacher. Adjust your language and examples for them.", note:"<strong>Audience awareness in argument.</strong> The same argument sounds different depending on who you're persuading. Model: write one sentence for a 10-year-old, then for a professor. What changes? Vocabulary, examples, tone. This is rhetorical sophistication.", spotlight:"EXPOSURE — participial phrase with conjunction / continuative relative which. Brief.", spotMode:"E", hw:"yes" },
-    "RB8-U10": { skill:"Opinion — strongest and weakest argument", prompt:"Identify the strongest and weakest argument for a position: The strongest reason to believe ___ is ___. The weakest reason is ___. Overall, I think ___ because ___.", note:"<strong>Evaluating argument quality.</strong> Students rank arguments — which is most convincing and why? This builds critical reading and critical writing simultaneously. Model: show three arguments for the same position and rank them together in class.", spotlight:"EXPOSURE — only to-infinitive / It is said that. Brief.", spotMode:"E", hw:"yes" },
-    "RB8-U11": { skill:"Opinion — final reflective argument", prompt:"Write about something you now think differently about after this year of reading. What changed? Why? What does this tell you about yourself?", note:"<strong>Year-long reflection as argument.</strong> Students look back across the whole year's reading and writing. This is the most personal and most open writing task. Model vulnerability: \"Reading about X made me realise I had never thought about Y.\" Strong Showcase preparation.", spotlight:"REINFORCEMENT — modals might and could / continuative relative. Students may use these naturally in reflective writing.", spotMode:"R", hw:"yes" },
-    "RB8-U12": { skill:"Personal voice — final independent piece", prompt:"Write anything. No prompt. No frame. Just your voice, your idea, your argument. It should be yours.", note:"<strong>End of G&S 4 — total independence.</strong> Students write whatever they want about any topic from the year. The only requirement: it must be their voice. Read aloud. Celebrate. These pieces should show how far each student has come since they started G&S 1.", spotlight:"REINFORCEMENT — could have / would have. A natural grammar application in reflective writing: \"I could have written...\"", spotMode:"R", hw:"yes" },
-  }
-},
-}; // end WRITING_DATA
-
-// ═══════════════════════════════════════════
-// EXTENDED REVIEW DATA
-// ═══════════════════════════════════════════
-const ER_DATA = {
-  gs1: {
-    freq: 'Every 4 weeks', duration: '50 min',
-    notes: [
-      { hi: true, text: 'ER replaces a regular R&C session — same Tue/Thu slot.' },
-      { text: 'No new text is read. This session is entirely review and speaking output.' },
-      { text: 'Writing homework review (10–15 min) fits naturally into Stage 2 of this flow.' },
-      { text: 'If students are behind on texts, Stage 4 can be shortened to catch up next session.' },
-    ],
-    stages: [
-      { title: 'Vocabulary Recall', time: '10 min', desc: 'Quick retrieval from the last 2–3 units. Show 6–8 words from recent RB texts on the board. Students work in pairs — one says the Korean meaning, one says an English sentence using the word. Swap roles. Fast and energetic.', tip: '<strong>Keep it quick.</strong> This is warm-up, not a quiz. If students blank, give the first letter as a prompt.' },
-      { title: 'Homework Review', time: '12 min', desc: 'Pick 2–3 students to write their writing homework on the board. Class reads together. Ask: "What does this say well?" and "What one thing could be better?" Students suggest one improvement each. Keep it positive — the goal is noticing, not correcting.', tip: '<strong>Only pick students who completed their homework.</strong> If most did not, do a quick class write-on-the-board together instead.' },
-      { title: 'Text Retell Challenge', time: '10 min', desc: 'Choose one text from the last 2–3 units. Close the book. Ask: "What was this text about?" Students take turns adding one sentence to rebuild the text from memory. Errors are fine — the goal is retrieval and speaking. Use the main idea frame: "This text is about ___ because ___.".', tip: '<strong>G&S 1 tip:</strong> After the retell, ask one evaluative question: "Do you agree with what the text said? Why?"' },
-      { title: 'Problem → Solution Speaking', time: '13 min', desc: 'Present a simple real-world problem on the board connected to a recent text topic. Students use the 3-part frame from RB2 U04: "The problem is ___. This happens because ___. I think we should ___." Each student produces one full response orally. Teacher builds on strong responses.', tip: '<strong>This is the ER core task.</strong> The problem-solution frame connects directly to writing and Showcase Day preparation. Return to this format every ER.' },
-      { title: 'Preview & Close', time: '5 min', desc: 'Tell students which text is coming next. Ask: "What do you think this text might be about?" One prediction per student. Assign vocab homework for the next text if not yet given.', tip: '<strong>End on energy.</strong> A good prediction discussion gets students curious about the next class.' },
-    ]
-  },
-  gs2: {
-    freq: 'Every 6 weeks', duration: '50 min',
-    notes: [
-      { hi: true, text: 'ER replaces a regular R&C session — same Tue/Thu slot.' },
-      { text: 'Focus shifts toward summarising quality and evaluative discussion — the two G&S 2 priorities.' },
-      { text: 'At G&S 2, students should be able to retell and evaluate without heavy framing. Push for that independence.' },
-      { text: 'Use ER to identify students who are ready to reduce reliance on sentence frames.' },
-    ],
-    stages: [
-      { title: 'Vocabulary Retrieval Game', time: '8 min', desc: 'Write 8–10 words from the last 3–4 units on the board. Students race to use each word in a sentence without looking at the text. For each correct sentence, erase the word. Goal: clear the board before time is up. Works well as teams at G&S 2.', tip: '<strong>Keep the pace fast.</strong> This is about fluency, not accuracy. Accept near-correct sentences and gently recast.' },
-      { title: 'Homework Showcase', time: '12 min', desc: '2–3 students write their summary homework on the board. Class evaluates: "Is this a good summary?" Checklist: (1) main idea in own words, (2) one key detail, (3) no copying from the text. Students suggest one revision each. Teacher models the revision on the board if needed.', tip: '<strong>The "no copying" check is the most important.</strong> Point out even subtle copying gently — this is the core G&S 2 writing challenge.' },
-      { title: 'Summarise Without Notes', time: '10 min', desc: 'Choose a text from 3+ weeks ago. Students have 3 minutes to write a 2–3 sentence summary without looking at the book or notes. Share 3–4 responses. Compare: do the summaries match? What did people include or leave out? Good discussion follows naturally.', tip: '<strong>Forgetting details is fine.</strong> Frame it positively: "What did our brains decide was most important?"' },
-      { title: 'Evaluative Discussion', time: '12 min', desc: 'Pick one evaluative question from a recent text (personal/evaluative level). Give students 2 minutes to form an opinion, then open the floor. Students must use: "I think ___ because ___" and respond to each other. Teacher tracks: who gave a reason vs. who just stated a preference.', tip: '<strong>G&S 2 evaluative goal:</strong> every student gives a reason, not just a preference. Push gently: "Why do you think that?"' },
-      { title: 'Two-Perspective Debate', time: '6 min', desc: 'Take a debatable statement from a recent text. Split the class — half agree, half disagree regardless of their real view. Each side gives two reasons. Teacher tallies the best reasons on the board.', tip: '<strong>The forced position is intentional</strong> — it trains students to argue beyond their gut reaction. Good preparation for G&S 3 persuasive writing.' },
-      { title: 'Preview & Close', time: '2 min', desc: 'Name the next text coming up. Assign vocab homework if not done.', tip: '' },
-    ]
-  },
-  gs3: {
-    freq: 'Every 6 weeks', duration: '50 min',
-    notes: [
-      { hi: true, text: 'ER replaces a regular R&C session — same MWF slot.' },
-      { text: 'G&S 3 ER is more intellectually demanding — paraphrasing and persuasive argument are the twin goals.' },
-      { text: 'Stage 4 (argument construction) is the core of G&S 3 ER. Protect this time — do not let earlier stages overrun.' },
-      { hi: true, text: '⚠️ G&S 3 sessions are tight. If behind on texts, shorten Stage 1 or 2, never Stage 4.' },
-    ],
-    stages: [
-      { title: 'Paraphrase Sprint', time: '8 min', desc: 'Write one sentence from a recent text on the board. Students rewrite it completely — different words, same meaning — in 2 minutes. Share 3–4 versions. Class votes: which paraphrase is (a) most accurate and (b) most different from the original? Repeat with a second sentence if time allows.', tip: '<strong>Remind students:</strong> changing one word is not paraphrasing. The sentence structure should also change. Worth practising every ER.' },
-      { title: 'Homework Review', time: '8 min', desc: '1–2 students share their paraphrasing or persuasive writing on the board. Class evaluates: (1) Does it avoid copying? (2) Is the argument clear? Teacher models one targeted improvement — paraphrase quality or argument structure. Keep brisk.', tip: '' },
-      { title: 'Evidence Hunt', time: '8 min', desc: 'Give students a claim connected to a recent text. Students have 3 minutes to find the best evidence from the text that supports it. Share findings. Discuss: is this evidence strong or weak? What would make it stronger? Introduce "According to the text" and "This suggests that" as linking phrases.', tip: '<strong>This task directly prepares students</strong> for the persuasive writing model: claim → evidence → explanation.' },
-      { title: 'Argument Construction', time: '18 min', desc: 'Give a debatable statement from a recent text topic. Students have 5 minutes to write: (1) their position, (2) two reasons, (3) one counter-argument, (4) a rebuttal. Share and debate. Teacher tracks: who uses evidence vs. who just asserts? Who acknowledges the other side? Celebrate both moves explicitly.', tip: '<strong>This is the ER core task for G&S 3.</strong> Every ER should include argument construction. It is the single best preparation for Showcase Day.' },
-      { title: 'Connector Spotlight', time: '5 min', desc: 'Choose 3 academic connectors used in the session (e.g. "however", "therefore", "for instance"). Write on the board. Students produce one sentence each using a different connector. Note them in student books as a running list.', tip: '<strong>Academic connectors are vocabulary</strong> at G&S 3 — teach as chunks, not grammar rules.' },
-      { title: 'Preview & Close', time: '3 min', desc: 'Name the next text. Assign vocab homework. One prediction from each student.', tip: '' },
-    ]
-  },
-  gs4: {
-    freq: 'Every 6 weeks', duration: '50 min',
-    notes: [
-      { hi: true, text: 'ER replaces a regular R&C session — same MWF slot.' },
-      { text: 'G&S 4 ER is the most intellectually open. Students should be driving discussion, not just responding.' },
-      { text: 'The teacher\'s role shifts toward facilitating and challenging — not leading and modelling.' },
-      { text: 'ER at G&S 4 is excellent Showcase Day preparation — problem identification, evidence, argument, personal voice.' },
-    ],
-    stages: [
-      { title: 'Synthesis Opening', time: '8 min', desc: 'Choose two texts from different units this cycle. Ask: "What do these two texts have in common?" Students have 2 minutes to think, then share. Push for connections beyond surface topic — theme, argument type, author perspective. Goal: drawing meaning across texts.', tip: '<strong>If students struggle:</strong> give them a starter — "Both texts seem to argue that ___." Then push them to complete it.' },
-      { title: 'Writing Voice Check', time: '8 min', desc: '1–2 students share their personal voice writing on the board. Class identifies: (1) Is this the student\'s own voice or a template? (2) What is the most interesting sentence? (3) What one thing would make this more convincing? Teacher gives one specific observation — not general praise.', tip: '<strong>Specific feedback beats general praise.</strong> "The sentence \'In fact, I believe\' felt like the real you — the rest was template" is more useful than "Good work."' },
-      { title: 'Nuanced Position Challenge', time: '10 min', desc: 'Give a statement that sounds obviously true. Students must complicate it in writing — acknowledge the truth, challenge it, then arrive at a more nuanced view. Share 2–3 responses. Discuss: what makes a nuanced argument more convincing than a simple one?', tip: '<strong>This is the G&S 4 signature move:</strong> not "I agree" or "I disagree" but "It\'s more complicated than that — here\'s why."' },
-      { title: 'Socratic Discussion', time: '16 min', desc: 'Open a discussion question connected to a recent text — one with no single right answer. Rules: (1) respond to the previous speaker before adding your own point, (2) give a reason, (3) challenge anyone. Teacher only asks questions — never gives opinions.', tip: '<strong>Teacher silence is powerful here.</strong> Wait 10 seconds after a student speaks before prompting the next. The discomfort is productive.' },
-      { title: 'Personal Statement Draft', time: '6 min', desc: 'Students write one sentence capturing their strongest belief about today\'s topic — their "personal statement." Share aloud. Celebrate clarity, surprise, and conviction equally. These sentences can feed into Showcase Day pitches.', tip: '<strong>Encourage bold sentences, not safe ones.</strong> The personal statement should feel like the student, not a template.' },
-      { title: 'Preview & Close', time: '2 min', desc: 'Name the next text. Assign vocab homework. Optional: one word that describes today\'s discussion.', tip: '' },
-    ]
-  },
-};
-
-// ═══════════════════════════════════════════
-// RENDER — EXTENDED REVIEW
-// ═══════════════════════════════════════════
-
-
 // R&C DATA (from kiw_rc_local.html)
 // ══════════════════════════════════════════════════
 const RC_DATA = {
@@ -1989,7 +1704,21 @@ gs4:{books:[
 // ══════════════════════════════════════════════════
 let progState = {}; // { gs1: {cb_id: bool}, ... }
 let rcState = {};   // { gs1: ['RB1-U01-T01', ...], ... }
-let erState = {};   // { gs1: 3, gs2: 1, ... }  — number of ER sessions done
+
+async function initApp() {
+  // Load persisted state
+  for (const lvl of ['gs1','gs2','gs3','gs4']) {
+    const pg = await stGet('kiw_prog_' + lvl);
+    progState[lvl] = pg ? JSON.parse(pg) : {};
+    const rc = await stGet('kiw_rc_' + lvl);
+    rcState[lvl] = rc ? JSON.parse(rc) : [];
+  }
+  // Build all grammar block UIs
+  for (const lvl of ['gs1','gs2','gs3','gs4']) {
+    buildGrammarBlocks(lvl);
+    buildRcUnits(lvl);
+  }
+}
 
 function buildGrammarBlocks(lvl) {
   const blocks = BLOCKS[lvl];
@@ -2103,56 +1832,18 @@ async function resetProgress(lvl) {
 }
 
 function buildRcUnits(lvl) {
-  try {
   const container = document.getElementById(lvl + '-rc-units');
   if (!container) return;
   const data = RC_DATA[lvl];
   if (!data) return;
   const done = rcState[lvl] || [];
-  const lvlCfg = { gs1:{erCycles:10,sessPerER:8}, gs2:{erCycles:7,sessPerER:11}, gs3:{erCycles:7,sessPerER:17}, gs4:{erCycles:7,sessPerER:17} };
-  const cfg = lvlCfg[lvl] || {erCycles:7,sessPerER:8};
-  const wd = (typeof WRITING_DATA !== 'undefined') ? (WRITING_DATA[lvl] || {}) : {};
-  const wUnits = wd.units || {};
-  const wPhases = wd.phases || {};
 
-  // Build flat list of all units across books for ER marker placement
-  let allUnits = [];
-  data.books.forEach(book => book.units.forEach(u => allUnits.push({book, u})));
-  const totalUnits = allUnits.length;
-  const erEvery = Math.max(1, Math.floor(totalUnits / cfg.erCycles));
-  const erPositions = new Set();
-  for (let i = 1; i <= cfg.erCycles; i++) erPositions.add(Math.min(i * erEvery, totalUnits) - 1);
-
-  let unitIndex = 0;
-  container.innerHTML = data.books.map(book => {
-    let bookHtml = `<div style="margin-bottom:32px">
+  container.innerHTML = data.books.map(book => `
+    <div style="margin-bottom:28px">
       <div class="sec-title" style="margin-bottom:12px">${book.name}</div>
-      <div class="unit-grid">`;
-
-    book.units.forEach((u, ui) => {
-      const wKey = book.code + '-' + u.num;
-      const wu = wUnits[wKey];
-      const phaseLabel = wPhases[wKey];
-
-      // Writing guide HTML
-      let writeHtml = '';
-      if (wu) {
-        const hwClass = wu.hw==='yes'?'#2D8A58':wu.hw==='maybe'?'#B87010':'#8A93B0';
-        const hwText = wu.hw==='yes'?'✓ Good homework':wu.hw==='maybe'?'⚑ Assign once secure in class':'✗ In class only — not homework yet';
-        const modeColor = wu.spotMode==='R'?'var(--gs2)':'var(--gs3)';
-        const modeLabel = wu.spotMode==='R'?'Reinforcement':'Exposure';
-        writeHtml = `<div class="rc-writing-guide">
-          <div class="rcw-title">✏️ Writing Guide</div>
-          ${phaseLabel ? `<div class="rcw-phase">${phaseLabel}</div>` : ''}
-          <div class="rcw-row"><span class="rcw-label">Skill</span><span class="rcw-val">${wu.skill}</span></div>
-          <div class="rcw-row"><span class="rcw-label">Prompt</span><div class="rcw-prompt">${wu.prompt}</div></div>
-          <div class="rcw-row"><span class="rcw-label">Notes</span><div class="rcw-note">${wu.note}</div></div>
-          <div class="rcw-row"><span class="rcw-label">Grammar</span><span class="rcw-spot" style="background:${modeColor}15;color:${modeColor};border:1px solid ${modeColor}30">${modeLabel} — ${wu.spotlight}</span></div>
-          <div class="rcw-row"><span class="rcw-label">Homework</span><span style="font-size:11px;font-weight:600;color:${hwClass}">${hwText}</span></div>
-        </div>`;
-      }
-
-      bookHtml += `<div class="unit-card">
+      <div class="unit-grid">
+        ${book.units.map(u => `
+          <div class="unit-card">
             <div class="unit-hdr">
               <div>
                 <div class="unit-num">${u.num}</div>
@@ -2162,36 +1853,21 @@ function buildRcUnits(lvl) {
             </div>
             <div class="text-list">
               ${u.texts.map(t => {
-                const key = book.code + '-' + u.num + '-T' + String(t.n).padStart(2,'0');
+                const key = `${book.code}-${u.num}-T${String(t.n).padStart(2,'0')}`;
                 const isDone = done.includes(key);
-                return `<div class="text-item${isDone?' done':''}" onclick="toggleRcText('${lvl}','${key}',this)"><input type="checkbox"${isDone?' checked':''} onclick="event.stopPropagation()"><span class="text-tag">${t.tag}</span><span class="text-title">${t.title}</span></div>`;
+                return `<div class="text-item${isDone?' done':''}" onclick="toggleRcText('${lvl}','${key}',this)">
+                  <input type="checkbox"${isDone?' checked':''} onclick="event.stopPropagation()">
+                  <span class="text-tag">${t.tag}</span>
+                  <span class="text-title">${t.title}</span>
+                </div>`;
               }).join('')}
             </div>
-            ${writeHtml}
-          </div>`;
-
-      // ER marker after this unit?
-      if (erPositions.has(unitIndex)) {
-        const erNum = Array.from(erPositions).sort((a,b)=>a-b).indexOf(unitIndex) + 1;
-        bookHtml += `<div class="er-marker">
-          <div class="er-marker-inner">
-            <span class="er-marker-icon">🔄</span>
-            <div>
-              <div class="er-marker-title">Extended Review #${erNum}</div>
-              <div class="er-marker-sub">ER class — replaces regular R&C session · See Extended Review tab for session flow</div>
-            </div>
-          </div>
-        </div>`;
-      }
-      unitIndex++;
-    });
-
-    bookHtml += '</div></div>';
-    return bookHtml;
-  }).join('');
+          </div>`).join('')}
+      </div>
+    </div>
+  `).join('');
 
   updateRcProgBar(lvl);
-  } catch(e) { console.error('buildRcUnits error:', e); }
 }
 
 async function toggleRcText(lvl, key, row) {
@@ -2218,90 +1894,6 @@ function updateRcProgBar(lvl) {
   if (pctEl) pctEl.textContent = pct + '%';
 }
 
-// ══════════════════════════════════════════════════
-// EXTENDED REVIEW PANEL
-// ══════════════════════════════════════════════════
-function buildErPanel(lvl) {
-  try {
-  const container = document.getElementById(lvl + '-er-content');
-  if (!container) return;
-  if (typeof ER_DATA === 'undefined') return;
-  const er = ER_DATA[lvl];
-  if (!er) return;
-  const lvlNames = {gs1:'G&S 1',gs2:'G&S 2',gs3:'G&S 3',gs4:'G&S 4'};
-  const erTotal = {gs1:10,gs2:7,gs3:7,gs4:7}[lvl] || 7;
-  const erDone = erState[lvl] || 0;
-  const lc = getComputedStyle(document.documentElement).getPropertyValue('--' + lvl).trim() || '#2F5DAD';
-
-  let h = '';
-
-  // Header
-  h += `<div style="margin-bottom:20px">
-    <div style="font-size:16px;font-weight:700;color:var(--txt);margin-bottom:4px">Extended Review — ${lvlNames[lvl]}</div>
-    <div style="font-size:12px;color:var(--muted)">${er.freq} · ${er.duration} per session · replaces regular R&C class</div>
-  </div>`;
-
-  // Progress tracker
-  h += `<div style="background:var(--white);border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:20px">
-    <div style="font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--light);margin-bottom:12px">Session Tracker — tap to mark done</div>
-    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px">`;
-  for (let i = 1; i <= erTotal; i++) {
-    const done = i <= erDone;
-    const isNext = i === erDone + 1;
-    h += `<button onclick="toggleErSession('${lvl}',${i})" style="
-      width:44px;height:44px;border-radius:8px;border:2px solid ${done?'var(--gs2)':isNext?'var(--warn)':'var(--border)'};
-      background:${done?'var(--gs2bg)':isNext?'var(--warnbg)':'var(--surface)'};
-      color:${done?'var(--gs2dark)':isNext?'var(--warn)':'var(--light)'};
-      font-size:10px;font-weight:700;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;transition:all .15s">
-      <span style="font-size:8px">ER</span><span>${i}</span>
-    </button>`;
-  }
-  h += `</div>
-    <div style="font-size:12px;color:var(--muted)">${erDone} of ${erTotal} sessions completed</div>
-  </div>`;
-
-  // Notes
-  h += `<div style="background:var(--white);border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:20px">
-    <div style="font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--light);margin-bottom:10px">How to Run ER at This Level</div>`;
-  er.notes.forEach(n => {
-    h += `<div style="font-size:12px;color:${n.hi?'var(--warn)':'var(--muted)'};font-weight:${n.hi?'600':'400'};padding:5px 0;border-bottom:1px solid var(--surface)">${n.text}</div>`;
-  });
-  h += `</div>`;
-
-  // Session flow
-  h += `<div style="background:var(--white);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:20px">
-    <div style="padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
-      <span style="font-size:13px;font-weight:700;color:var(--txt)">Session Flow</span>
-      <span style="font-size:11px;color:var(--muted)">${er.duration} · ${er.stages.length} stages</span>
-    </div>`;
-  er.stages.forEach((st, i) => {
-    h += `<div style="padding:14px 20px;border-bottom:1px solid var(--surface);display:flex;gap:14px;align-items:flex-start">
-      <div style="width:24px;height:24px;border-radius:50%;background:var(--tealbg);color:var(--teal);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px">${i+1}</div>
-      <div style="flex:1">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
-          <span style="font-size:13px;font-weight:600;color:var(--txt)">${st.title}</span>
-          <span style="font-size:10px;font-weight:600;color:var(--teal);background:var(--tealbg);padding:2px 8px;border-radius:10px">⏱ ${st.time}</span>
-        </div>
-        <div style="font-size:12px;color:var(--muted);line-height:1.55;margin-bottom:${st.tip?'6px':'0'}">${st.desc}</div>
-        ${st.tip ? `<div style="font-size:11.5px;color:var(--gs2dark);background:var(--gs2bg);border-left:3px solid var(--gs2);padding:6px 10px;border-radius:0 6px 6px 0">${st.tip}</div>` : ''}
-      </div>
-    </div>`;
-  });
-  h += `</div>`;
-
-  container.innerHTML = h;
-  } catch(e) { console.error('buildErPanel error:', e); }
-}
-
-async function toggleErSession(lvl, n) {
-  const cur = erState[lvl] || 0;
-  if (n === cur + 1) erState[lvl] = n;
-  else if (n === cur) erState[lvl] = n - 1;
-  else return;
-  await stSet('kiw_er_' + lvl, String(erState[lvl]));
-  buildErPanel(lvl);
-}
-
 async function resetRcProgress(lvl) {
   if (!confirm('Reset all R&C progress for this level?')) return;
   rcState[lvl] = [];
@@ -2321,9 +1913,9 @@ async function resetRcProgress(lvl) {
 const LP_LEVEL_CONFIG = {
   starter1:  { label:'Starters 1',     color:'var(--st)',  colorDark:'var(--stdark)',  colorBg:'var(--stbg)',  duration:'2hr', classTypes:['craft-cook'], showActivity:true,  showBook:false, focusLabel:'Activity / Theme', focusPlaceholder:'e.g. farm animals · colours · shapes' },
   starter2:  { label:'Starters 2',     color:'var(--st)',  colorDark:'var(--stdark)',  colorBg:'var(--stbg)',  duration:'2hr', classTypes:['craft-cook'], showActivity:true,  showBook:false, focusLabel:'Activity / Theme', focusPlaceholder:'e.g. fruit · weather · feelings' },
-  'low1-lv1':{ label:'Level 1',color:'var(--lo)',  colorDark:'var(--lodark)',  colorBg:'var(--lobg)',  duration:'2hr', classTypes:['phonics','craft-cook'], showActivity:true, showBook:true, focusLabel:'Phonics Focus', focusPlaceholder:'e.g. JP1 sounds s,a,t,p · blending CVC' },
-  'low1-lv2':{ label:'Level 2',color:'var(--lo)',  colorDark:'var(--lodark)',  colorBg:'var(--lobg)',  duration:'2hr', classTypes:['phonics','craft-cook'], showActivity:true, showBook:true, focusLabel:'Phonics Focus', focusPlaceholder:'e.g. JP3 digraphs ch,sh · reading sentences' },
-  'low1-lv3':{ label:'Level 3',color:'var(--lo)',  colorDark:'var(--lodark)',  colorBg:'var(--lobg)',  duration:'2hr', classTypes:['grammar-rc','pbl'],     showActivity:false,showBook:true, focusLabel:'Grammar Focus', focusPlaceholder:'e.g. JG1 Ch.2 · simple sentences · verbs' },
+  'low1-lv1':{ label:'Low 1 · Level 1',color:'var(--lo)',  colorDark:'var(--lodark)',  colorBg:'var(--lobg)',  duration:'2hr', classTypes:['phonics','craft-cook'], showActivity:true, showBook:true, focusLabel:'Phonics Focus', focusPlaceholder:'e.g. JP1 sounds s,a,t,p · blending CVC' },
+  'low1-lv2':{ label:'Low 1 · Level 2',color:'var(--lo)',  colorDark:'var(--lodark)',  colorBg:'var(--lobg)',  duration:'2hr', classTypes:['phonics','craft-cook'], showActivity:true, showBook:true, focusLabel:'Phonics Focus', focusPlaceholder:'e.g. JP3 digraphs ch,sh · reading sentences' },
+  'low1-lv3':{ label:'Low 1 · Level 3',color:'var(--lo)',  colorDark:'var(--lodark)',  colorBg:'var(--lobg)',  duration:'2hr', classTypes:['grammar-rc','pbl'],     showActivity:false,showBook:true, focusLabel:'Grammar Focus', focusPlaceholder:'e.g. JG1 Ch.2 · simple sentences · verbs' },
   gs1:       { label:'G&S 1',           color:'var(--gs1)', colorDark:'var(--gs1dark)', colorBg:'var(--gs1bg)', duration:'1hr', classTypes:['grammar','rc'],          showActivity:false,showBook:true, focusLabel:'Grammar Point / R&C Text', focusPlaceholder:'e.g. present continuous · U3 · RB1 Unit 5' },
   gs2:       { label:'G&S 2',           color:'var(--gs2)', colorDark:'var(--gs2dark)', colorBg:'var(--gs2bg)', duration:'1hr', classTypes:['grammar','rc'],          showActivity:false,showBook:true, focusLabel:'Grammar Point / R&C Text', focusPlaceholder:'e.g. simple past · U10 · RB3 Unit 3' },
   gs3:       { label:'G&S 3',           color:'var(--gs3)', colorDark:'var(--gs3dark)', colorBg:'var(--gs3bg)', duration:'1hr', classTypes:['grammar','rc'],          showActivity:false,showBook:true, focusLabel:'Grammar Point / R&C Text', focusPlaceholder:'e.g. present perfect · Int.7–8 · RB5 Unit 2' },
@@ -2509,17 +2101,17 @@ KEY RULES:
 - Homework has no consequences for non-completion at KiW.
 - Grammar In 3A/3B not used at KiW. G&S 3 & 4 homework uses Grammar In 2A/2B plus supplementary teacher-made worksheets where book content is limited (e.g. G&S 3 present perfect Block 2).
 - G&S 1 & 2: Grammar MWF, R&C T/Th. G&S 3 & 4: R&C MWF (priority), Grammar T/Th.
-- Speaking Lab (Starters/Levels 1-2 craft-cooking): 4 non-negotiable stages: ① Pre-Teach (language before materials, drill pattern 10x), ② Guided Language (teacher controls materials flow, prompts language), ③ Production (making while talking — teacher narrates/questions/responds), ④ Presentation (every student says something — one sentence is enough). Praise the language, not the product.
-- Level 3 PBL: student-driven. Teacher = language coach only. Never take over the idea.
+- Speaking Lab (Starters/Low 1 craft-cooking): 4 non-negotiable stages: ① Pre-Teach (language before materials, drill pattern 10x), ② Guided Language (teacher controls materials flow, prompts language), ③ Production (making while talking — teacher narrates/questions/responds), ④ Presentation (every student says something — one sentence is enough). Praise the language, not the product.
+- Low 1 Level 3 PBL: student-driven. Teacher = language coach only. Never take over the idea.
 
 LESSON FORMATS:
-2-hour class (Starters 1&2, Level 1 & 2 — craft/phonics):
+2-hour class (Starters 1&2, Low 1 Lv 1&2 — craft/phonics):
 Warm-Up/Review 10–15 min | Main Instruction 20–25 min | Speaking/Practice 20–25 min | Snack Time 15 min | Activity/Speaking Lab 40 min | Wrap-Up 5 min
 
-2-hour class (Level 3 — grammar-rc):
+2-hour class (Low 1 Lv 3 — grammar-rc):
 Warm-Up/Review 10–15 min | Main Instruction 20–25 min | Speaking/Practice 20–25 min | Snack Time 15 min | R&C + Writing 40 min | Wrap-Up 5 min
 
-2-hour class (Level 3 — PBL T/Th):
+2-hour class (Low 1 Lv 3 — PBL T/Th):
 Warm-Up/Review 10 min | PBL Work Session 80 min | Language Debrief 10 min | Wrap-Up 5 min
 
 1-hour class (G&S 1–4 — grammar):
@@ -2723,8 +2315,8 @@ function apikeyPrompt() { document.getElementById('apikey-modal').style.display=
 // ══════════════════════════════════════════════════
 // OVERRIDE initApp to add API key check + rpInit
 // ══════════════════════════════════════════════════
+const _origInitApp = window.initApp || initApp;
 async function initApp() {
-  console.log('initApp started');
   // Load persisted state
   for (const lvl of ['gs1','gs2','gs3','gs4']) {
     const pg = await stGet('kiw_prog_' + lvl);
@@ -2732,23 +2324,9 @@ async function initApp() {
     const rc = await stGet('kiw_rc_' + lvl);
     rcState[lvl] = rc ? JSON.parse(rc) : [];
   }
-  for (const lvl of ['gs1','gs2','gs3','gs4']) {
-    const er = await stGet('kiw_er_' + lvl);
-    erState[lvl] = er ? parseInt(er) : 0;
-  }
-  console.log('state loaded, building UI...');
-  console.log('BLOCKS gs1:', typeof BLOCKS, BLOCKS ? Object.keys(BLOCKS) : 'undefined');
-  console.log('RC_DATA gs1:', typeof RC_DATA, RC_DATA ? Object.keys(RC_DATA) : 'undefined');
-  console.log('gs1-arc el:', document.getElementById('gs1-arc'));
-  console.log('gs1-blocks el:', document.getElementById('gs1-blocks'));
-  for (const lvl of ['gs1','gs2','gs3','gs4']) { 
-    try { buildGrammarBlocks(lvl); console.log('buildGrammarBlocks ' + lvl + ' OK'); } catch(e) { console.error('buildGrammarBlocks ' + lvl + ' FAILED:', e); }
-    try { buildRcUnits(lvl); console.log('buildRcUnits ' + lvl + ' OK'); } catch(e) { console.error('buildRcUnits ' + lvl + ' FAILED:', e); }
-    try { buildErPanel(lvl); } catch(e) { console.error('buildErPanel ' + lvl + ' FAILED:', e); }
-  }
+  for (const lvl of ['gs1','gs2','gs3','gs4']) { buildGrammarBlocks(lvl); buildRcUnits(lvl); }
   rpInit();
   if (!getApiKey()) document.getElementById('apikey-modal').style.display='flex';
-  console.log('initApp complete');
 }
 
 // ══════════════════════════════════════════════════
@@ -2784,7 +2362,7 @@ async function wsGenerate(refinement) {
   const phonics  = (document.getElementById('ws-phonics')||{}).value||'';
   const topic    = (document.getElementById('ws-topic')||{}).value||'';
   const instr    = (document.getElementById('ws-instructions')||{}).value||'';
-  const lvlLabel = {starters:'Starters 1 & 2',phonics:'Phonics Bridge',low1lv3:'Level 3',gs1:'G&S 1',gs2:'G&S 2',gs3:'G&S 3',gs4:'G&S 4'}[lvl];
+  const lvlLabel = {starters:'Starters 1 & 2',phonics:'Low 1 Phonics Bridge',low1lv3:'Low 1 Level 3',gs1:'G&S 1',gs2:'G&S 2',gs3:'G&S 3',gs4:'G&S 4'}[lvl];
 
   let userMsg = `Level: ${lvlLabel}\n`;
   if (wordlist.trim()) userMsg += `Word list: ${wordlist.trim()}\n`;
@@ -2799,8 +2377,8 @@ Include: student name/date field at top, clear instructions per exercise, age-ap
 
 Difficulty by level:
 - Starters: picture-match (emoji to word), first-letter (fill first letter), bingo (4x4 emoji grid with FREE square)
-- Phonics Bridge: sound-sort, blend-draw (CVC words + drawing box), circle correct starting sound
-- Level 3 / G&S 1-2: simple definitions, guided sentence frames, 3-letter scrambles, 3 MC options
+- Low 1 Phonics: sound-sort, blend-draw (CVC words + drawing box), circle correct starting sound
+- Low 1 Lv3 / G&S 1-2: simple definitions, guided sentence frames, 3-letter scrambles, 3 MC options
 - G&S 3-4: contextual clues, free sentences, longer scrambles, 4 MC options
 
 Choose 4-5 exercise types appropriate for the level from: matching, fitb, scramble, sentence, mc, picture-match, first-letter, bingo, sound-sort, blend-draw
@@ -2910,6 +2488,7 @@ function wsRender(ws, lvl) {
 
   document.getElementById('ws-result').style.display='block';
   document.getElementById('ws-refine-text').value='';
+  gShowDocBtn();
 }
 
 function wsPrint() { window.print(); }
@@ -3111,7 +2690,7 @@ Rules:
 - Homework non-completion: if mentioned in logs, note it as a work habits observation only — never as a disciplinary issue (KiW policy: no consequences for homework).
 
 Report categories to address (vary by level):
-- Starters / Levels 1-3: Listening & Response · Speaking Participation · Phonics Progress (Levels 1-3 only) · Classroom Engagement
+- Starters / Low 1: Listening & Response · Speaking Participation · Phonics Progress (Low 1 only) · Classroom Engagement
 - G&S 1–4: Speaking · Reading & Comprehension · Grammar · Writing · Classroom Engagement
 
 Return ONLY valid JSON, no markdown, no preamble:
@@ -3197,198 +2776,168 @@ function rpPrintReport() {
 }
 
 // ══════════════════════════════════════════════════
-// GOOGLE DRIVE SYNC
+// GOOGLE OAUTH + DOCS INTEGRATION
 // ══════════════════════════════════════════════════
-const DRIVE_CLIENT_ID = '167507541748-ah33rhq2ig3k88f7c130q1u1bchp6aqf.apps.googleusercontent.com';
-const DRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.appdata';
-const DRIVE_FILENAME = 'kiw_data.json';
+const G_CLIENT_ID = '167507541748-ah33rhq2ig3k88f7c130q1u1bchp6aqf.apps.googleusercontent.com';
+const G_SCOPES = 'https://www.googleapis.com/auth/documents https://www.googleapis.com/auth/drive.file';
+let gAccessToken = null;
+let gTokenExpiry = 0;
 
-let driveAccessToken = null;
-let driveFileId = null;
-let driveSignedIn = false;
-
-// ── UI helpers ─────────────────────────────────────
-function syncSetStatus(msg, persist) {
-  const el = document.getElementById('sync-status');
-  el.textContent = msg;
-  el.classList.add('show');
-  if (!persist) setTimeout(() => el.classList.remove('show'), 3000);
+function gIsSignedIn() {
+  return gAccessToken && Date.now() < gTokenExpiry;
 }
 
-function syncSetBtn(state) {
-  const btn = document.getElementById('sync-btn');
-  const lbl = document.getElementById('sync-btn-label');
-  btn.className = 'sync-btn';
-  if (state === 'idle') { lbl.textContent = 'Sign in to sync'; }
-  else if (state === 'signed-in') { btn.classList.add('signed-in'); lbl.textContent = '☁ Save to Drive'; }
-  else if (state === 'syncing') { btn.classList.add('signed-in','syncing'); lbl.textContent = 'Saving…'; }
-}
-
-// ── Sign in ────────────────────────────────────────
-function driveSignIn() {
-  if (driveSignedIn) { saveToDrive(); return; }
-  if (!window.google) { alert('Google sign-in not loaded yet. Please wait a moment and try again.'); return; }
+function gSignIn() {
+  if (gIsSignedIn()) { gSignOut(); return; }
   const client = google.accounts.oauth2.initTokenClient({
-    client_id: DRIVE_CLIENT_ID,
-    scope: DRIVE_SCOPE,
-    callback: async (resp) => {
-      if (resp.error) { syncSetStatus('Sign-in failed'); return; }
-      driveAccessToken = resp.access_token;
-      driveSignedIn = true;
-      syncSetBtn('signed-in');
-      syncSetStatus('Signed in — loading data…', true);
-      await loadFromDrive();
+    client_id: G_CLIENT_ID,
+    scope: G_SCOPES,
+    callback: (resp) => {
+      if (resp.error) { console.error('Google sign-in error:', resp.error); return; }
+      gAccessToken = resp.access_token;
+      gTokenExpiry = Date.now() + (resp.expires_in * 1000);
+      gUpdateSignInBtn();
+      gShowDocBtn();
     }
   });
   client.requestAccessToken();
 }
 
-// ── Collect all dashboard data ─────────────────────
-async function collectAllData() {
-  const data = { version: 1, savedAt: new Date().toISOString() };
-  // Student progress logs (Module 4)
-  const students = await stGet('kiw_rp_students');
-  data.students = students ? JSON.parse(students) : [];
-  // Observation logs per student
-  data.logs = {};
-  for (const s of data.students) {
-    const logs = await stGet('kiw_rp_logs_' + s.id);
-    if (logs) data.logs[s.id] = JSON.parse(logs);
-  }
-  // Grammar block progress (Module 1)
-  data.grammarProgress = {};
-  for (const lvl of ['gs1','gs2','gs3','gs4']) {
-    const pg = await stGet('kiw_prog_' + lvl);
-    if (pg) data.grammarProgress[lvl] = JSON.parse(pg);
-  }
-  // R&C tracker state
-  data.rcState = {};
-  for (const lvl of ['gs1','gs2','gs3','gs4']) {
-    const rc = await stGet('kiw_rc_' + lvl);
-    if (rc) data.rcState[lvl] = JSON.parse(rc);
-  }
-  // ER state
-  data.erState = {};
-  for (const lvl of ['gs1','gs2','gs3','gs4']) {
-    data.erState[lvl] = erState[lvl] || 0;
-  }
-  return data;
+function gSignOut() {
+  if (gAccessToken) google.accounts.oauth2.revoke(gAccessToken, () => {});
+  gAccessToken = null;
+  gTokenExpiry = 0;
+  gUpdateSignInBtn();
+  const docBtn = document.getElementById('ws-gdoc-btn');
+  if (docBtn) docBtn.style.display = 'none';
 }
 
-// ── Restore data from Drive payload ───────────────
-async function restoreAllData(data) {
-  if (!data) return;
-  if (data.students) await stSet('kiw_rp_students', JSON.stringify(data.students));
-  if (data.logs) {
-    for (const [id, logs] of Object.entries(data.logs)) {
-      await stSet('kiw_rp_logs_' + id, JSON.stringify(logs));
-    }
+function gUpdateSignInBtn() {
+  const btn = document.getElementById('hdr-gsign');
+  if (!btn) return;
+  if (gIsSignedIn()) {
+    btn.classList.add('signed-in');
+    btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24"><path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg> ✓ Google`;
+  } else {
+    btn.classList.remove('signed-in');
+    btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24"><path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg> Sign in`;
   }
-  if (data.grammarProgress) {
-    for (const [lvl, pg] of Object.entries(data.grammarProgress)) {
-      await stSet('kiw_prog_' + lvl, JSON.stringify(pg));
-      progState[lvl] = pg;
-      buildGrammarBlocks(lvl);
-    }
-  }
-  if (data.rcState) {
-    for (const [lvl, rc] of Object.entries(data.rcState)) {
-      await stSet('kiw_rc_' + lvl, JSON.stringify(rc));
-      rcState[lvl] = rc;
-      buildRcUnits(lvl);
-    }
-  }
-  if (data.erState) {
-    for (const [lvl, n] of Object.entries(data.erState)) {
-      await stSet('kiw_er_' + lvl, String(n));
-      erState[lvl] = n;
-      buildErPanel(lvl);
-    }
-  }
-  rpInit();
 }
 
-// ── Find existing file in AppData ─────────────────
-async function driveFindFile() {
-  const resp = await fetch(
-    `https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&q=name='${DRIVE_FILENAME}'&fields=files(id,name,modifiedTime)`,
-    { headers: { Authorization: 'Bearer ' + driveAccessToken } }
-  );
-  const data = await resp.json();
-  return (data.files && data.files.length > 0) ? data.files[0] : null;
+function gShowDocBtn() {
+  const wsResult = document.getElementById('ws-result');
+  const docBtn = document.getElementById('ws-gdoc-btn');
+  if (!docBtn) return;
+  if (gIsSignedIn() && wsResult && wsResult.style.display !== 'none') {
+    docBtn.style.display = 'flex';
+  }
 }
 
-// ── Save to Drive ──────────────────────────────────
-async function saveToDrive() {
-  if (!driveAccessToken) { driveSignIn(); return; }
-  syncSetBtn('syncing');
+async function wsSaveToDoc() {
+  if (!gIsSignedIn()) { gSignIn(); return; }
+  const docBtn = document.getElementById('ws-gdoc-btn');
+  docBtn.disabled = true;
+  docBtn.textContent = 'Creating…';
+
   try {
-    const payload = JSON.stringify(await collectAllData(), null, 2);
-    const blob = new Blob([payload], { type: 'application/json' });
+    // Pull rendered worksheet content
+    const sheet = document.getElementById('ws-printable');
+    if (!sheet) throw new Error('No worksheet found');
 
-    let url, method, headers;
-    if (driveFileId) {
-      // Update existing file
-      url = `https://www.googleapis.com/upload/drive/v3/files/${driveFileId}?uploadType=media`;
-      method = 'PATCH';
-      headers = { 'Authorization': 'Bearer ' + driveAccessToken, 'Content-Type': 'application/json' };
-    } else {
-      // Create new file in AppData
-      const meta = JSON.stringify({ name: DRIVE_FILENAME, parents: ['appDataFolder'] });
-      const form = new FormData();
-      form.append('metadata', new Blob([meta], { type: 'application/json' }));
-      form.append('file', blob);
-      url = 'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id';
-      method = 'POST';
-      headers = { 'Authorization': 'Bearer ' + driveAccessToken };
-      const resp = await fetch(url, { method, headers, body: form });
-      const result = await resp.json();
-      driveFileId = result.id;
-      syncSetBtn('signed-in');
-      const t = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
-      syncSetStatus('Saved at ' + t);
-      return;
+    const titleEl = sheet.querySelector('.ws-sheet-title');
+    const subtitleEl = sheet.querySelector('.ws-sheet-subtitle');
+    const docTitle = (titleEl ? titleEl.textContent : 'KiW Worksheet') + ' — ' + new Date().toLocaleDateString('en-GB', {day:'numeric',month:'long',year:'numeric'});
+
+    // Build Docs API requests from rendered content
+    const requests = [];
+    let cursor = 1;
+
+    // Helper: insert text and track cursor
+    function ins(text, bold, size, color, center) {
+      requests.push({insertText:{location:{index:cursor},text}});
+      const fmt = {range:{startIndex:cursor,endIndex:cursor+text.length},textStyle:{}};
+      if (bold) fmt.textStyle.bold = true;
+      if (size) fmt.textStyle.fontSize = {magnitude:size,unit:'PT'};
+      if (color) fmt.textStyle.foregroundColor = {color:{rgbColor:hexToRgb(color)}};
+      if (Object.keys(fmt.textStyle).length) requests.push({updateTextStyle:{...fmt,fields:Object.keys(fmt.textStyle).join(',')}});
+      if (center) requests.push({updateParagraphStyle:{range:{startIndex:cursor,endIndex:cursor+text.length},paragraphStyle:{alignment:'CENTER'},fields:'alignment'}});
+      cursor += text.length;
     }
 
-    await fetch(url, { method, headers, body: blob });
-    syncSetBtn('signed-in');
-    const t = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
-    syncSetStatus('Saved at ' + t);
+    // Title
+    ins(docTitle + '\n', true, 16, null, true);
+    if (subtitleEl) ins(subtitleEl.textContent + '\n', false, 11, '#555555', true);
+    ins('Name: ________________________   Date: ________________________\n\n', false, 11);
+
+    // Exercises
+    const exercises = sheet.querySelectorAll('.ws-exercise');
+    exercises.forEach(ex => {
+      const exTitle = ex.querySelector('.ws-ex-title');
+      const exInstr = ex.querySelector('.ws-ex-instruction');
+      const wordBank = ex.querySelector('.ws-word-bank');
+      const items = ex.querySelectorAll('.ws-items li');
+
+      if (exTitle) ins(exTitle.textContent + '\n', true, 12, '#2F5DAD');
+      if (exInstr) ins(exInstr.textContent + '\n', false, 10, '#555555');
+      if (wordBank) ins('Word Bank: ' + wordBank.textContent.replace('Word Bank','').trim() + '\n', false, 10);
+
+      items.forEach((li, i) => {
+        ins((i+1) + '. ' + li.textContent.replace(/^\d+\.\s*/, '').trim() + '\n', false, 11);
+        ins('\n', false, 10); // space for writing
+      });
+      ins('\n', false, 10);
+    });
+
+    // Answer key
+    const ak = sheet.querySelector('.ws-answer-key');
+    if (ak) {
+      ins('— Answer Key —\n', true, 11, '#888888', true);
+      const akRows = ak.querySelectorAll('.ws-ak-row');
+      akRows.forEach(row => ins(row.textContent + '\n', false, 10, '#555555'));
+    }
+
+    // Step 1: Create the document
+    const createResp = await fetch('https://docs.googleapis.com/v1/documents', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + gAccessToken, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title: docTitle })
+    });
+    const doc = await createResp.json();
+    if (!doc.documentId) throw new Error('Could not create document');
+
+    // Step 2: Insert content via batchUpdate
+    await fetch(`https://docs.googleapis.com/v1/documents/${doc.documentId}:batchUpdate`, {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + gAccessToken, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ requests })
+    });
+
+    // Step 3: Open the document
+    const url = 'https://docs.google.com/document/d/' + doc.documentId + '/edit';
+    docBtn.textContent = '✓ Saved!';
+    docBtn.style.background = '#2D8A58';
+    setTimeout(() => {
+      docBtn.disabled = false;
+      docBtn.textContent = '📄 Save to Google Docs';
+      docBtn.style.background = '';
+    }, 3000);
+    window.open(url, '_blank');
+
   } catch(e) {
-    syncSetBtn('signed-in');
-    syncSetStatus('Save failed — try again');
-    console.error('Drive save error:', e);
+    console.error('Google Docs error:', e);
+    alert('Could not save to Google Docs: ' + e.message);
+    docBtn.disabled = false;
+    docBtn.textContent = '📄 Save to Google Docs';
   }
 }
 
-// ── Load from Drive ────────────────────────────────
-async function loadFromDrive() {
-  if (!driveAccessToken) return;
-  try {
-    const file = await driveFindFile();
-    if (!file) {
-      syncSetStatus('No saved data found — will create on first save');
-      syncSetBtn('signed-in');
-      return;
-    }
-    driveFileId = file.id;
-    const resp = await fetch(
-      `https://www.googleapis.com/drive/v3/files/${driveFileId}?alt=media`,
-      { headers: { Authorization: 'Bearer ' + driveAccessToken } }
-    );
-    const data = await resp.json();
-    await restoreAllData(data);
-    const saved = new Date(data.savedAt);
-    const label = saved.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) + ' ' +
-                  saved.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
-    syncSetStatus('Loaded — last saved ' + label);
-    syncSetBtn('signed-in');
-  } catch(e) {
-    syncSetStatus('Load failed');
-    syncSetBtn('signed-in');
-    console.error('Drive load error:', e);
-  }
+function hexToRgb(hex) {
+  const r = parseInt(hex.slice(1,3),16)/255;
+  const g = parseInt(hex.slice(3,5),16)/255;
+  const b = parseInt(hex.slice(5,7),16)/255;
+  return {red:r,green:g,blue:b};
 }
+
 </script>
 </body>
 </html>
