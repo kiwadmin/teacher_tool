@@ -51,6 +51,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--surface);color:var(--txt)
 .hdr-right{display:flex;align-items:center;gap:10px}
 .hdr-badge{font-size:10px;font-weight:700;letter-spacing:.06em;color:rgba(255,255,255,.45);background:rgba(255,255,255,.08);padding:3px 10px;border-radius:20px}
 .hdr-lock{background:none;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.55);padding:5px 12px;border-radius:6px;font-size:11px;cursor:pointer;transition:all .15s}
+.hdr-apikey{background:none;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.55);padding:5px 12px;border-radius:6px;font-size:11px;cursor:pointer;transition:all .15s}
+.hdr-apikey:hover{border-color:rgba(255,255,255,.5);color:#fff}
 .hdr-lock:hover{background:rgba(255,255,255,.1);color:#fff}
 .hdr-gsign{background:none;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.55);padding:5px 12px;border-radius:6px;font-size:11px;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:6px}
 .hdr-gsign:hover{background:rgba(255,255,255,.1);color:#fff}
@@ -525,6 +527,7 @@ select.lp-input{cursor:pointer}
         <svg width="14" height="14" viewBox="0 0 24 24"><path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
         Sign in
       </button>
+      <button class="hdr-apikey" onclick="apikeyPrompt()" title="Set API Key">🔑 API Key</button>
       <button class="hdr-lock" onclick="lockApp()">🔒 Lock</button>
     </div>
   </header>
@@ -543,7 +546,7 @@ select.lp-input{cursor:pointer}
     <!-- Level tabs -->
     <div class="lvl-bar" id="m1-lvl-bar">
       <button class="lvl-btn st active" onclick="switchLvl('st',this)">⭐ Starters</button>
-      <button class="lvl-btn lo" onclick="switchLvl('lo',this)">🌱 Low 1</button>
+      <button class="lvl-btn lo" onclick="switchLvl('lo',this)">🌱 Levels</button>
       <button class="lvl-btn gs1" onclick="switchLvl('gs1',this)">G&S 1</button>
       <button class="lvl-btn gs2" onclick="switchLvl('gs2',this)">G&S 2</button>
       <button class="lvl-btn gs3" onclick="switchLvl('gs3',this)">G&S 3</button>
@@ -593,7 +596,7 @@ select.lp-input{cursor:pointer}
           <div class="info-card">
             <div class="ic-label">Assessment</div>
             <div class="ic-title">Observation Only</div>
-            <div class="ic-body">No formal tests. Teachers observe listening response, engagement, and social interaction. 원장 approves readiness for Low 1.</div>
+            <div class="ic-body">No formal tests. Teachers observe listening response, engagement, and social interaction. 원장 approves readiness for Level 1.</div>
             <span class="ic-tag" style="background:var(--gs2bg);color:var(--gs2dark)">Continuous</span>
           </div>
         </div>
@@ -616,7 +619,7 @@ select.lp-input{cursor:pointer}
           <div class="info-card"><div class="ic-label">Starter 1 Goals</div><div class="ic-body">Open listening. Minimal verbal responses: water, hungry, sleepy, yes/no. Comfort in the English classroom environment.</div></div>
           <div class="info-card"><div class="ic-label">Starter 2 Goals</div><div class="ic-body">Respond to daily routines. Begin simple requests and interactions with the teacher. Build on Starter 1 vocabulary.</div></div>
           <div class="info-card"><div class="ic-label">Key Activities</div><div class="ic-body">Creative play · Outdoor play · Crafts · Circle time read-alouds · Songs and movement · Simple games</div></div>
-          <div class="info-card"><div class="ic-label">Readiness for Low 1</div><div class="ic-body">Responds to classroom routines. Shows comfort and engagement. Attempts to communicate with teacher. 원장 approves promotion.</div></div>
+          <div class="info-card"><div class="ic-label">Readiness for Level 1</div><div class="ic-body">Responds to classroom routines. Shows comfort and engagement. Attempts to communicate with teacher. 원장 approves promotion.</div></div>
         </div>
       </div>
     </div>
@@ -625,8 +628,8 @@ select.lp-input{cursor:pointer}
     <div id="lvl-lo" class="lvl-panel" style="--lc:var(--lo);--lcdark:var(--lodark);--lcmid:var(--lomid);--lcbg:var(--lobg);--lclight:var(--lolight)">
       <div class="lvl-banner">
         <div class="lvl-banner-inner">
-          <div class="lvl-badge">Low 1 · Early Elementary</div>
-          <div class="lvl-title">Low 1 — Phonics, Speaking & Early Reading</div>
+          <div class="lvl-badge">Levels 1–3 · Early Elementary</div>
+          <div class="lvl-title">Levels 1–3 — Phonics, Speaking & Early Reading</div>
           <div class="lvl-intro">Four levels (Level 1, Phonics Bridge, Level 2, Level 3) taking students from first phonics sounds through to grammar-aware reading and free speech. A transition point into G&S.</div>
           <div class="lvl-meta">
             <div class="lvl-meta-item">📅 <strong>Schedule:</strong> 3–5x/week · 2 hrs/session</div>
@@ -670,7 +673,7 @@ select.lp-input{cursor:pointer}
       </div>
       <div id="lo-books" class="sub-panel">
         <div class="sec-title">Books & Materials</div>
-        <div class="sec-sub">Materials for all Low 1 levels</div>
+        <div class="sec-sub">Materials for all Levels 1–3</div>
         <table class="books-table">
           <tr><th>Level</th><th>Book</th><th>Days/Sessions</th><th>Notes</th></tr>
           <tr><td>Level 1</td><td>Jolly Phonics 1 & 2</td><td>MWF · 2 hrs</td><td>New students from March 2026</td></tr>
@@ -688,7 +691,7 @@ select.lp-input{cursor:pointer}
         <div class="info-card" style="max-width:680px">
           <div class="ic-label">Context</div>
           <div class="ic-body" style="font-size:13px;line-height:1.7">
-            <p style="margin-bottom:10px">Beginning March 2026, KiW adopted a new phonics sequencing for Low 1. New students begin with JP1 & JP2 (Level 1), then move to JP3 (Level 2).</p>
+            <p style="margin-bottom:10px">Beginning March 2026, KiW adopted a new phonics sequencing for Levels 1–3. New students begin with JP1 & JP2 (Level 1), then move to JP3 (Level 2).</p>
             <p style="margin-bottom:10px"><strong>The gap:</strong> Returning students from the old system completed only JP1 last year. They need JP2 before they can join the standard Level 2 (JP3) class alongside new students.</p>
             <p style="margin-bottom:10px"><strong>The Phonics Bridge is not remediation.</strong> It fills exactly one gap. Once these students complete JP2, they move into the regular Level 2 class.</p>
             <p>This level will phase out naturally once no more old-system students remain. Both cohorts converge at Level 2 and proceed together from that point.</p>
@@ -716,6 +719,7 @@ select.lp-input{cursor:pointer}
         <button class="sub-btn" onclick="switchSub('gs1','grammar',this)">Grammar Blocks</button>
         <button class="sub-btn" onclick="switchSub('gs1','rc',this)">R&C · Reader's Bank</button>
         <button class="sub-btn" onclick="switchSub('gs1','pacing',this)">Pacing</button>
+        <button class="sub-btn" onclick="switchSub('gs1','er',this)">Extended Review</button>
       </div>
       <div id="gs1-overview" class="sub-panel active">
         <div class="info-grid">
@@ -742,6 +746,17 @@ select.lp-input{cursor:pointer}
           <div class="prog-pct" id="gs1-rc-pct">0%</div>
           <button class="prog-reset" onclick="resetRcProgress('gs1')">Reset</button>
         </div>
+
+      <div style="padding:16px 24px 0">
+        <div style="font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--gs1dark);margin-bottom:10px">R&C Timeline — T/Th · ~82 sessions/year</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">
+          <span style="background:var(--gs1bg);border:1px solid var(--gs1);color:var(--gs1dark);font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px">Mar–May: RB1 U1–7</span>
+          <span style="background:var(--gs1bg);border:1px solid var(--gs1);color:var(--gs1dark);font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px">Jun–Aug: RB1 U8–12 + RB2 U1–3</span>
+          <span style="background:var(--gs1bg);border:1px solid var(--gs1);color:var(--gs1dark);font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px">Sep–Oct: RB2 U4–9</span>
+          <span style="background:var(--gs1bg);border:1px solid var(--gs1);color:var(--gs1dark);font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px">Nov–Feb: RB2 U10–12 + consolidation</span>
+        </div>
+        <div style="font-size:11.5px;color:var(--muted);margin-bottom:4px">~1.5–2 sessions per unit · Writing homework: 3 pieces/month · ER every 6th unit</div>
+      </div>
         <div style="padding:20px 24px 40px" id="gs1-rc-units"></div>
       </div>
       <div id="gs1-pacing" class="sub-panel">
@@ -759,6 +774,98 @@ select.lp-input{cursor:pointer}
           <tr class="warn-row"><td>Jan–Feb ⚠️</td><td>Block 6: high-frequency verbs (U53–56, U112–113)</td><td>Extended tasks</td><td>1B cont.</td><td>~2–4 pieces</td></tr>
         </table>
         <p style="font-size:11.5px;color:var(--muted)">⚠️ = holiday months. May loses ~3 MWF sessions (Labor Day, Children's Day, Buddha's Birthday). October loses ~2–3 sessions (추석). January/February lose ~5 sessions (설날).</p>
+      </div>
+
+      <div id="gs1-er" class="sub-panel">
+        <div class="sec-title">Extended Review — G&S 1</div>
+        <div class="sec-sub">Every 6th R&C class (roughly once per month) · G&S 1 — T/Th R&C classes</div>
+        <p style="font-size:13px;color:var(--muted);padding:12px 0 16px;line-height:1.6">Consolidate what students have read across 5–6 units. Builds fluency, retrieval practice, and cross-text discussion skills.</p>
+        
+<div style="background:var(--lcbg);border:1px solid var(--lc);border-radius:10px;padding:16px 20px;margin-bottom:20px;opacity:.85">
+  <div style="font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--lcdark);margin-bottom:8px">How to Run an ER Class</div>
+  <div style="font-size:12.5px;color:var(--txt);line-height:1.7">
+    <strong>① Warm-up (5 min)</strong> — Quick recall: "What did we read last week? What was it about?"<br>
+    <strong>② Language focus (10 min)</strong> — Teacher highlights 3–5 vocabulary or grammar items from the covered texts.<br>
+    <strong>③ Discussion task (30–35 min)</strong> — Main activity per the session guide below. Always ends with students speaking.<br>
+    <strong>④ Wrap-up (5 min)</strong> — One sentence per student: "The most interesting thing I read this period was…"
+  </div>
+</div>
+
+        <div style="padding-bottom:40px">
+          
+      <div class="er-session" id="gs1-er-s1" style="border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:12px;display:flex;gap:16px;align-items:flex-start">
+        <div style="flex-shrink:0">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+            <input type="checkbox" id="gs1-er-cb1" onchange="toggleErSession('gs1',1,this)" style="width:16px;height:16px;accent-color:var(--gs1);cursor:pointer">
+            <span style="font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--gs1)">ER 1</span>
+          </label>
+        </div>
+        <div style="flex:1">
+          <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:3px">March–April · RB1 Units 1–3</div>
+          <div style="font-size:13px;color:var(--txt);line-height:1.6">Retell stories from texts. Teacher prompts: "What happened? Who was it about? What surprised you?"</div>
+        </div>
+      </div>
+      <div class="er-session" id="gs1-er-s2" style="border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:12px;display:flex;gap:16px;align-items:flex-start">
+        <div style="flex-shrink:0">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+            <input type="checkbox" id="gs1-er-cb2" onchange="toggleErSession('gs1',2,this)" style="width:16px;height:16px;accent-color:var(--gs1);cursor:pointer">
+            <span style="font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--gs1)">ER 2</span>
+          </label>
+        </div>
+        <div style="flex:1">
+          <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:3px">May · RB1 Units 4–7</div>
+          <div style="font-size:13px;color:var(--txt);line-height:1.6">Vocabulary review — match words to definitions from 4 units. Then pair discussion: favourite text and why.</div>
+        </div>
+      </div>
+      <div class="er-session" id="gs1-er-s3" style="border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:12px;display:flex;gap:16px;align-items:flex-start">
+        <div style="flex-shrink:0">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+            <input type="checkbox" id="gs1-er-cb3" onchange="toggleErSession('gs1',3,this)" style="width:16px;height:16px;accent-color:var(--gs1);cursor:pointer">
+            <span style="font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--gs1)">ER 3</span>
+          </label>
+        </div>
+        <div style="flex:1">
+          <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:3px">June · RB1 Units 8–12</div>
+          <div style="font-size:13px;color:var(--txt);line-height:1.6">Compare two animals/topics from different texts. Use: "Both… / But… / I think…"</div>
+        </div>
+      </div>
+      <div class="er-session" id="gs1-er-s4" style="border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:12px;display:flex;gap:16px;align-items:flex-start">
+        <div style="flex-shrink:0">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+            <input type="checkbox" id="gs1-er-cb4" onchange="toggleErSession('gs1',4,this)" style="width:16px;height:16px;accent-color:var(--gs1);cursor:pointer">
+            <span style="font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--gs1)">ER 4</span>
+          </label>
+        </div>
+        <div style="flex:1">
+          <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:3px">Sep–Oct · RB2 Units 1–4</div>
+          <div style="font-size:13px;color:var(--txt);line-height:1.6">Opinion sharing: "Which character would you want to meet? Which place would you visit?" Use evidence.</div>
+        </div>
+      </div>
+      <div class="er-session" id="gs1-er-s5" style="border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:12px;display:flex;gap:16px;align-items:flex-start">
+        <div style="flex-shrink:0">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+            <input type="checkbox" id="gs1-er-cb5" onchange="toggleErSession('gs1',5,this)" style="width:16px;height:16px;accent-color:var(--gs1);cursor:pointer">
+            <span style="font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--gs1)">ER 5</span>
+          </label>
+        </div>
+        <div style="flex:1">
+          <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:3px">Nov–Dec · RB2 Units 5–9</div>
+          <div style="font-size:13px;color:var(--txt);line-height:1.6">Extended discussion: pick one text, explain it to a partner who didn't read it carefully.</div>
+        </div>
+      </div>
+      <div class="er-session" id="gs1-er-s6" style="border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:12px;display:flex;gap:16px;align-items:flex-start">
+        <div style="flex-shrink:0">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+            <input type="checkbox" id="gs1-er-cb6" onchange="toggleErSession('gs1',6,this)" style="width:16px;height:16px;accent-color:var(--gs1);cursor:pointer">
+            <span style="font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--gs1)">ER 6</span>
+          </label>
+        </div>
+        <div style="flex:1">
+          <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:3px">Jan–Feb · RB2 Units 10–12</div>
+          <div style="font-size:13px;color:var(--txt);line-height:1.6">Full review: favourite RB2 text. Write 2 sentences + share with class.</div>
+        </div>
+      </div>
+        </div>
       </div>
     </div>
 
@@ -781,6 +888,7 @@ select.lp-input{cursor:pointer}
         <button class="sub-btn" onclick="switchSub('gs2','grammar',this)">Grammar Blocks</button>
         <button class="sub-btn" onclick="switchSub('gs2','rc',this)">R&C · Reader's Bank</button>
         <button class="sub-btn" onclick="switchSub('gs2','pacing',this)">Pacing</button>
+        <button class="sub-btn" onclick="switchSub('gs2','er',this)">Extended Review</button>
       </div>
       <div id="gs2-overview" class="sub-panel active">
         <div class="info-grid">
@@ -807,6 +915,17 @@ select.lp-input{cursor:pointer}
           <div class="prog-pct" id="gs2-rc-pct">0%</div>
           <button class="prog-reset" onclick="resetRcProgress('gs2')">Reset</button>
         </div>
+
+      <div style="padding:16px 24px 0">
+        <div style="font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--gs2dark);margin-bottom:10px">R&C Timeline — T/Th · ~82 sessions/year</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">
+          <span style="background:var(--gs2bg);border:1px solid var(--gs2);color:var(--gs2dark);font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px">Mar–Jun: RB3 U1–12</span>
+          <span style="background:var(--gs2bg);border:1px solid var(--gs2);color:var(--gs2dark);font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px">Jul–Sep: RB4 U1–6</span>
+          <span style="background:var(--gs2bg);border:1px solid var(--gs2);color:var(--gs2dark);font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px">Oct–Dec: RB4 U7–12</span>
+          <span style="background:var(--gs2bg);border:1px solid var(--gs2);color:var(--gs2dark);font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px">Jan–Feb: Consolidation</span>
+        </div>
+        <div style="font-size:11.5px;color:var(--muted);margin-bottom:4px">~2 sessions per unit · Writing homework: 2–3 pieces/month · ER every 6th unit</div>
+      </div>
         <div style="padding:20px 24px 40px" id="gs2-rc-units"></div>
       </div>
       <div id="gs2-pacing" class="sub-panel">
@@ -824,6 +943,98 @@ select.lp-input{cursor:pointer}
           <tr><td>Nov–Dec</td><td>Block 8: relative clauses intro (U97–100)</td><td>Consolidation tasks</td><td>Review</td><td>~2 pieces</td></tr>
           <tr class="warn-row"><td>Jan–Feb ⚠️</td><td>Block 9: present perfect + passive intro (U16–21)</td><td>Extended tasks</td><td>Review</td><td>~2–4 pieces</td></tr>
         </table>
+      </div>
+
+      <div id="gs2-er" class="sub-panel">
+        <div class="sec-title">Extended Review — G&S 2</div>
+        <div class="sec-sub">Every 6th R&C class (roughly once per month) · G&S 2 — T/Th R&C classes</div>
+        <p style="font-size:13px;color:var(--muted);padding:12px 0 16px;line-height:1.6">Synthesise reading across multiple units. Develops summarising and comparison skills that feed directly into writing homework.</p>
+        
+<div style="background:var(--lcbg);border:1px solid var(--lc);border-radius:10px;padding:16px 20px;margin-bottom:20px;opacity:.85">
+  <div style="font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--lcdark);margin-bottom:8px">How to Run an ER Class</div>
+  <div style="font-size:12.5px;color:var(--txt);line-height:1.7">
+    <strong>① Warm-up (5 min)</strong> — Quick recall: "What did we read last week? What was it about?"<br>
+    <strong>② Language focus (10 min)</strong> — Teacher highlights 3–5 vocabulary or grammar items from the covered texts.<br>
+    <strong>③ Discussion task (30–35 min)</strong> — Main activity per the session guide below. Always ends with students speaking.<br>
+    <strong>④ Wrap-up (5 min)</strong> — One sentence per student: "The most interesting thing I read this period was…"
+  </div>
+</div>
+
+        <div style="padding-bottom:40px">
+          
+      <div class="er-session" id="gs2-er-s1" style="border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:12px;display:flex;gap:16px;align-items:flex-start">
+        <div style="flex-shrink:0">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+            <input type="checkbox" id="gs2-er-cb1" onchange="toggleErSession('gs2',1,this)" style="width:16px;height:16px;accent-color:var(--gs2);cursor:pointer">
+            <span style="font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--gs2)">ER 1</span>
+          </label>
+        </div>
+        <div style="flex:1">
+          <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:3px">March–April · RB3 Units 1–3</div>
+          <div style="font-size:13px;color:var(--txt);line-height:1.6">Summarise: "What was the main idea of each text?" 2 sentences per text, then share.</div>
+        </div>
+      </div>
+      <div class="er-session" id="gs2-er-s2" style="border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:12px;display:flex;gap:16px;align-items:flex-start">
+        <div style="flex-shrink:0">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+            <input type="checkbox" id="gs2-er-cb2" onchange="toggleErSession('gs2',2,this)" style="width:16px;height:16px;accent-color:var(--gs2);cursor:pointer">
+            <span style="font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--gs2)">ER 2</span>
+          </label>
+        </div>
+        <div style="flex:1">
+          <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:3px">April–May · RB3 Units 4–7</div>
+          <div style="font-size:13px;color:var(--txt);line-height:1.6">Compare texts: "Which topic was most important / most surprising?" Pairs argue their choice.</div>
+        </div>
+      </div>
+      <div class="er-session" id="gs2-er-s3" style="border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:12px;display:flex;gap:16px;align-items:flex-start">
+        <div style="flex-shrink:0">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+            <input type="checkbox" id="gs2-er-cb3" onchange="toggleErSession('gs2',3,this)" style="width:16px;height:16px;accent-color:var(--gs2);cursor:pointer">
+            <span style="font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--gs2)">ER 3</span>
+          </label>
+        </div>
+        <div style="flex:1">
+          <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:3px">June · RB3 Units 8–12</div>
+          <div style="font-size:13px;color:var(--txt);line-height:1.6">Vocabulary consolidation + quiz: pull 10 words from recent units. Students write sentences.</div>
+        </div>
+      </div>
+      <div class="er-session" id="gs2-er-s4" style="border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:12px;display:flex;gap:16px;align-items:flex-start">
+        <div style="flex-shrink:0">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+            <input type="checkbox" id="gs2-er-cb4" onchange="toggleErSession('gs2',4,this)" style="width:16px;height:16px;accent-color:var(--gs2);cursor:pointer">
+            <span style="font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--gs2)">ER 4</span>
+          </label>
+        </div>
+        <div style="flex:1">
+          <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:3px">Sep–Oct · RB4 Units 1–4</div>
+          <div style="font-size:13px;color:var(--txt);line-height:1.6">Discussion: "Which text changed how you think about something?" Use summarising skills.</div>
+        </div>
+      </div>
+      <div class="er-session" id="gs2-er-s5" style="border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:12px;display:flex;gap:16px;align-items:flex-start">
+        <div style="flex-shrink:0">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+            <input type="checkbox" id="gs2-er-cb5" onchange="toggleErSession('gs2',5,this)" style="width:16px;height:16px;accent-color:var(--gs2);cursor:pointer">
+            <span style="font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--gs2)">ER 5</span>
+          </label>
+        </div>
+        <div style="flex:1">
+          <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:3px">Nov–Dec · RB4 Units 5–8</div>
+          <div style="font-size:13px;color:var(--txt);line-height:1.6">Comparison writing prep: choose two texts, list 3 similarities and 3 differences.</div>
+        </div>
+      </div>
+      <div class="er-session" id="gs2-er-s6" style="border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:12px;display:flex;gap:16px;align-items:flex-start">
+        <div style="flex-shrink:0">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+            <input type="checkbox" id="gs2-er-cb6" onchange="toggleErSession('gs2',6,this)" style="width:16px;height:16px;accent-color:var(--gs2);cursor:pointer">
+            <span style="font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--gs2)">ER 6</span>
+          </label>
+        </div>
+        <div style="flex:1">
+          <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:3px">Jan–Feb · RB4 Units 9–12</div>
+          <div style="font-size:13px;color:var(--txt);line-height:1.6">End of year: pick the most interesting thing you read all year. Present to the class in 3 sentences.</div>
+        </div>
+      </div>
+        </div>
       </div>
     </div>
 
@@ -847,6 +1058,7 @@ select.lp-input{cursor:pointer}
         <button class="sub-btn" onclick="switchSub('gs3','grammar',this)">Grammar Blocks</button>
         <button class="sub-btn" onclick="switchSub('gs3','rc',this)">R&C · Reader's Bank</button>
         <button class="sub-btn" onclick="switchSub('gs3','pacing',this)">Pacing</button>
+        <button class="sub-btn" onclick="switchSub('gs3','er',this)">Extended Review</button>
       </div>
       <div id="gs3-overview" class="sub-panel active">
         <div class="info-grid">
@@ -874,6 +1086,17 @@ select.lp-input{cursor:pointer}
           <div class="prog-pct" id="gs3-rc-pct">0%</div>
           <button class="prog-reset" onclick="resetRcProgress('gs3')">Reset</button>
         </div>
+
+      <div style="padding:16px 24px 0">
+        <div style="font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--gs3dark);margin-bottom:10px">R&C Timeline — MWF (priority) · ~125 sessions/year</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">
+          <span style="background:var(--gs3bg);border:1px solid var(--gs3);color:var(--gs3dark);font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px">Mar–Jun: RB5 U1–12 (~1 week/unit)</span>
+          <span style="background:var(--gs3bg);border:1px solid var(--gs3);color:var(--gs3dark);font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px">Jul–Sep: RB6 U1–6</span>
+          <span style="background:var(--gs3bg);border:1px solid var(--gs3);color:var(--gs3dark);font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px">Oct–Dec: RB6 U7–12</span>
+          <span style="background:var(--gs3bg);border:1px solid var(--gs3);color:var(--gs3dark);font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px">Jan–Feb: Extended tasks</span>
+        </div>
+        <div style="font-size:11.5px;color:var(--muted);margin-bottom:4px">~3 sessions per unit (1 per text) · Writing homework: 4 pieces/month · ER every 12th unit</div>
+      </div>
         <div style="padding:20px 24px 40px" id="gs3-rc-units"></div>
       </div>
       <div id="gs3-pacing" class="sub-panel">
@@ -893,6 +1116,110 @@ select.lp-input{cursor:pointer}
           <tr class="warn-row"><td>Jan–Feb ⚠️</td><td>Block 7: conditionals & wish (Int.36–39)</td><td>Extended tasks</td><td>2B Ch.4</td><td>~2–3 pieces</td></tr>
         </table>
         <p style="font-size:11.5px;color:var(--warn);margin-top:8px">⚠️ Present perfect homework (Block 2): Grammar In 2A Ch.2 U02 covers this but exercises are limited — supplement with teacher-made worksheets.</p>
+      </div>
+
+      <div id="gs3-er" class="sub-panel">
+        <div class="sec-title">Extended Review — G&S 3</div>
+        <div class="sec-sub">Every 12th R&C class (roughly every 4 weeks — MWF pace is faster) · G&S 3 — MWF R&C classes</div>
+        <p style="font-size:13px;color:var(--muted);padding:12px 0 16px;line-height:1.6">Academic reading consolidation. Paraphrasing practice, argument analysis, and grammar spotlight review across recent units.</p>
+        
+<div style="background:var(--lcbg);border:1px solid var(--lc);border-radius:10px;padding:16px 20px;margin-bottom:20px;opacity:.85">
+  <div style="font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--lcdark);margin-bottom:8px">How to Run an ER Class</div>
+  <div style="font-size:12.5px;color:var(--txt);line-height:1.7">
+    <strong>① Warm-up (5 min)</strong> — Quick recall: "What did we read last week? What was it about?"<br>
+    <strong>② Language focus (10 min)</strong> — Teacher highlights 3–5 vocabulary or grammar items from the covered texts.<br>
+    <strong>③ Discussion task (30–35 min)</strong> — Main activity per the session guide below. Always ends with students speaking.<br>
+    <strong>④ Wrap-up (5 min)</strong> — One sentence per student: "The most interesting thing I read this period was…"
+  </div>
+</div>
+
+        <div style="padding-bottom:40px">
+          
+      <div class="er-session" id="gs3-er-s1" style="border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:12px;display:flex;gap:16px;align-items:flex-start">
+        <div style="flex-shrink:0">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+            <input type="checkbox" id="gs3-er-cb1" onchange="toggleErSession('gs3',1,this)" style="width:16px;height:16px;accent-color:var(--gs3);cursor:pointer">
+            <span style="font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--gs3)">ER 1</span>
+          </label>
+        </div>
+        <div style="flex:1">
+          <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:3px">March–April · RB5 Units 1–3</div>
+          <div style="font-size:13px;color:var(--txt);line-height:1.6">Paraphrase practice: restate the main argument of each text in your own words. Peer compare.</div>
+        </div>
+      </div>
+      <div class="er-session" id="gs3-er-s2" style="border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:12px;display:flex;gap:16px;align-items:flex-start">
+        <div style="flex-shrink:0">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+            <input type="checkbox" id="gs3-er-cb2" onchange="toggleErSession('gs3',2,this)" style="width:16px;height:16px;accent-color:var(--gs3);cursor:pointer">
+            <span style="font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--gs3)">ER 2</span>
+          </label>
+        </div>
+        <div style="flex:1">
+          <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:3px">May · RB5 Units 4–6</div>
+          <div style="font-size:13px;color:var(--txt);line-height:1.6">Grammar spotlight: identify relative clauses and participial phrases in recently read texts.</div>
+        </div>
+      </div>
+      <div class="er-session" id="gs3-er-s3" style="border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:12px;display:flex;gap:16px;align-items:flex-start">
+        <div style="flex-shrink:0">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+            <input type="checkbox" id="gs3-er-cb3" onchange="toggleErSession('gs3',3,this)" style="width:16px;height:16px;accent-color:var(--gs3);cursor:pointer">
+            <span style="font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--gs3)">ER 3</span>
+          </label>
+        </div>
+        <div style="flex:1">
+          <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:3px">June · RB5 Units 7–9</div>
+          <div style="font-size:13px;color:var(--txt);line-height:1.6">Evidence-based discussion: "Which text made the strongest argument? Why?" Use quotes as evidence.</div>
+        </div>
+      </div>
+      <div class="er-session" id="gs3-er-s4" style="border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:12px;display:flex;gap:16px;align-items:flex-start">
+        <div style="flex-shrink:0">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+            <input type="checkbox" id="gs3-er-cb4" onchange="toggleErSession('gs3',4,this)" style="width:16px;height:16px;accent-color:var(--gs3);cursor:pointer">
+            <span style="font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--gs3)">ER 4</span>
+          </label>
+        </div>
+        <div style="flex:1">
+          <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:3px">Jul–Aug · RB5 Units 10–12 + RB6 1–3</div>
+          <div style="font-size:13px;color:var(--txt);line-height:1.6">Persuasive writing prep: choose a position from a text, write 3 supporting points.</div>
+        </div>
+      </div>
+      <div class="er-session" id="gs3-er-s5" style="border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:12px;display:flex;gap:16px;align-items:flex-start">
+        <div style="flex-shrink:0">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+            <input type="checkbox" id="gs3-er-cb5" onchange="toggleErSession('gs3',5,this)" style="width:16px;height:16px;accent-color:var(--gs3);cursor:pointer">
+            <span style="font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--gs3)">ER 5</span>
+          </label>
+        </div>
+        <div style="flex:1">
+          <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:3px">Sep–Oct · RB6 Units 4–6</div>
+          <div style="font-size:13px;color:var(--txt);line-height:1.6">Vocabulary in context: find 5 academic words from recent texts, write sentences showing meaning.</div>
+        </div>
+      </div>
+      <div class="er-session" id="gs3-er-s6" style="border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:12px;display:flex;gap:16px;align-items:flex-start">
+        <div style="flex-shrink:0">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+            <input type="checkbox" id="gs3-er-cb6" onchange="toggleErSession('gs3',6,this)" style="width:16px;height:16px;accent-color:var(--gs3);cursor:pointer">
+            <span style="font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--gs3)">ER 6</span>
+          </label>
+        </div>
+        <div style="flex:1">
+          <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:3px">Nov · RB6 Units 7–9</div>
+          <div style="font-size:13px;color:var(--txt);line-height:1.6">Cross-text analysis: "How do two authors approach the same topic differently?"</div>
+        </div>
+      </div>
+      <div class="er-session" id="gs3-er-s7" style="border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:12px;display:flex;gap:16px;align-items:flex-start">
+        <div style="flex-shrink:0">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+            <input type="checkbox" id="gs3-er-cb7" onchange="toggleErSession('gs3',7,this)" style="width:16px;height:16px;accent-color:var(--gs3);cursor:pointer">
+            <span style="font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--gs3)">ER 7</span>
+          </label>
+        </div>
+        <div style="flex:1">
+          <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:3px">Dec–Jan · RB6 Units 10–12</div>
+          <div style="font-size:13px;color:var(--txt);line-height:1.6">Full consolidation: best argument from any RB6 text — students present position + 2 reasons.</div>
+        </div>
+      </div>
+        </div>
       </div>
     </div>
 
@@ -916,6 +1243,7 @@ select.lp-input{cursor:pointer}
         <button class="sub-btn" onclick="switchSub('gs4','grammar',this)">Grammar Blocks</button>
         <button class="sub-btn" onclick="switchSub('gs4','rc',this)">R&C · Reader's Bank</button>
         <button class="sub-btn" onclick="switchSub('gs4','pacing',this)">Pacing</button>
+        <button class="sub-btn" onclick="switchSub('gs4','er',this)">Extended Review</button>
       </div>
       <div id="gs4-overview" class="sub-panel active">
         <div class="info-grid">
@@ -942,6 +1270,17 @@ select.lp-input{cursor:pointer}
           <div class="prog-pct" id="gs4-rc-pct">0%</div>
           <button class="prog-reset" onclick="resetRcProgress('gs4')">Reset</button>
         </div>
+
+      <div style="padding:16px 24px 0">
+        <div style="font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--gs4dark);margin-bottom:10px">R&C Timeline — MWF (priority) · ~125 sessions/year</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">
+          <span style="background:var(--gs4bg);border:1px solid var(--gs4);color:var(--gs4dark);font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px">Mar–Jul: RB7 U1–12 (~1 week/unit)</span>
+          <span style="background:var(--gs4bg);border:1px solid var(--gs4);color:var(--gs4dark);font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px">Jul–Oct: RB8 U1–9</span>
+          <span style="background:var(--gs4bg);border:1px solid var(--gs4);color:var(--gs4dark);font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px">Nov: RB8 U10–12</span>
+          <span style="background:var(--gs4bg);border:1px solid var(--gs4);color:var(--gs4dark);font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px">Dec–Feb: Portfolio + oral</span>
+        </div>
+        <div style="font-size:11.5px;color:var(--muted);margin-bottom:4px">~3 sessions per unit (1 per text) · Writing homework: 4 pieces/month · ER every 12th unit</div>
+      </div>
         <div style="padding:20px 24px 40px" id="gs4-rc-units"></div>
       </div>
       <div id="gs4-pacing" class="sub-panel">
@@ -961,6 +1300,122 @@ select.lp-input{cursor:pointer}
           <tr><td>December</td><td>Block 7 cont. (Int.123–130) + PV away/back</td><td>Extended tasks</td><td>Supplementary worksheets</td><td>~2 pieces</td></tr>
           <tr class="warn-row"><td>Jan–Feb ⚠️</td><td>Consolidation + portfolio</td><td>Oral + portfolio</td><td>Review</td><td>~2 pieces</td></tr>
         </table>
+      </div>
+
+      <div id="gs4-er" class="sub-panel">
+        <div class="sec-title">Extended Review — G&S 4</div>
+        <div class="sec-sub">Every 12th R&C class (roughly every 4 weeks) · G&S 4 — MWF R&C classes</div>
+        <p style="font-size:13px;color:var(--muted);padding:12px 0 16px;line-height:1.6">High-level academic consolidation. Argument analysis, personal voice development, and synthesis across multiple texts.</p>
+        
+<div style="background:var(--lcbg);border:1px solid var(--lc);border-radius:10px;padding:16px 20px;margin-bottom:20px;opacity:.85">
+  <div style="font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--lcdark);margin-bottom:8px">How to Run an ER Class</div>
+  <div style="font-size:12.5px;color:var(--txt);line-height:1.7">
+    <strong>① Warm-up (5 min)</strong> — Quick recall: "What did we read last week? What was it about?"<br>
+    <strong>② Language focus (10 min)</strong> — Teacher highlights 3–5 vocabulary or grammar items from the covered texts.<br>
+    <strong>③ Discussion task (30–35 min)</strong> — Main activity per the session guide below. Always ends with students speaking.<br>
+    <strong>④ Wrap-up (5 min)</strong> — One sentence per student: "The most interesting thing I read this period was…"
+  </div>
+</div>
+
+        <div style="padding-bottom:40px">
+          
+      <div class="er-session" id="gs4-er-s1" style="border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:12px;display:flex;gap:16px;align-items:flex-start">
+        <div style="flex-shrink:0">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+            <input type="checkbox" id="gs4-er-cb1" onchange="toggleErSession('gs4',1,this)" style="width:16px;height:16px;accent-color:var(--gs4);cursor:pointer">
+            <span style="font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--gs4)">ER 1</span>
+          </label>
+        </div>
+        <div style="flex:1">
+          <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:3px">March–April · RB7 Units 1–3</div>
+          <div style="font-size:13px;color:var(--txt);line-height:1.6">Evaluative discussion: "How strong is this argument? What evidence would make it stronger?"</div>
+        </div>
+      </div>
+      <div class="er-session" id="gs4-er-s2" style="border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:12px;display:flex;gap:16px;align-items:flex-start">
+        <div style="flex-shrink:0">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+            <input type="checkbox" id="gs4-er-cb2" onchange="toggleErSession('gs4',2,this)" style="width:16px;height:16px;accent-color:var(--gs4);cursor:pointer">
+            <span style="font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--gs4)">ER 2</span>
+          </label>
+        </div>
+        <div style="flex:1">
+          <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:3px">May · RB7 Units 4–6</div>
+          <div style="font-size:13px;color:var(--txt);line-height:1.6">Synthesis: find a connecting idea across 3 texts. Write a claim that links all three.</div>
+        </div>
+      </div>
+      <div class="er-session" id="gs4-er-s3" style="border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:12px;display:flex;gap:16px;align-items:flex-start">
+        <div style="flex-shrink:0">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+            <input type="checkbox" id="gs4-er-cb3" onchange="toggleErSession('gs4',3,this)" style="width:16px;height:16px;accent-color:var(--gs4);cursor:pointer">
+            <span style="font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--gs4)">ER 3</span>
+          </label>
+        </div>
+        <div style="flex:1">
+          <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:3px">June–July · RB7 Units 7–9</div>
+          <div style="font-size:13px;color:var(--txt);line-height:1.6">Counter-argument practice: take a position from a text and argue the opposite.</div>
+        </div>
+      </div>
+      <div class="er-session" id="gs4-er-s4" style="border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:12px;display:flex;gap:16px;align-items:flex-start">
+        <div style="flex-shrink:0">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+            <input type="checkbox" id="gs4-er-cb4" onchange="toggleErSession('gs4',4,this)" style="width:16px;height:16px;accent-color:var(--gs4);cursor:pointer">
+            <span style="font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--gs4)">ER 4</span>
+          </label>
+        </div>
+        <div style="flex:1">
+          <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:3px">Jul–Aug · RB7 Units 10–12</div>
+          <div style="font-size:13px;color:var(--txt);line-height:1.6">Academic vocabulary: build a class glossary from RB7. Students define and exemplify.</div>
+        </div>
+      </div>
+      <div class="er-session" id="gs4-er-s5" style="border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:12px;display:flex;gap:16px;align-items:flex-start">
+        <div style="flex-shrink:0">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+            <input type="checkbox" id="gs4-er-cb5" onchange="toggleErSession('gs4',5,this)" style="width:16px;height:16px;accent-color:var(--gs4);cursor:pointer">
+            <span style="font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--gs4)">ER 5</span>
+          </label>
+        </div>
+        <div style="flex:1">
+          <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:3px">Aug–Sep · RB8 Units 1–3</div>
+          <div style="font-size:13px;color:var(--txt);line-height:1.6">Personal voice: connect a text's argument to your own experience or opinion.</div>
+        </div>
+      </div>
+      <div class="er-session" id="gs4-er-s6" style="border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:12px;display:flex;gap:16px;align-items:flex-start">
+        <div style="flex-shrink:0">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+            <input type="checkbox" id="gs4-er-cb6" onchange="toggleErSession('gs4',6,this)" style="width:16px;height:16px;accent-color:var(--gs4);cursor:pointer">
+            <span style="font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--gs4)">ER 6</span>
+          </label>
+        </div>
+        <div style="flex:1">
+          <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:3px">Sep–Oct · RB8 Units 4–6</div>
+          <div style="font-size:13px;color:var(--txt);line-height:1.6">Debate: divide class by text position. Each side summarises their text's argument.</div>
+        </div>
+      </div>
+      <div class="er-session" id="gs4-er-s7" style="border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:12px;display:flex;gap:16px;align-items:flex-start">
+        <div style="flex-shrink:0">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+            <input type="checkbox" id="gs4-er-cb7" onchange="toggleErSession('gs4',7,this)" style="width:16px;height:16px;accent-color:var(--gs4);cursor:pointer">
+            <span style="font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--gs4)">ER 7</span>
+          </label>
+        </div>
+        <div style="flex:1">
+          <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:3px">Nov · RB8 Units 7–9</div>
+          <div style="font-size:13px;color:var(--txt);line-height:1.6">Portfolio selection: choose one text that most influenced your thinking. Write 1 paragraph why.</div>
+        </div>
+      </div>
+      <div class="er-session" id="gs4-er-s8" style="border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:12px;display:flex;gap:16px;align-items:flex-start">
+        <div style="flex-shrink:0">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+            <input type="checkbox" id="gs4-er-cb8" onchange="toggleErSession('gs4',8,this)" style="width:16px;height:16px;accent-color:var(--gs4);cursor:pointer">
+            <span style="font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--gs4)">ER 8</span>
+          </label>
+        </div>
+        <div style="flex:1">
+          <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:3px">Dec–Feb · RB8 Units 10–12</div>
+          <div style="font-size:13px;color:var(--txt);line-height:1.6">Final consolidation: full year synthesis — present your most developed argument to the group.</div>
+        </div>
+      </div>
+        </div>
       </div>
     </div>
 
@@ -1003,10 +1458,10 @@ select.lp-input{cursor:pointer}
                 <option value="starter1">Starters 1</option>
                 <option value="starter2">Starters 2</option>
               </optgroup>
-              <optgroup label="Low 1">
-                <option value="low1-lv1">Low 1 · Level 1</option>
-                <option value="low1-lv2">Low 1 · Level 2</option>
-                <option value="low1-lv3">Low 1 · Level 3</option>
+              <optgroup label="Levels 1–3">
+                <option value="low1-lv1">Level 1</option>
+                <option value="low1-lv2">Level 2</option>
+                <option value="low1-lv3">Level 3</option>
               </optgroup>
               <optgroup label="G&S">
                 <option value="gs1">G&S 1</option>
@@ -1097,8 +1552,8 @@ select.lp-input{cursor:pointer}
             <select id="ws-level" class="ws-input" onchange="wsLevelChange()">
               <option value="">— Select level —</option>
               <option value="starters">Starters 1 &amp; 2</option>
-              <option value="phonics">Low 1 — Phonics Bridge</option>
-              <option value="low1lv3">Low 1 — Level 3</option>
+              <option value="phonics">Phonics Bridge</option>
+              <option value="low1lv3">Level 3</option>
               <option value="gs1">G&amp;S 1</option>
               <option value="gs2">G&amp;S 2</option>
               <option value="gs3">G&amp;S 3</option>
@@ -1106,7 +1561,7 @@ select.lp-input{cursor:pointer}
             </select>
           </div>
 
-          <!-- Word list (Low 1 Lv3 + G&S 1–4) -->
+          <!-- Word list (Level 3 + G&S 1–4) -->
           <div class="ws-field" id="ws-wordlist-field" style="display:none">
             <label class="ws-label">Word List</label>
             <div class="voice-field-wrap">
@@ -1115,13 +1570,13 @@ select.lp-input{cursor:pointer}
             </div>
           </div>
 
-          <!-- Phonics focus (Low 1 Phonics) -->
+          <!-- Phonics focus (Phonics Bridge) -->
           <div class="ws-field" id="ws-phonics-field" style="display:none">
             <label class="ws-label">Phonics Focus</label>
             <input type="text" id="ws-phonics" class="ws-input" placeholder="e.g. JP1 sounds s, a, t, p">
           </div>
 
-          <!-- Topic / theme (Starters + Low 1) -->
+          <!-- Topic / theme (Starters + Levels 1–3) -->
           <div class="ws-field" id="ws-topic-field" style="display:none">
             <label class="ws-label">Topic / Theme</label>
             <input type="text" id="ws-topic" class="ws-input" placeholder="e.g. fruit · animals · colours">
@@ -1277,8 +1732,8 @@ select.lp-input{cursor:pointer}
           <select id="rp-modal-level" class="rp-modal-input">
             <option value="Starters 1">Starters 1</option>
             <option value="Starters 2">Starters 2</option>
-            <option value="Low 1 — Phonics">Low 1 — Phonics Bridge</option>
-            <option value="Low 1 — Level 3">Low 1 — Level 3</option>
+            <option value="Phonics Bridge">Phonics Bridge</option>
+            <option value="Level 3">Level 3</option>
             <option value="G&S 1">G&amp;S 1</option>
             <option value="G&S 2">G&amp;S 2</option>
             <option value="G&S 3">G&amp;S 3</option>
@@ -1425,16 +1880,16 @@ gs1:[
   { num:2, title:'Describing the World Around Me', tagline:'Layer description onto the identity language from Block 1', sessions:'~26', cards:[
     {topic:'Naming things',desc:'Introduce objects; one vs. many',ex:'"A dog. An apple. Two cats. Three heavy books."',grammar:'a / an · singular & plural · countable/uncountable',giu:'Basic U63–66',hw:'1A Ch.3 명사와 관사 U01–02',when:'Mid April'},
     {topic:'The one I mean',desc:'Refer back to something already mentioned',ex:'"I have a dog. The dog is brown and fluffy."',grammar:'a / an and the · articles extension',giu:'Basic U67–71',hw:'1A Ch.3 명사와 관사 U02',when:'Mid–Late April'},
-    {topic:'What\'s in the room?',desc:'Describe what exists in a space',ex:'"There is a whiteboard. There are three chairs."',grammar:'there is / there are / there was / there were',giu:'Basic U35–37',hw:'1A Ch.1 인칭대명사와 be동사 U02',when:'Late April'},
-    {topic:'Near or far?',desc:'Point to and compare nearby vs. distant things',ex:'"This is my pencil. That is yours. These are heavy."',grammar:'this / that / these / those · some / any',giu:'Basic U72–74',hw:'1B Ch.1 대명사 U02',when:'Late April'},
+    {topic:'What\'s in the room?',desc:'Describe what exists in a space',ex:'"There is a whiteboard. There are three chairs."',grammar:'there is / there are / there was / there were',giu:'Basic U35–37',hw:'Supplementary worksheets',when:'Late April'},
+    {topic:'Near or far?',desc:'Point to and compare nearby vs. distant things',ex:'"This is my pencil. That is yours. These are heavy."',grammar:'this / that / these / those · some / any',giu:'Basic U72–74',hw:'1B Ch.1 대명사 U01',when:'Late April'},
     {topic:'Where is it?',desc:'Talk about the location of things and places',ex:'"The cat is in the box. She\'s at school."',grammar:'in / at / on (place) · prepositions of position',giu:'Basic U104–111',hw:'1B Ch.7 전치사 U02–03',when:'May'},
-    {topic:'What does it look like?',desc:'Add colour, size, and feeling to descriptions',ex:'"A big brown dog. A kind teacher. She speaks quietly."',grammar:'adjectives · adverbs',giu:'Basic U83–84',hw:'1B Ch.2 형용사와 부사 U01–02',when:'May'},
+    {topic:'What does it look like?',desc:'Add colour, size, and feeling to descriptions',ex:'"A big brown dog. A kind teacher. She speaks quietly."',grammar:'adjectives · adverbs',giu:'Basic U83–84',hw:'1B Ch.2 형용사와 부사 U01',when:'May'},
   ]},
   { num:3, title:'Action, Routine & Connected Speech', tagline:'Bring movement and time in — and start joining ideas together', sessions:'~15', cards:[
     {topic:'What\'s happening right now?',desc:'Describe actions in progress at this exact moment',ex:'"I am reading. She is laughing. What are you doing?"',grammar:'present continuous',giu:'Basic U3–4',hw:'1A Ch.5 시제 U02',when:'Late May'},
     {topic:'Now vs. always',desc:'Contrast a current action with a usual habit',ex:'"I usually walk, but today I am taking the bus."',grammar:'I am doing vs. I do (contrast)',giu:'Basic U8',hw:'1A Ch.5 시제 U01–02',when:'Late May–June'},
-    {topic:'My routine',desc:'Say how often you do things and in what order',ex:'"I always eat breakfast. I usually walk to school."',grammar:'frequency adverbs · word order',giu:'Basic U91–92',hw:'1B Ch.4 문장의 종류 U01 + 1B Ch.2 형용사와 부사 U02',when:'June'},
-    {topic:'Still happening? Done yet?',desc:'Talk about things still in progress or already finished',ex:'"I\'m still eating. Have you finished already?"',grammar:'still / yet / already',giu:'Basic U93–94',hw:'1B Ch.2 형용사와 부사 U02',when:'June'},
+    {topic:'My routine',desc:'Say how often you do things and in what order',ex:'"I always eat breakfast. I usually walk to school."',grammar:'frequency adverbs · word order (verb + object + place + time)',giu:'Basic U91–92',hw:'1B Ch.2 형용사와 부사 U01',when:'June'},
+    {topic:'Still happening? Done yet?',desc:'Talk about things still in progress or already finished',ex:'"I\'m still eating. Have you finished already?"',grammar:'still / yet / already',giu:'Basic U93–94',hw:'Supplementary worksheets',when:'June'},
     {topic:'Linking ideas',desc:'Connect two ideas into longer, natural sentences',ex:'"I like dogs because they are friendly. I want to go, but I\'m tired."',grammar:'and / but / or / so / because',giu:'Basic U95',hw:'1B Ch.6 접속사 U01',when:'June'},
   ]},
   { num:4, title:'Questions (Full Coverage)', tagline:'Everything taught so far — now asked as a question', sessions:'~11', cards:[
@@ -1446,47 +1901,47 @@ gs1:[
   { num:5, title:'Possession, Determiners & Reference', tagline:'Fine-tune how students talk about ownership and quantities', sessions:'~11', cards:[
     {topic:'Whose is it?',desc:'Express ownership accurately',ex:'"Whose bag is this? — It\'s mine. It\'s hers."',grammar:'whose / possessive \'s / possessive pronouns',giu:'Basic U59–62',hw:'1B Ch.1 대명사 U01',when:'November'},
     {topic:'How much / how many?',desc:'Quantify things accurately',ex:'"I don\'t have much time. There are a few students left."',grammar:'much/many / a lot of / a little / a few',giu:'Basic U75–78',hw:'1B Ch.1 대명사 U02',when:'November'},
-    {topic:'Both, either, neither',desc:'Refer to two things — together, separately, or not at all',ex:'"Both answers are correct. Neither of them came."',grammar:'both / either / neither',giu:'Basic U79–82',hw:'1B Ch.3 동사의 종류 U02',when:'December'},
+    {topic:'Both, either, neither',desc:'Refer to two things — together, separately, or not at all',ex:'"Both answers are correct. Neither of them came."',grammar:'both / either / neither',giu:'Basic U79–82',hw:'1B Ch.2 형용사와 부사 U01',when:'December'},
   ]},
   { num:6, title:'High-Frequency Verb Patterns', tagline:'go, get, do, make, have — the verbs students need every day', sessions:'~9', synthesis:true, cards:[
-    {topic:'Activities I do',desc:'Go + activity — natural spoken patterns',ex:'"I go swimming on Saturdays. Let\'s go shopping."',grammar:'go (go swimming / go shopping)',giu:'Basic U53',hw:'1B Ch.3 동사의 종류 U01',when:'January'},
-    {topic:'Getting around & states',desc:'Get — the most versatile verb in English',ex:'"I get tired easily. We got to school late."',grammar:'get (get tired / get to / get on)',giu:'Basic U54',hw:'1A Ch.1 인칭대명사와 be동사 U02',when:'January'},
-    {topic:'Do and make',desc:'The classic distinction Korean speakers find tricky',ex:'"I do my homework. I make a mistake. Do the dishes."',grammar:'do and make',giu:'Basic U55',hw:'1A Ch.2 일반동사 U01',when:'February'},
-    {topic:'Have a good time',desc:'Have as an activity verb — collocations',ex:'"Have a shower. Have a good time. Have a look."',grammar:'have (have a shower / have a good time)',giu:'Basic U56',hw:'1A Ch.2 일반동사 U02',when:'February'},
-    {topic:'Phrasal verbs — first steps',desc:'An introduction to the world of phrasal verbs',ex:'"Turn off the light. Give up. Come on, hurry up!"',grammar:'phrasal verbs introduction',giu:'Basic U112–113',hw:'1A Ch.5 시제 U02',when:'February'},
+    {topic:'Activities I do',desc:'Go + activity — natural spoken patterns',ex:'"I go swimming on Saturdays. Let\'s go shopping."',grammar:'go / get / do / make / have (collocations)',giu:'Basic U53–56',hw:'Supplementary worksheets',when:'January'},
+    {topic:'Getting around & states',desc:'Get — the most versatile verb in English',ex:'"I get tired easily. We got to school late."',grammar:'get (get tired / get to / get on)',giu:'Basic U54',hw:'Supplementary worksheets',when:'January'},
+    {topic:'Do and make',desc:'The classic distinction Korean speakers find tricky',ex:'"I do my homework. I make a mistake. Do the dishes."',grammar:'do and make',giu:'Basic U55',hw:'Supplementary worksheets',when:'February'},
+    {topic:'Have a good time',desc:'Have as an activity verb — collocations',ex:'"Have a shower. Have a good time. Have a look."',grammar:'have (have a shower / have a good time)',giu:'Basic U56',hw:'Supplementary worksheets',when:'February'},
+    {topic:'Phrasal verbs — first steps',desc:'An introduction to the world of phrasal verbs',ex:'"Turn off the light. Give up. Come on, hurry up!"',grammar:'phrasal verbs — introduction',giu:'Basic U112–113',hw:'Supplementary worksheets',when:'February'},
   ]},
 ],
 gs2:[
   { num:4, title:'The Past', tagline:'Storytelling is the most natural speaking task at this level', sessions:'~18.5', cards:[
-    {topic:'What was it like?',desc:'Past states and descriptions using be',ex:'"She was tired. They were at home. Was it good?"',grammar:'was / were',giu:'Basic U10',hw:'2A Ch.3 조동사 U02',when:'March'},
-    {topic:'Telling a story',desc:'Regular and irregular past tense verbs',ex:'"I walked to school. She ran. We ate lunch together."',grammar:'regular and irregular verbs (simple past)',giu:'Basic U22–23',hw:'1B Ch.7 전치사 U01',when:'March–April'},
-    {topic:'What was happening?',desc:'Actions in progress in the past',ex:'"It was raining when I left. She was reading."',grammar:'past continuous',giu:'Basic U13–14',hw:'1A Ch.5 시제 U01',when:'April'},
-    {topic:'Then vs. now',desc:'Contrast past habits with the present',ex:'"I used to walk to school. She didn\'t use to like English."',grammar:'used to',giu:'Basic U15',hw:'1A Ch.5 시제 U01',when:'April'},
-    {topic:'When did it happen?',desc:'Time expressions for the past',ex:'"yesterday, last week, in 2020, two hours ago"',grammar:'past time expressions · ago / in / last',giu:'Basic U101–103',hw:'1A Ch.6 조동사 U01',when:'Late April'},
+    {topic:'What was it like?',desc:'Past states and descriptions using be',ex:'"She was tired. They were at home. Was it good?"',grammar:'was / were · be/have/do in past',giu:'Basic U10, U22',hw:'1A Ch.5 시제 U01',when:'March'},
+    {topic:'Telling a story',desc:'Regular and irregular past tense verbs',ex:'"I walked to school. She ran. We ate lunch together."',grammar:'simple past (regular + irregular)',giu:'Basic U23, U11',hw:'1A Ch.5 시제 U01',when:'March–April'},
+    {topic:'What was happening?',desc:'Actions in progress in the past',ex:'"It was raining when I left. She was reading."',grammar:'past continuous · while / when',giu:'Basic U13–14',hw:'1A Ch.5 시제 U02 + Supplementary worksheets',when:'April'},
+    {topic:'Then vs. now',desc:'Contrast past habits with the present',ex:'"I used to walk to school. She didn\'t use to like English."',grammar:'I used to…',giu:'Basic U15',hw:'Supplementary worksheets',when:'April'},
+    {topic:'When did it happen?',desc:'Time expressions for the past',ex:'"yesterday, last week, in 2020, two hours ago"',grammar:'at / on / in (time)',giu:'Basic U101–103',hw:'1B Ch.6 접속사 U02',when:'Late April'},
   ]},
   { num:5, title:'The Future & Plans', tagline:'Now students can talk about what\'s coming next', sessions:'~14', cards:[
-    {topic:'My plans',desc:'What you\'ve already decided to do',ex:'"I\'m going to study medicine. She\'s going to be a teacher."',grammar:'going to (plans)',giu:'Basic U24–25',hw:'1B Ch.2 형용사와 부사 U02',when:'May'},
-    {topic:'Predictions & quick decisions',desc:'Will for predictions and on-the-spot decisions',ex:'"It will rain tomorrow. — Oh, I\'ll carry that for you."',grammar:'will (predictions / instant decisions)',giu:'Basic U26',hw:'1B Ch.2 형용사와 부사 U02',when:'May'},
-    {topic:'Maybe…',desc:'Express uncertainty about the future',ex:'"I might go to the party. She may be late."',grammar:'might / may',giu:'Basic U27',hw:'1A Ch.6 조동사 U01',when:'Late May'},
-    {topic:'Comparing things',desc:'Comparatives and superlatives',ex:'"She is taller than me. This is the best restaurant."',grammar:'comparatives · superlatives',giu:'Basic U85–88',hw:'1A Ch.6 조동사 U01',when:'June'},
-    {topic:'Enough or too much?',desc:'Degree modifiers in everyday speech',ex:'"It\'s too hot. There isn\'t enough time. I\'m old enough."',grammar:'too / enough',giu:'Basic U89–90',hw:'1A Ch.6 조동사 U01',when:'June'},
+    {topic:'My plans',desc:'What you\'ve already decided to do',ex:'"I\'m going to study medicine. She\'s going to be a teacher."',grammar:'going to · present continuous for future',giu:'Basic U25, U24',hw:'1A Ch.5 시제 U01',when:'May'},
+    {topic:'Predictions & quick decisions',desc:'Will for predictions and on-the-spot decisions',ex:'"It will rain tomorrow. — Oh, I\'ll carry that for you."',grammar:'will',giu:'Basic U26',hw:'1A Ch.5 시제 U01',when:'May'},
+    {topic:'Maybe…',desc:'Express uncertainty about the future',ex:'"I might go to the party. She may be late."',grammar:'would you like / I\'d like',giu:'Basic U32',hw:'1A Ch.6 조동사 U01',when:'Late May'},
+    {topic:'Comparing things',desc:'Comparatives and superlatives',ex:'"She is taller than me. This is the best restaurant."',grammar:'comparatives · as…as / than',giu:'Basic U85–87',hw:'1B Ch.2 형용사와 부사 U02',when:'June'},
+    {topic:'Enough or too much?',desc:'Degree modifiers in everyday speech',ex:'"It\'s too hot. There isn\'t enough time. I\'m old enough."',grammar:'superlatives · enough / too · very / too',giu:'Basic U88–90',hw:'1B Ch.2 형용사와 부사 U02 · enough/too → Supplementary worksheets',when:'June'},
   ]},
   { num:6, title:'Modals & Permission', tagline:'Students gain the language to ask, advise, and express obligation', sessions:'~13', cards:[
     {topic:'Can you do it?',desc:'Ability and possibility — can and could',ex:'"Can you swim? I could read at age 4."',grammar:'can / could (ability)',giu:'Basic U28–29',hw:'1A Ch.6 조동사 U01–02',when:'July'},
-    {topic:'Giving advice',desc:'Use should to help and advise',ex:'"You should see a doctor. You shouldn\'t eat so much."',grammar:'should',giu:'Basic U30',hw:'1B Ch.6 접속사 U02',when:'July'},
-    {topic:'Rules & obligation',desc:'Must and have to for rules and necessity',ex:'"You must wear a seatbelt. I have to finish this."',grammar:'must / have to',giu:'Basic U31',hw:'1B Ch.4 문장의 종류 U02',when:'August'},
-    {topic:'Polite wants & offers',desc:'Polite language for requests and offers',ex:'"Would you like some tea? I\'d like to go, please."',grammar:'would like / would you like',giu:'Basic U32–34',hw:'1B Ch.4 문장의 종류 U02',when:'August'},
+    {topic:'Giving advice',desc:'Use should to help and advise',ex:'"You should see a doctor. You shouldn\'t eat so much."',grammar:'should / shouldn\'t',giu:'Basic U30',hw:'1A Ch.6 조동사 U01',when:'July'},
+    {topic:'Rules & obligation',desc:'Must and have to for rules and necessity',ex:'"You must wear a seatbelt. I have to finish this."',grammar:'must / have to',giu:'Basic U31',hw:'1A Ch.6 조동사 U01–02 + Supplementary worksheets',when:'August'},
+    {topic:'Polite wants & offers',desc:'Polite language for requests and offers',ex:'"Would you like some tea? I\'d like to go, please."',grammar:'when… / if… clauses',giu:'Basic U96',hw:'1B Ch.6 접속사 U02',when:'August'},
   ]},
   { num:7, title:'Questions, Tags & Reported Speech', tagline:'Consolidation and extension of question forms', sessions:'~8', cards:[
     {topic:'Checking & confirming',desc:'Question tags — checking what you think you know',ex:'"It\'s cold today, isn\'t it? You\'re coming, aren\'t you?"',grammar:'question tags',giu:'Basic U47–50',hw:'Supplementary worksheets',when:'September'},
-    {topic:'What did they say?',desc:'Report what others said',ex:'"She said she was tired. He told me to wait."',grammar:'reported speech (said / told)',giu:'Basic U48–50',hw:'2A Ch.2 시제 U02 + supplementary worksheets',when:'September–October'},
+    {topic:'What did they say?',desc:'Report what others said',ex:'"She said she was tired. He told me to wait."',grammar:'reported speech — introduction',giu:'Basic U48–50',hw:'Supplementary worksheets',when:'September–October'},
   ]},
   { num:8, title:'Relative Clauses (Introduction)', tagline:'Connecting ideas with who, which, and that', sessions:'~7', cards:[
-    {topic:'The one who / that',desc:'Describe people and things with relative clauses',ex:'"The woman who called you is here. The book that I read was great."',grammar:'relative clauses: who / which / that',giu:'Basic U97–100',hw:'2A Ch.7 수동태 U01',when:'November'},
+    {topic:'The one who / that',desc:'Describe people and things with relative clauses',ex:'"The woman who called you is here. The book that I read was great."',grammar:'relative clauses — who / that / which / whose / where',giu:'Basic U97–100',hw:'Supplementary worksheets',when:'November'},
   ]},
   { num:9, title:'Present Perfect & Passive (Introduction)', tagline:'Bridge to G&S 3 — life experience and being done to', sessions:'~9', synthesis:true, cards:[
-    {topic:'Life experience',desc:'Talk about experiences at some point in your life',ex:'"I have been to Japan. Have you ever eaten kimchi?"',grammar:'present perfect (have been / have done)',giu:'Basic U16–19',hw:'2A Ch.2 시제 U01',when:'January'},
-    {topic:'Done to you',desc:'When the action happens to the subject',ex:'"English is spoken here. It was built in 1900."',grammar:'passive voice (introduction)',giu:'Basic U20–21',hw:'2A Ch.2 시제 U01',when:'February'},
+    {topic:'Life experience',desc:'Talk about experiences at some point in your life',ex:'"I have been to Japan. Have you ever eaten kimchi?"',grammar:'present perfect — introduction',giu:'Basic U16–19',hw:'Supplementary worksheets',when:'January'},
+    {topic:'Done to you',desc:'When the action happens to the subject',ex:'"English is spoken here. It was built in 1900."',grammar:'passive voice — introduction',giu:'Basic U20–21',hw:'2A Ch.7 수동태 U01',when:'February'},
   ]},
 ],
 gs3:[
@@ -1497,36 +1952,36 @@ gs3:[
     {topic:'Telling a story (intermediate)',desc:'Past tense storytelling — past simple and continuous together',ex:'"She was walking home when she heard a noise."',grammar:'past simple + continuous (review)',giu:'Int.5–6',hw:'Supplementary worksheets',when:'March'},
   ]},
   { num:2, title:'The Present Perfect System', tagline:'The most important new tense — link past and present', sessions:'~22', cards:[
-    {topic:'Life experience',desc:'Experiences at some point in your life — ever and never',ex:'"Have you ever been to Jeju? I\'ve never tried surfing."',grammar:'present perfect: I have done',giu:'Int.7–8',hw:'2A Ch.7 수동태 U01',when:'April'},
-    {topic:'How long?',desc:'Duration from past to now — for and since',ex:'"I\'ve lived here for 10 years. She\'s been ill since Monday."',grammar:'present perfect with for / since · how long?',giu:'Int.9–12',hw:'2A Ch.7 수동태 U02',when:'May'},
-    {topic:'News & updates',desc:'Use present perfect to introduce recent events',ex:'"There\'s been an accident. Have you heard the news?"',grammar:'present perfect for recent events (just/already/yet)',giu:'Int.13–14',hw:'2A Ch.7 수동태 U02',when:'June'},
-    {topic:'What had been happening?',desc:'Events that were ongoing before another past event',ex:'"She had been waiting for an hour when he arrived."',grammar:'past perfect · past perfect continuous',giu:'Int.15',hw:'2B Ch.4 접속사 U01',when:'June'},
+    {topic:'Life experience',desc:'Experiences at some point in your life — ever and never',ex:'"Have you ever been to Jeju? I\'ve never tried surfing."',grammar:'present perfect — I have done',giu:'Int.7',hw:'2A Ch.2 시제 U02',when:'April'},
+    {topic:'How long?',desc:'Duration from past to now — for and since',ex:'"I\'ve lived here for 10 years. She\'s been ill since Monday."',grammar:'present perfect continuous · for / since / how long / ago',giu:'Int.9–12',hw:'Supplementary worksheets',when:'May'},
+    {topic:'News & updates',desc:'Use present perfect to introduce recent events',ex:'"There\'s been an accident. Have you heard the news?"',grammar:'just / already / yet · past perfect continuous',giu:'Int.13, Int.15',hw:'Supplementary worksheets',when:'June'},
+    {topic:'What had been happening?',desc:'Events that were ongoing before another past event',ex:'"She had been waiting for an hour when he arrived."',grammar:'present perfect vs. simple past',giu:'Int.8, Int.14',hw:'Supplementary worksheets',when:'June'},
   ]},
   { num:3, title:'Passive Voice', tagline:'Express what happens without naming who does it', sessions:'~8', cards:[
-    {topic:'Done to you',desc:'Shift focus from doer to receiver of the action',ex:'"The window was broken. English is spoken worldwide."',grammar:'passive: present / past',giu:'Int.40–41',hw:'2B Ch.4 접속사 U01',when:'July'},
-    {topic:'Getting things done',desc:'Arrange for someone else to do something for you',ex:'"I had my hair cut. She got her car fixed."',grammar:'have something done · get something done',giu:'Int.43–44',hw:'2A Ch.5 동명사 U01',when:'August'},
+    {topic:'Done to you',desc:'Shift focus from doer to receiver of the action',ex:'"The window was broken. English is spoken worldwide."',grammar:'passive — is done / was done / has been done / being done',giu:'Int.40–41',hw:'2A Ch.7 수동태 U01',when:'July'},
+    {topic:'Getting things done',desc:'Arrange for someone else to do something for you',ex:'"I had my hair cut. She got her car fixed."',grammar:'have / get something done',giu:'Int.43–44',hw:'2A Ch.7 수동태 U02 + Supplementary worksheets',when:'August'},
   ]},
   { num:4, title:'Reported Speech', tagline:'Report what others say, think, and ask', sessions:'~5', cards:[
-    {topic:'What people say',desc:'Report statements — shifting tenses back',ex:'"She said she was tired. He told me the exam was easy."',grammar:'reported speech: statements',giu:'Int.42',hw:'2A Ch.4 to부정사 U01',when:'September'},
-    {topic:'What did they say?',desc:'Report questions and commands',ex:'"She asked where I lived. He told me to sit down."',grammar:'reported questions / commands',giu:'Int.45–46',hw:'2A Ch.5 동명사 U02',when:'September'},
+    {topic:'What people say',desc:'Report statements — shifting tenses back',ex:'"She said she was tired. He told me the exam was easy."',grammar:'reported speech — he said that…',giu:'Int.45',hw:'Supplementary worksheets',when:'September'},
+    {topic:'What did they say?',desc:'Report questions and commands',ex:'"She asked where I lived. He told me to sit down."',grammar:'reported questions & commands',giu:'Int.46',hw:'Supplementary worksheets',when:'September'},
   ]},
   { num:5, title:'Verb Patterns — -ing and to-infinitive', tagline:'What follows a verb — mastery of the hardest pattern in English', sessions:'~18', cards:[
-    {topic:'Activities I enjoy',desc:'-ing as object of verbs — enjoy, mind, keep, avoid',ex:'"I enjoy reading. She keeps forgetting. Stop talking!"',grammar:'verb + -ing (enjoy/mind/stop/keep…)',giu:'Int.52',hw:'2A Ch.5 동명사 U01–02',when:'October'},
-    {topic:'Plans & intentions',desc:'to-infinitive as object — decide, want, hope, plan',ex:'"I want to go. She decided to study. We plan to leave."',grammar:'verb + to-infinitive',giu:'Int.53–54',hw:'2A Ch.5 동명사 U02',when:'October'},
+    {topic:'Activities I enjoy',desc:'-ing as object of verbs — enjoy, mind, keep, avoid',ex:'"I enjoy reading. She keeps forgetting. Stop talking!"',grammar:'verb + -ing (enjoy / stop / keep / mind)',giu:'Int.52',hw:'2A Ch.5 동명사 U01',when:'October'},
+    {topic:'Plans & intentions',desc:'to-infinitive as object — decide, want, hope, plan',ex:'"I want to go. She decided to study. We plan to leave."',grammar:'verb + to (decide / forget / want) · verb + object + to',giu:'Int.53–54',hw:'2A Ch.4 to부정사 U01 + Supplementary worksheets',when:'October'},
     {topic:'When meaning changes',desc:'Remember / forget / try / stop + -ing vs. to',ex:'"I remember locking the door. — vs. — Remember to lock the door."',grammar:'verb + -ing or to (meaning changes)',giu:'Int.55–56',hw:'2A Ch.4 to부정사 U02',when:'November'},
-    {topic:'I prefer…',desc:'Preference expressions',ex:'"I prefer swimming to running. I\'d rather stay home."',grammar:'prefer / would rather',giu:'Int.57',hw:'2A Ch.4 to부정사 U03',when:'November'},
-    {topic:'Getting used to it',desc:'Habituation and familiarity',ex:'"I\'m used to getting up early. She got used to the cold."',grammar:'be/get used to + -ing',giu:'Int.59',hw:'2B Ch.4 접속사 U02',when:'November'},
+    {topic:'I prefer…',desc:'Preference expressions',ex:'"I prefer swimming to running. I\'d rather stay home."',grammar:'prefer / would rather · preposition + -ing',giu:'Int.57–58',hw:'2A Ch.3 조동사 U02',when:'November'},
+    {topic:'Getting used to it',desc:'Habituation and familiarity',ex:'"I\'m used to getting up early. She got used to the cold."',grammar:'worth doing? · be/get used to · feel like · there\'s no point',giu:'Int.59–61',hw:'Supplementary worksheets',when:'November'},
   ]},
   { num:6, title:'Conjunctions & Connectors', tagline:'The grammar of academic writing — argumentation and analysis', sessions:'~12', cards:[
-    {topic:'Contrast & concession',desc:'Even though, although, despite, in spite of',ex:'"Although it was raining, we went out. Despite the cold, she swam."',grammar:'although / even though / despite / in spite of',giu:'Int.106',hw:'2B Ch.4 접속사 U02',when:'December'},
-    {topic:'Conditions & restrictions',desc:'Unless, as long as, provided',ex:'"Unless you hurry, you\'ll be late. I\'ll go as long as you come too."',grammar:'unless / as long as / provided',giu:'Int.108',hw:'2B Ch.4 접속사 U02',when:'December'},
-    {topic:'As…',desc:'Proportional and simultaneous actions',ex:'"As the years passed, she grew wiser. Do as I say."',grammar:'as (linking / proportional)',giu:'Int.109',hw:'2B Ch.4 접속사 U03',when:'January'},
-    {topic:'Time relationships',desc:'By the time, until, as soon as',ex:'"By the time I arrived, she had left. I\'ll wait until you finish."',grammar:'by the time / until / as soon as',giu:'Int.112–114',hw:'2B Ch.6 가정법 U01',when:'January'},
+    {topic:'Contrast & concession',desc:'Even though, although, despite, in spite of',ex:'"Although it was raining, we went out. Despite the cold, she swam."',grammar:'although / despite / in spite of · even though',giu:'Int.106',hw:'2B Ch.4 접속사 U02',when:'December'},
+    {topic:'Conditions & restrictions',desc:'Unless, as long as, provided',ex:'"Unless you hurry, you\'ll be late. I\'ll go as long as you come too."',grammar:'in case · unless / as long as / provided',giu:'Int.107–108',hw:'2B Ch.4 접속사 U02',when:'December'},
+    {topic:'As…',desc:'Proportional and simultaneous actions',ex:'"As the years passed, she grew wiser. Do as I say."',grammar:'as (time/reason) · like and as · as if / as though',giu:'Int.109–111',hw:'2B Ch.4 접속사 U02',when:'January'},
+    {topic:'Time relationships',desc:'By the time, until, as soon as',ex:'"By the time I arrived, she had left. I\'ll wait until you finish."',grammar:'for / during / while · by / until · by the time',giu:'Int.112–114',hw:'2B Ch.4 접속사 U02',when:'January'},
   ]},
   { num:7, title:'Conditionals & Wish', tagline:'Hypothetical, imaginary, and regret — the language of opinion and argument', sessions:'~6', synthesis:true, cards:[
     {topic:'What if…?',desc:'First conditional — real possibilities in the future',ex:'"If it rains, I\'ll stay home. If you study, you\'ll pass."',grammar:'conditionals 1 (real: if + will)',giu:'Int.37',hw:'2B Ch.6 가정법 U01',when:'February'},
     {topic:'Unreal past',desc:'Second conditional — unreal situations now',ex:'"If I were you, I\'d leave. If I had more time, I\'d read more."',grammar:'conditionals 2 (unreal: if + would)',giu:'Int.38',hw:'2B Ch.6 가정법 U02',when:'February'},
-    {topic:'I wish…',desc:'Express wishes about the present and regrets about the past',ex:'"I wish I could fly. I wish I hadn\'t said that."',grammar:'wish (present / past regret)',giu:'Int.39',hw:'2B Ch.5 관계사 U01–02',when:'February'},
+    {topic:'I wish…',desc:'Express wishes about the present and regrets about the past',ex:'"I wish I could fly. I wish I hadn\'t said that."',grammar:'third conditional · wish (all forms)',giu:'Int.38–39',hw:'2B Ch.6 가정법 U02',when:'February'},
   ]},
 ],
 gs4:[
@@ -1704,6 +2159,7 @@ gs4:{books:[
 // ══════════════════════════════════════════════════
 let progState = {}; // { gs1: {cb_id: bool}, ... }
 let rcState = {};   // { gs1: ['RB1-U01-T01', ...], ... }
+let erState = {};   // { gs1: [1,3,...], ... } — ER sessions checked off
 
 async function initApp() {
   // Load persisted state
@@ -1712,6 +2168,8 @@ async function initApp() {
     progState[lvl] = pg ? JSON.parse(pg) : {};
     const rc = await stGet('kiw_rc_' + lvl);
     rcState[lvl] = rc ? JSON.parse(rc) : [];
+    const er = await stGet('kiw_er_' + lvl);
+    erState[lvl] = er ? JSON.parse(er) : [];
   }
   // Build all grammar block UIs
   for (const lvl of ['gs1','gs2','gs3','gs4']) {
@@ -1831,18 +2289,41 @@ async function resetProgress(lvl) {
   updateProgBar(lvl);
 }
 
+
+
+// Writing guide per level for R&C units
+const WRITING_GUIDE = {
+  gs1: { skill:"Main Idea", prompt:"Write 1-2 sentences: What is this text mainly about?", note:"Focus on the central topic only. Students often summarise instead — prompt them to identify the single most important idea.", grammar:"Simple present or past", hw:"~3 pieces per month" },
+  gs2: { skill:"Summarising", prompt:"Write 3-5 sentences summarising the text in your own words.", note:"No copying from the text. Students should put it in their own words. Prompt: Pretend you are telling a friend who did not read it.", grammar:"Simple past + present for general truths", hw:"~2-3 pieces per month" },
+  gs3: { skill:"Paraphrasing + Persuasive", prompt:"Paraphrase one paragraph, then add your own opinion with evidence.", note:"Two tasks: (1) restate one paragraph using different words, (2) add I believe... because... with one piece of evidence from the text.", grammar:"Academic present + evidence phrases", hw:"~4 pieces per month (weekly)" },
+  gs4: { skill:"Personal Voice", prompt:"State your opinion, give 2 reasons, and connect to your own experience.", note:"Push for specificity. Vague opinions are not enough — require evidence and personal connection.", grammar:"Opinion phrases + hedging language", hw:"~4 pieces per month (weekly)" },
+};
+
+// ER marker intervals (every Nth unit, 1-indexed)
+const ER_INTERVALS = { gs1: 6, gs2: 6, gs3: 12, gs4: 12 };
+
+
 function buildRcUnits(lvl) {
   const container = document.getElementById(lvl + '-rc-units');
   if (!container) return;
   const data = RC_DATA[lvl];
   if (!data) return;
   const done = rcState[lvl] || [];
+  const wg = WRITING_GUIDE[lvl] || {};
+  const erInterval = ER_INTERVALS[lvl] || 6;
+
+  let unitCount = 0;
 
   container.innerHTML = data.books.map(book => `
     <div style="margin-bottom:28px">
       <div class="sec-title" style="margin-bottom:12px">${book.name}</div>
       <div class="unit-grid">
-        ${book.units.map(u => `
+        ${book.units.map(u => {
+          unitCount++;
+          const isEr = (unitCount % erInterval === 0);
+          const erBadge = isEr ? `<div style="background:var(--lc);color:#fff;font-size:10px;font-weight:700;letter-spacing:.06em;padding:3px 10px;border-radius:20px;text-align:center;margin-bottom:8px">📋 EXTENDED REVIEW after this unit</div>` : '';
+          return `
+          ${erBadge}
           <div class="unit-card">
             <div class="unit-hdr">
               <div>
@@ -1862,12 +2343,27 @@ function buildRcUnits(lvl) {
                 </div>`;
               }).join('')}
             </div>
-          </div>`).join('')}
+            ${wg.skill ? `<div style="border-top:1px dashed var(--border);margin-top:10px;padding-top:10px">
+              <div style="font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--lc);margin-bottom:4px">✍️ Writing Task</div>
+              <div style="font-size:12px;font-weight:600;color:var(--txt);margin-bottom:3px">${wg.skill}</div>
+              <div style="font-size:11.5px;color:var(--muted);margin-bottom:4px;font-style:italic">"${wg.prompt}"</div>
+              <div style="font-size:11px;color:var(--light);line-height:1.5">${wg.note}</div>
+              <div style="font-size:10.5px;color:var(--muted);margin-top:4px">📚 ${wg.hw}</div>
+            </div>` : ''}
+          </div>`;
+        }).join('')}
       </div>
     </div>
   `).join('');
 
   updateRcProgBar(lvl);
+}
+
+async function toggleErSession(lvl, n, cb) {
+  if (!erState[lvl]) erState[lvl] = [];
+  if (cb.checked) { if (!erState[lvl].includes(n)) erState[lvl].push(n); }
+  else erState[lvl] = erState[lvl].filter(k => k !== n);
+  await stSet('kiw_er_' + lvl, JSON.stringify(erState[lvl]));
 }
 
 async function toggleRcText(lvl, key, row) {
@@ -1913,9 +2409,9 @@ async function resetRcProgress(lvl) {
 const LP_LEVEL_CONFIG = {
   starter1:  { label:'Starters 1',     color:'var(--st)',  colorDark:'var(--stdark)',  colorBg:'var(--stbg)',  duration:'2hr', classTypes:['craft-cook'], showActivity:true,  showBook:false, focusLabel:'Activity / Theme', focusPlaceholder:'e.g. farm animals · colours · shapes' },
   starter2:  { label:'Starters 2',     color:'var(--st)',  colorDark:'var(--stdark)',  colorBg:'var(--stbg)',  duration:'2hr', classTypes:['craft-cook'], showActivity:true,  showBook:false, focusLabel:'Activity / Theme', focusPlaceholder:'e.g. fruit · weather · feelings' },
-  'low1-lv1':{ label:'Low 1 · Level 1',color:'var(--lo)',  colorDark:'var(--lodark)',  colorBg:'var(--lobg)',  duration:'2hr', classTypes:['phonics','craft-cook'], showActivity:true, showBook:true, focusLabel:'Phonics Focus', focusPlaceholder:'e.g. JP1 sounds s,a,t,p · blending CVC' },
-  'low1-lv2':{ label:'Low 1 · Level 2',color:'var(--lo)',  colorDark:'var(--lodark)',  colorBg:'var(--lobg)',  duration:'2hr', classTypes:['phonics','craft-cook'], showActivity:true, showBook:true, focusLabel:'Phonics Focus', focusPlaceholder:'e.g. JP3 digraphs ch,sh · reading sentences' },
-  'low1-lv3':{ label:'Low 1 · Level 3',color:'var(--lo)',  colorDark:'var(--lodark)',  colorBg:'var(--lobg)',  duration:'2hr', classTypes:['grammar-rc','pbl'],     showActivity:false,showBook:true, focusLabel:'Grammar Focus', focusPlaceholder:'e.g. JG1 Ch.2 · simple sentences · verbs' },
+  'low1-lv1':{ label:'Level 1',color:'var(--lo)',  colorDark:'var(--lodark)',  colorBg:'var(--lobg)',  duration:'2hr', classTypes:['phonics','craft-cook'], showActivity:true, showBook:true, focusLabel:'Phonics Focus', focusPlaceholder:'e.g. JP1 sounds s,a,t,p · blending CVC' },
+  'low1-lv2':{ label:'Level 2',color:'var(--lo)',  colorDark:'var(--lodark)',  colorBg:'var(--lobg)',  duration:'2hr', classTypes:['phonics','craft-cook'], showActivity:true, showBook:true, focusLabel:'Phonics Focus', focusPlaceholder:'e.g. JP3 digraphs ch,sh · reading sentences' },
+  'low1-lv3':{ label:'Level 3',color:'var(--lo)',  colorDark:'var(--lodark)',  colorBg:'var(--lobg)',  duration:'2hr', classTypes:['grammar-rc','pbl'],     showActivity:false,showBook:true, focusLabel:'Grammar Focus', focusPlaceholder:'e.g. JG1 Ch.2 · simple sentences · verbs' },
   gs1:       { label:'G&S 1',           color:'var(--gs1)', colorDark:'var(--gs1dark)', colorBg:'var(--gs1bg)', duration:'1hr', classTypes:['grammar','rc'],          showActivity:false,showBook:true, focusLabel:'Grammar Point / R&C Text', focusPlaceholder:'e.g. present continuous · U3 · RB1 Unit 5' },
   gs2:       { label:'G&S 2',           color:'var(--gs2)', colorDark:'var(--gs2dark)', colorBg:'var(--gs2bg)', duration:'1hr', classTypes:['grammar','rc'],          showActivity:false,showBook:true, focusLabel:'Grammar Point / R&C Text', focusPlaceholder:'e.g. simple past · U10 · RB3 Unit 3' },
   gs3:       { label:'G&S 3',           color:'var(--gs3)', colorDark:'var(--gs3dark)', colorBg:'var(--gs3bg)', duration:'1hr', classTypes:['grammar','rc'],          showActivity:false,showBook:true, focusLabel:'Grammar Point / R&C Text', focusPlaceholder:'e.g. present perfect · Int.7–8 · RB5 Unit 2' },
@@ -2101,17 +2597,17 @@ KEY RULES:
 - Homework has no consequences for non-completion at KiW.
 - Grammar In 3A/3B not used at KiW. G&S 3 & 4 homework uses Grammar In 2A/2B plus supplementary teacher-made worksheets where book content is limited (e.g. G&S 3 present perfect Block 2).
 - G&S 1 & 2: Grammar MWF, R&C T/Th. G&S 3 & 4: R&C MWF (priority), Grammar T/Th.
-- Speaking Lab (Starters/Low 1 craft-cooking): 4 non-negotiable stages: ① Pre-Teach (language before materials, drill pattern 10x), ② Guided Language (teacher controls materials flow, prompts language), ③ Production (making while talking — teacher narrates/questions/responds), ④ Presentation (every student says something — one sentence is enough). Praise the language, not the product.
-- Low 1 Level 3 PBL: student-driven. Teacher = language coach only. Never take over the idea.
+- Speaking Lab (Starters/Levels 1–2 craft-cooking): 4 non-negotiable stages: ① Pre-Teach (language before materials, drill pattern 10x), ② Guided Language (teacher controls materials flow, prompts language), ③ Production (making while talking — teacher narrates/questions/responds), ④ Presentation (every student says something — one sentence is enough). Praise the language, not the product.
+- Level 3 PBL: student-driven. Teacher = language coach only. Never take over the idea.
 
 LESSON FORMATS:
-2-hour class (Starters 1&2, Low 1 Lv 1&2 — craft/phonics):
+2-hour class (Starters 1&2, Level 1 & 2 — craft/phonics):
 Warm-Up/Review 10–15 min | Main Instruction 20–25 min | Speaking/Practice 20–25 min | Snack Time 15 min | Activity/Speaking Lab 40 min | Wrap-Up 5 min
 
-2-hour class (Low 1 Lv 3 — grammar-rc):
+2-hour class (Level 3 — grammar-rc):
 Warm-Up/Review 10–15 min | Main Instruction 20–25 min | Speaking/Practice 20–25 min | Snack Time 15 min | R&C + Writing 40 min | Wrap-Up 5 min
 
-2-hour class (Low 1 Lv 3 — PBL T/Th):
+2-hour class (Level 3 — PBL T/Th):
 Warm-Up/Review 10 min | PBL Work Session 80 min | Language Debrief 10 min | Wrap-Up 5 min
 
 1-hour class (G&S 1–4 — grammar):
@@ -2323,8 +2819,20 @@ async function initApp() {
     progState[lvl] = pg ? JSON.parse(pg) : {};
     const rc = await stGet('kiw_rc_' + lvl);
     rcState[lvl] = rc ? JSON.parse(rc) : [];
+    const er = await stGet('kiw_er_' + lvl);
+    erState[lvl] = er ? JSON.parse(er) : [];
   }
-  for (const lvl of ['gs1','gs2','gs3','gs4']) { buildGrammarBlocks(lvl); buildRcUnits(lvl); }
+  for (const lvl of ['gs1','gs2','gs3','gs4']) {
+    buildGrammarBlocks(lvl);
+    buildRcUnits(lvl);
+    // Restore ER checkbox states
+    if (erState[lvl]) {
+      erState[lvl].forEach(n => {
+        const cb = document.getElementById(lvl + '-er-cb' + n);
+        if (cb) cb.checked = true;
+      });
+    }
+  }
   rpInit();
   if (!getApiKey()) document.getElementById('apikey-modal').style.display='flex';
 }
@@ -2362,7 +2870,7 @@ async function wsGenerate(refinement) {
   const phonics  = (document.getElementById('ws-phonics')||{}).value||'';
   const topic    = (document.getElementById('ws-topic')||{}).value||'';
   const instr    = (document.getElementById('ws-instructions')||{}).value||'';
-  const lvlLabel = {starters:'Starters 1 & 2',phonics:'Low 1 Phonics Bridge',low1lv3:'Low 1 Level 3',gs1:'G&S 1',gs2:'G&S 2',gs3:'G&S 3',gs4:'G&S 4'}[lvl];
+  const lvlLabel = {starters:'Starters 1 & 2',phonics:'Phonics Bridge',low1lv3:'Level 3',gs1:'G&S 1',gs2:'G&S 2',gs3:'G&S 3',gs4:'G&S 4'}[lvl];
 
   let userMsg = `Level: ${lvlLabel}\n`;
   if (wordlist.trim()) userMsg += `Word list: ${wordlist.trim()}\n`;
@@ -2377,8 +2885,8 @@ Include: student name/date field at top, clear instructions per exercise, age-ap
 
 Difficulty by level:
 - Starters: picture-match (emoji to word), first-letter (fill first letter), bingo (4x4 emoji grid with FREE square)
-- Low 1 Phonics: sound-sort, blend-draw (CVC words + drawing box), circle correct starting sound
-- Low 1 Lv3 / G&S 1-2: simple definitions, guided sentence frames, 3-letter scrambles, 3 MC options
+- Phonics Bridge: sound-sort, blend-draw (CVC words + drawing box), circle correct starting sound
+- Level 3 / G&S 1-2: simple definitions, guided sentence frames, 3-letter scrambles, 3 MC options
 - G&S 3-4: contextual clues, free sentences, longer scrambles, 4 MC options
 
 Choose 4-5 exercise types appropriate for the level from: matching, fitb, scramble, sentence, mc, picture-match, first-letter, bingo, sound-sort, blend-draw
@@ -2690,7 +3198,7 @@ Rules:
 - Homework non-completion: if mentioned in logs, note it as a work habits observation only — never as a disciplinary issue (KiW policy: no consequences for homework).
 
 Report categories to address (vary by level):
-- Starters / Low 1: Listening & Response · Speaking Participation · Phonics Progress (Low 1 only) · Classroom Engagement
+- Starters / Levels 1–3: Listening & Response · Speaking Participation · Phonics Progress (Phonics Bridge only) · Classroom Engagement
 - G&S 1–4: Speaking · Reading & Comprehension · Grammar · Writing · Classroom Engagement
 
 Return ONLY valid JSON, no markdown, no preamble:
