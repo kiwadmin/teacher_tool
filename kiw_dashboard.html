@@ -2,6 +2,11 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%231A8A98'/%3E%3Ctext x='50' y='62' font-family='Georgia,serif' font-size='36' font-weight='bold' text-anchor='middle' fill='white'%3EKiW%3C/text%3E%3C/svg%3E">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KiW Teacher">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Kids in Wonder — Teacher Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
@@ -433,6 +438,11 @@ select.lp-input{cursor:pointer}
 .rp-log-input:focus{outline:none;border-color:var(--teal)}
 .rp-add-log-btn{width:100%;padding:9px;background:var(--teal);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;margin-top:8px;transition:background .2s}
 .rp-add-log-btn:hover{background:#167A87}
+.rp-level-group-hdr{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:10px 12px 4px;cursor:pointer;user-select:none;display:flex;align-items:center;justify-content:space-between}
+.rp-lvl-count{font-size:10px;font-weight:400;color:var(--light);letter-spacing:0;text-transform:none}
+.rp-level-group-hdr::before{content:'▾';font-size:10px;color:var(--muted);transition:transform .15s}
+.rp-level-group-hdr.collapsed::before{transform:rotate(-90deg)}
+.rp-level-group-body{margin-bottom:4px}
 .rp-no-student{font-size:13px;color:var(--muted);text-align:center;padding:40px 0}
 .rp-panel3{flex:1;overflow-y:auto;padding:32px;background:var(--white)}
 .rp-report-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;gap:12px;color:var(--muted);text-align:center}
@@ -486,6 +496,16 @@ select.lp-input{cursor:pointer}
 <!-- ══════════════════════════════════════
      PIN SCREEN
 ══════════════════════════════════════ -->
+<!-- Add to home screen banner -->
+<div id="a2hs-banner" style="display:none;position:fixed;bottom:16px;left:50%;transform:translateX(-50%);z-index:9999;background:#1A8A98;color:#fff;border-radius:12px;padding:12px 18px;font-size:13px;font-family:'DM Sans',sans-serif;box-shadow:0 4px 20px rgba(0,0,0,.25);max-width:320px;width:calc(100vw - 40px);display:flex;gap:10px;align-items:flex-start">
+  <span style="font-size:20px;flex-shrink:0">📱</span>
+  <div style="flex:1">
+    <div style="font-weight:700;margin-bottom:3px">Add to your home screen</div>
+    <div style="opacity:.85;font-size:12px;line-height:1.5" id="a2hs-instructions">Tap Share → <strong>Add to Home Screen</strong> for quick access like an app.</div>
+  </div>
+  <button onclick="a2hsClose()" style="background:none;border:none;color:#fff;font-size:18px;cursor:pointer;padding:0;line-height:1;flex-shrink:0;opacity:.7">✕</button>
+</div>
+
 <div id="pin-screen">
   <div class="pin-brand">Kids in Wonder<span>Teacher Dashboard · 2026–2027</span></div>
   <div class="pin-box">
@@ -538,6 +558,7 @@ select.lp-input{cursor:pointer}
     <button class="mod-btn" onclick="switchModule('m2',this)">📝 Lesson Plans</button>
     <button class="mod-btn" onclick="switchModule('m3',this)">📄 Worksheets</button>
     <button class="mod-btn" onclick="switchModule('m4',this)">📊 Reports</button>
+    <button class="mod-btn" onclick="csOpen(this)">⚙️ Settings</button>
   </nav>
 
   <!-- ══════════ MODULE 1: CURRICULUM REFERENCE ══════════ -->
@@ -563,7 +584,7 @@ select.lp-input{cursor:pointer}
           <div class="lvl-intro">The first stage of Kids in Wonder. Children learn through play, creative activities, and immersive listening. No formal reading or writing. The goal is open listening, joy, and the first seeds of English.</div>
           <div class="lvl-meta">
             <div class="lvl-meta-item">📅 <strong>Schedule:</strong> 2x/week · 2 hrs/session</div>
-            <div class="lvl-meta-item">📚 <strong>Books:</strong> Jolly English 1 & 2</div>
+            <div class="lvl-meta-item">📚 <strong>Books:</strong> See Books &amp; Materials tab</div>
             <div class="lvl-meta-item">🎯 <strong>Focus:</strong> Listening · Play</div>
           </div>
         </div>
@@ -607,6 +628,7 @@ select.lp-input{cursor:pointer}
         <table class="books-table">
           <tr><th>Level</th><th>Book</th><th>Purpose</th><th>Notes</th></tr>
           <tr><td>Starter 1</td><td>Jolly English 1</td><td>Listening, play-based language</td><td>Primary book</td></tr>
+          <tr><td>Starter 1 & 2</td><td>Spotlight on Literacy</td><td>Comprehension &amp; vocabulary enrichment</td><td>Supplementary — use level-appropriate texts</td></tr>
           <tr><td>Starter 1</td><td>Teacher-selected read-alouds</td><td>Vocabulary exposure</td><td>Teacher's choice</td></tr>
           <tr><td>Starter 2</td><td>Jolly English 2</td><td>Listening, early interaction</td><td>Primary book</td></tr>
           <tr><td>Starter 2</td><td>Teacher-selected read-alouds</td><td>Vocabulary exposure</td><td>Teacher's choice</td></tr>
@@ -633,7 +655,7 @@ select.lp-input{cursor:pointer}
           <div class="lvl-intro">Four levels (Level 1, Phonics Bridge, Level 2, Level 3) taking students from first phonics sounds through to grammar-aware reading and free speech. A transition point into G&S.</div>
           <div class="lvl-meta">
             <div class="lvl-meta-item">📅 <strong>Schedule:</strong> 3–5x/week · 2 hrs/session</div>
-            <div class="lvl-meta-item">📚 <strong>Books:</strong> Jolly Phonics 1–3 · Jolly Grammar 1–2</div>
+            <div class="lvl-meta-item">📚 <strong>Books:</strong> See Books &amp; Materials tab</div>
             <div class="lvl-meta-item">🎯 <strong>Focus:</strong> Phonics · Speaking · Early Reading</div>
           </div>
         </div>
@@ -648,7 +670,7 @@ select.lp-input{cursor:pointer}
           <div class="info-card">
             <div class="ic-label">Level 1</div>
             <div class="ic-title">Jolly Phonics 1 & 2</div>
-            <div class="ic-body">Decode sounds. Understand simple words and sentences. Begin responding verbally. 3x/week, 2 hrs.</div>
+            <div class="ic-body">Decode sounds. Understand simple words and sentences. Begin responding verbally. Spotlight on Literacy used as supplementary comprehension and vocabulary enrichment alongside phonics. 3x/week, 2 hrs.</div>
             <span class="ic-tag" style="background:var(--lobg);color:var(--lodark)">Phonics + Speaking</span>
           </div>
           <div class="info-card">
@@ -665,8 +687,8 @@ select.lp-input{cursor:pointer}
           </div>
           <div class="info-card">
             <div class="ic-label">Level 3</div>
-            <div class="ic-title">Jolly Grammar 1 & 2 · JP Readers</div>
-            <div class="ic-body">Grammar awareness in speech. Early reading & writing. Free expression on real-world topics. 5x/week — MWF academic, T/Th PBL.</div>
+            <div class="ic-title">See Books &amp; Materials tab for full list</div>
+            <div class="ic-body">Grammar awareness in speech. Early reading & writing. Free expression on real-world topics. 5x/week — MWF academic, T/Th PBL. Bricks First Grammar 2 pending confirmation.</div>
             <span class="ic-tag" style="background:var(--lobg);color:var(--lodark)">Grammar + Reading + PBL</span>
           </div>
         </div>
@@ -677,10 +699,13 @@ select.lp-input{cursor:pointer}
         <table class="books-table">
           <tr><th>Level</th><th>Book</th><th>Days/Sessions</th><th>Notes</th></tr>
           <tr><td>Level 1</td><td>Jolly Phonics 1 & 2</td><td>MWF · 2 hrs</td><td>New students from March 2026</td></tr>
-          <tr><td>Phonics Bridge</td><td>Jolly Phonics 2</td><td>MWF · 2 hrs</td><td>Returning students only — phases out</td></tr>
+          <tr><td>Level 1</td><td>Spotlight on Literacy</td><td>MWF (supplementary)</td><td>Comprehension & vocabulary enrichment alongside phonics</td></tr>
           <tr><td>Level 2</td><td>Jolly Phonics 3</td><td>MWF · 2 hrs</td><td>Old + new system students together</td></tr>
-          <tr><td>Level 3</td><td>Jolly Grammar 1 & 2</td><td>MWF · 2 hrs</td><td>Academic track</td></tr>
-          <tr><td>Level 3</td><td>Jolly Phonics Readers (Red→Yellow→Green)</td><td>MWF</td><td>Reading progression</td></tr>
+          <tr><td>Level 2</td><td>Jolly Readers (Word → Orange)</td><td>MWF</td><td>Reading fluency alongside phonics — Word level first, then Orange</td></tr>
+          <tr><td>Phonics Bridge</td><td>Jolly Phonics 2</td><td>MWF · 2 hrs</td><td>Returning students only — phases out</td></tr>
+          <tr><td>Level 3</td><td>Jolly Grammar 1</td><td>MWF · 2 hrs</td><td>Primary grammar text</td></tr>
+          <tr><td>Level 3</td><td>Bricks First Grammar 1</td><td>MWF · 2 hrs</td><td>Primary grammar text (BFG 2 pending confirmation)</td></tr>
+          <tr><td>Level 3</td><td>Jolly Readers (Red → Green)</td><td>MWF</td><td>Reading fluency and comprehension</td></tr>
           <tr><td>Level 3</td><td>Reading A to Z</td><td>MWF (supplementary)</td><td>Bridge support</td></tr>
           <tr><td>Level 3 (T/Th)</td><td>PBL — social issues projects</td><td>T/Th · 2 hrs</td><td>Student-chosen topics</td></tr>
         </table>
@@ -803,6 +828,7 @@ select.lp-input{cursor:pointer}
         <div style="flex:1">
           <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:3px">March–April · RB1 Units 1–3</div>
           <div style="font-size:13px;color:var(--txt);line-height:1.6">Retell stories from texts. Teacher prompts: "What happened? Who was it about? What surprised you?"</div>
+          <div style="margin-top:8px" id="note-er-wrap-gs1-er-1"></div>
         </div>
       </div>
       <div class="er-session" id="gs1-er-s2" style="border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:12px;display:flex;gap:16px;align-items:flex-start">
@@ -815,6 +841,7 @@ select.lp-input{cursor:pointer}
         <div style="flex:1">
           <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:3px">May · RB1 Units 4–7</div>
           <div style="font-size:13px;color:var(--txt);line-height:1.6">Vocabulary review — match words to definitions from 4 units. Then pair discussion: favourite text and why.</div>
+          <div style="margin-top:8px" id="note-er-wrap-gs1-er-2"></div>
         </div>
       </div>
       <div class="er-session" id="gs1-er-s3" style="border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:12px;display:flex;gap:16px;align-items:flex-start">
@@ -827,6 +854,7 @@ select.lp-input{cursor:pointer}
         <div style="flex:1">
           <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:3px">June · RB1 Units 8–12</div>
           <div style="font-size:13px;color:var(--txt);line-height:1.6">Compare two animals/topics from different texts. Use: "Both… / But… / I think…"</div>
+          <div style="margin-top:8px" id="note-er-wrap-gs1-er-3"></div>
         </div>
       </div>
       <div class="er-session" id="gs1-er-s4" style="border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:12px;display:flex;gap:16px;align-items:flex-start">
@@ -839,6 +867,7 @@ select.lp-input{cursor:pointer}
         <div style="flex:1">
           <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:3px">Sep–Oct · RB2 Units 1–4</div>
           <div style="font-size:13px;color:var(--txt);line-height:1.6">Opinion sharing: "Which character would you want to meet? Which place would you visit?" Use evidence.</div>
+          <div style="margin-top:8px" id="note-er-wrap-gs1-er-4"></div>
         </div>
       </div>
       <div class="er-session" id="gs1-er-s5" style="border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:12px;display:flex;gap:16px;align-items:flex-start">
@@ -851,6 +880,7 @@ select.lp-input{cursor:pointer}
         <div style="flex:1">
           <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:3px">Nov–Dec · RB2 Units 5–9</div>
           <div style="font-size:13px;color:var(--txt);line-height:1.6">Extended discussion: pick one text, explain it to a partner who didn't read it carefully.</div>
+          <div style="margin-top:8px" id="note-er-wrap-gs1-er-5"></div>
         </div>
       </div>
       <div class="er-session" id="gs1-er-s6" style="border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:12px;display:flex;gap:16px;align-items:flex-start">
@@ -863,6 +893,7 @@ select.lp-input{cursor:pointer}
         <div style="flex:1">
           <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:3px">Jan–Feb · RB2 Units 10–12</div>
           <div style="font-size:13px;color:var(--txt);line-height:1.6">Full review: favourite RB2 text. Write 2 sentences + share with class.</div>
+          <div style="margin-top:8px" id="note-er-wrap-gs1-er-6"></div>
         </div>
       </div>
         </div>
@@ -972,6 +1003,7 @@ select.lp-input{cursor:pointer}
         <div style="flex:1">
           <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:3px">March–April · RB3 Units 1–3</div>
           <div style="font-size:13px;color:var(--txt);line-height:1.6">Summarise: "What was the main idea of each text?" 2 sentences per text, then share.</div>
+          <div style="margin-top:8px" id="note-er-wrap-gs2-er-1"></div>
         </div>
       </div>
       <div class="er-session" id="gs2-er-s2" style="border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:12px;display:flex;gap:16px;align-items:flex-start">
@@ -984,6 +1016,7 @@ select.lp-input{cursor:pointer}
         <div style="flex:1">
           <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:3px">April–May · RB3 Units 4–7</div>
           <div style="font-size:13px;color:var(--txt);line-height:1.6">Compare texts: "Which topic was most important / most surprising?" Pairs argue their choice.</div>
+          <div style="margin-top:8px" id="note-er-wrap-gs2-er-2"></div>
         </div>
       </div>
       <div class="er-session" id="gs2-er-s3" style="border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:12px;display:flex;gap:16px;align-items:flex-start">
@@ -996,6 +1029,7 @@ select.lp-input{cursor:pointer}
         <div style="flex:1">
           <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:3px">June · RB3 Units 8–12</div>
           <div style="font-size:13px;color:var(--txt);line-height:1.6">Vocabulary consolidation + quiz: pull 10 words from recent units. Students write sentences.</div>
+          <div style="margin-top:8px" id="note-er-wrap-gs2-er-3"></div>
         </div>
       </div>
       <div class="er-session" id="gs2-er-s4" style="border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:12px;display:flex;gap:16px;align-items:flex-start">
@@ -1008,6 +1042,7 @@ select.lp-input{cursor:pointer}
         <div style="flex:1">
           <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:3px">Sep–Oct · RB4 Units 1–4</div>
           <div style="font-size:13px;color:var(--txt);line-height:1.6">Discussion: "Which text changed how you think about something?" Use summarising skills.</div>
+          <div style="margin-top:8px" id="note-er-wrap-gs2-er-4"></div>
         </div>
       </div>
       <div class="er-session" id="gs2-er-s5" style="border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:12px;display:flex;gap:16px;align-items:flex-start">
@@ -1020,6 +1055,7 @@ select.lp-input{cursor:pointer}
         <div style="flex:1">
           <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:3px">Nov–Dec · RB4 Units 5–8</div>
           <div style="font-size:13px;color:var(--txt);line-height:1.6">Comparison writing prep: choose two texts, list 3 similarities and 3 differences.</div>
+          <div style="margin-top:8px" id="note-er-wrap-gs2-er-5"></div>
         </div>
       </div>
       <div class="er-session" id="gs2-er-s6" style="border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:12px;display:flex;gap:16px;align-items:flex-start">
@@ -1032,6 +1068,7 @@ select.lp-input{cursor:pointer}
         <div style="flex:1">
           <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:3px">Jan–Feb · RB4 Units 9–12</div>
           <div style="font-size:13px;color:var(--txt);line-height:1.6">End of year: pick the most interesting thing you read all year. Present to the class in 3 sentences.</div>
+          <div style="margin-top:8px" id="note-er-wrap-gs2-er-6"></div>
         </div>
       </div>
         </div>
@@ -1145,6 +1182,7 @@ select.lp-input{cursor:pointer}
         <div style="flex:1">
           <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:3px">March–April · RB5 Units 1–3</div>
           <div style="font-size:13px;color:var(--txt);line-height:1.6">Paraphrase practice: restate the main argument of each text in your own words. Peer compare.</div>
+          <div style="margin-top:8px" id="note-er-wrap-gs3-er-1"></div>
         </div>
       </div>
       <div class="er-session" id="gs3-er-s2" style="border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:12px;display:flex;gap:16px;align-items:flex-start">
@@ -1157,6 +1195,7 @@ select.lp-input{cursor:pointer}
         <div style="flex:1">
           <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:3px">May · RB5 Units 4–6</div>
           <div style="font-size:13px;color:var(--txt);line-height:1.6">Grammar spotlight: identify relative clauses and participial phrases in recently read texts.</div>
+          <div style="margin-top:8px" id="note-er-wrap-gs3-er-2"></div>
         </div>
       </div>
       <div class="er-session" id="gs3-er-s3" style="border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:12px;display:flex;gap:16px;align-items:flex-start">
@@ -1169,6 +1208,7 @@ select.lp-input{cursor:pointer}
         <div style="flex:1">
           <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:3px">June · RB5 Units 7–9</div>
           <div style="font-size:13px;color:var(--txt);line-height:1.6">Evidence-based discussion: "Which text made the strongest argument? Why?" Use quotes as evidence.</div>
+          <div style="margin-top:8px" id="note-er-wrap-gs3-er-3"></div>
         </div>
       </div>
       <div class="er-session" id="gs3-er-s4" style="border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:12px;display:flex;gap:16px;align-items:flex-start">
@@ -1181,6 +1221,7 @@ select.lp-input{cursor:pointer}
         <div style="flex:1">
           <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:3px">Jul–Aug · RB5 Units 10–12 + RB6 1–3</div>
           <div style="font-size:13px;color:var(--txt);line-height:1.6">Persuasive writing prep: choose a position from a text, write 3 supporting points.</div>
+          <div style="margin-top:8px" id="note-er-wrap-gs3-er-4"></div>
         </div>
       </div>
       <div class="er-session" id="gs3-er-s5" style="border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:12px;display:flex;gap:16px;align-items:flex-start">
@@ -1193,6 +1234,7 @@ select.lp-input{cursor:pointer}
         <div style="flex:1">
           <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:3px">Sep–Oct · RB6 Units 4–6</div>
           <div style="font-size:13px;color:var(--txt);line-height:1.6">Vocabulary in context: find 5 academic words from recent texts, write sentences showing meaning.</div>
+          <div style="margin-top:8px" id="note-er-wrap-gs3-er-5"></div>
         </div>
       </div>
       <div class="er-session" id="gs3-er-s6" style="border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:12px;display:flex;gap:16px;align-items:flex-start">
@@ -1205,6 +1247,7 @@ select.lp-input{cursor:pointer}
         <div style="flex:1">
           <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:3px">Nov · RB6 Units 7–9</div>
           <div style="font-size:13px;color:var(--txt);line-height:1.6">Cross-text analysis: "How do two authors approach the same topic differently?"</div>
+          <div style="margin-top:8px" id="note-er-wrap-gs3-er-6"></div>
         </div>
       </div>
       <div class="er-session" id="gs3-er-s7" style="border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:12px;display:flex;gap:16px;align-items:flex-start">
@@ -1217,6 +1260,7 @@ select.lp-input{cursor:pointer}
         <div style="flex:1">
           <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:3px">Dec–Jan · RB6 Units 10–12</div>
           <div style="font-size:13px;color:var(--txt);line-height:1.6">Full consolidation: best argument from any RB6 text — students present position + 2 reasons.</div>
+          <div style="margin-top:8px" id="note-er-wrap-gs3-er-7"></div>
         </div>
       </div>
         </div>
@@ -1329,6 +1373,7 @@ select.lp-input{cursor:pointer}
         <div style="flex:1">
           <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:3px">March–April · RB7 Units 1–3</div>
           <div style="font-size:13px;color:var(--txt);line-height:1.6">Evaluative discussion: "How strong is this argument? What evidence would make it stronger?"</div>
+          <div style="margin-top:8px" id="note-er-wrap-gs4-er-1"></div>
         </div>
       </div>
       <div class="er-session" id="gs4-er-s2" style="border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:12px;display:flex;gap:16px;align-items:flex-start">
@@ -1341,6 +1386,7 @@ select.lp-input{cursor:pointer}
         <div style="flex:1">
           <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:3px">May · RB7 Units 4–6</div>
           <div style="font-size:13px;color:var(--txt);line-height:1.6">Synthesis: find a connecting idea across 3 texts. Write a claim that links all three.</div>
+          <div style="margin-top:8px" id="note-er-wrap-gs4-er-2"></div>
         </div>
       </div>
       <div class="er-session" id="gs4-er-s3" style="border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:12px;display:flex;gap:16px;align-items:flex-start">
@@ -1353,6 +1399,7 @@ select.lp-input{cursor:pointer}
         <div style="flex:1">
           <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:3px">June–July · RB7 Units 7–9</div>
           <div style="font-size:13px;color:var(--txt);line-height:1.6">Counter-argument practice: take a position from a text and argue the opposite.</div>
+          <div style="margin-top:8px" id="note-er-wrap-gs4-er-3"></div>
         </div>
       </div>
       <div class="er-session" id="gs4-er-s4" style="border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:12px;display:flex;gap:16px;align-items:flex-start">
@@ -1365,6 +1412,7 @@ select.lp-input{cursor:pointer}
         <div style="flex:1">
           <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:3px">Jul–Aug · RB7 Units 10–12</div>
           <div style="font-size:13px;color:var(--txt);line-height:1.6">Academic vocabulary: build a class glossary from RB7. Students define and exemplify.</div>
+          <div style="margin-top:8px" id="note-er-wrap-gs4-er-4"></div>
         </div>
       </div>
       <div class="er-session" id="gs4-er-s5" style="border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:12px;display:flex;gap:16px;align-items:flex-start">
@@ -1377,6 +1425,7 @@ select.lp-input{cursor:pointer}
         <div style="flex:1">
           <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:3px">Aug–Sep · RB8 Units 1–3</div>
           <div style="font-size:13px;color:var(--txt);line-height:1.6">Personal voice: connect a text's argument to your own experience or opinion.</div>
+          <div style="margin-top:8px" id="note-er-wrap-gs4-er-5"></div>
         </div>
       </div>
       <div class="er-session" id="gs4-er-s6" style="border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:12px;display:flex;gap:16px;align-items:flex-start">
@@ -1389,6 +1438,7 @@ select.lp-input{cursor:pointer}
         <div style="flex:1">
           <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:3px">Sep–Oct · RB8 Units 4–6</div>
           <div style="font-size:13px;color:var(--txt);line-height:1.6">Debate: divide class by text position. Each side summarises their text's argument.</div>
+          <div style="margin-top:8px" id="note-er-wrap-gs4-er-6"></div>
         </div>
       </div>
       <div class="er-session" id="gs4-er-s7" style="border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:12px;display:flex;gap:16px;align-items:flex-start">
@@ -1401,6 +1451,7 @@ select.lp-input{cursor:pointer}
         <div style="flex:1">
           <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:3px">Nov · RB8 Units 7–9</div>
           <div style="font-size:13px;color:var(--txt);line-height:1.6">Portfolio selection: choose one text that most influenced your thinking. Write 1 paragraph why.</div>
+          <div style="margin-top:8px" id="note-er-wrap-gs4-er-7"></div>
         </div>
       </div>
       <div class="er-session" id="gs4-er-s8" style="border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:12px;display:flex;gap:16px;align-items:flex-start">
@@ -1413,6 +1464,7 @@ select.lp-input{cursor:pointer}
         <div style="flex:1">
           <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:3px">Dec–Feb · RB8 Units 10–12</div>
           <div style="font-size:13px;color:var(--txt);line-height:1.6">Final consolidation: full year synthesis — present your most developed argument to the group.</div>
+          <div style="margin-top:8px" id="note-er-wrap-gs4-er-8"></div>
         </div>
       </div>
         </div>
@@ -1552,6 +1604,8 @@ select.lp-input{cursor:pointer}
             <select id="ws-level" class="ws-input" onchange="wsLevelChange()">
               <option value="">— Select level —</option>
               <option value="starters">Starters 1 &amp; 2</option>
+              <option value="low1-lv1">Level 1</option>
+              <option value="low1-lv2">Level 2</option>
               <option value="phonics">Phonics Bridge</option>
               <option value="low1lv3">Level 3</option>
               <option value="gs1">G&amp;S 1</option>
@@ -1561,32 +1615,29 @@ select.lp-input{cursor:pointer}
             </select>
           </div>
 
-          <!-- Word list (Level 3 + G&S 1–4) -->
-          <div class="ws-field" id="ws-wordlist-field" style="display:none">
-            <label class="ws-label">Word List</label>
+          <!-- Worksheet topic / instruction (all levels, shown once level selected) -->
+          <div class="ws-field" id="ws-topic-field" style="display:none">
+            <label class="ws-label">What is this worksheet about? <span class="ws-optional">(required)</span></label>
             <div class="voice-field-wrap">
-              <textarea id="ws-wordlist" class="ws-input ws-textarea" placeholder="One word per line, or comma-separated&#10;e.g. explore, ancient, discovery" rows="5"></textarea>
-              <button class="mic-btn" id="mic-ws-wordlist" onclick="voiceToField('ws-wordlist','mic-ws-wordlist')" title="Voice input">🎤</button>
+              <textarea id="ws-topic" class="ws-input ws-textarea" placeholder="e.g. short a sound&#10;GiU page 7 related exercises&#10;past tense verbs for 5th grade ESL&#10;ocean vocabulary&#10;animals · fruit · colours" rows="3"></textarea>
+              <button class="mic-btn" id="mic-ws-topic" onclick="voiceToField('ws-topic','mic-ws-topic')" title="Voice input">🎤</button>
             </div>
           </div>
 
-          <!-- Phonics focus (Phonics Bridge) -->
-          <div class="ws-field" id="ws-phonics-field" style="display:none">
-            <label class="ws-label">Phonics Focus</label>
-            <input type="text" id="ws-phonics" class="ws-input" placeholder="e.g. JP1 sounds s, a, t, p">
-          </div>
-
-          <!-- Topic / theme (Starters + Levels 1–3) -->
-          <div class="ws-field" id="ws-topic-field" style="display:none">
-            <label class="ws-label">Topic / Theme</label>
-            <input type="text" id="ws-topic" class="ws-input" placeholder="e.g. fruit · animals · colours">
+          <!-- Word list (optional for all levels) -->
+          <div class="ws-field" id="ws-wordlist-field" style="display:none">
+            <label class="ws-label">Word List <span class="ws-optional">(optional — AI will generate words if left blank)</span></label>
+            <div class="voice-field-wrap">
+              <textarea id="ws-wordlist" class="ws-input ws-textarea" placeholder="One word per line, or comma-separated&#10;e.g. cat, bat, hat, map, ran" rows="4"></textarea>
+              <button class="mic-btn" id="mic-ws-wordlist" onclick="voiceToField('ws-wordlist','mic-ws-wordlist')" title="Voice input">🎤</button>
+            </div>
           </div>
 
           <!-- Special instructions (all) -->
           <div class="ws-field" id="ws-instructions-field" style="display:none">
             <label class="ws-label">Special Instructions <span class="ws-optional">(optional)</span></label>
             <div class="voice-field-wrap">
-              <textarea id="ws-instructions" class="ws-input ws-textarea" placeholder="e.g. Make it Halloween-themed · Keep sentences very short · Include a bingo grid" rows="3"></textarea>
+              <textarea id="ws-instructions" class="ws-input ws-textarea" placeholder="e.g. Make it Halloween-themed · Keep sentences very short · Include a bingo grid" rows="2"></textarea>
               <button class="mic-btn" id="mic-ws-instructions" onclick="voiceToField('ws-instructions','mic-ws-instructions')" title="Voice input">🎤</button>
             </div>
           </div>
@@ -1732,6 +1783,8 @@ select.lp-input{cursor:pointer}
           <select id="rp-modal-level" class="rp-modal-input">
             <option value="Starters 1">Starters 1</option>
             <option value="Starters 2">Starters 2</option>
+            <option value="Level 1">Level 1</option>
+            <option value="Level 2">Level 2</option>
             <option value="Phonics Bridge">Phonics Bridge</option>
             <option value="Level 3">Level 3</option>
             <option value="G&S 1">G&amp;S 1</option>
@@ -1752,6 +1805,30 @@ select.lp-input{cursor:pointer}
     </div>
 
   </div>
+
+<!-- ══════════ MODULE 5: CURRICULUM SETTINGS ══════════ -->
+<div id="m5" class="mod-panel">
+  <!-- PIN overlay -->
+  <div class="cs-pin-overlay" id="cs-pin-overlay">
+    <div class="cs-pin-box">
+      <div class="cs-pin-title">🔒 원장 Access</div>
+      <div class="cs-pin-sub">Enter the 원장 PIN to access Curriculum Settings</div>
+      <input type="password" id="cs-pin-input" class="cs-pin-input" maxlength="6" placeholder="••••" onkeydown="if(event.key==='Enter')csCheckPin()">
+      <div class="cs-pin-err" id="cs-pin-err"></div>
+      <button class="cs-pin-btn" onclick="csCheckPin()">Unlock</button>
+    </div>
+  </div>
+  <!-- Settings content -->
+  <div class="cs-shell" id="cs-content" style="display:none">
+    <div class="cs-title">⚙️ Curriculum Settings</div>
+    <div class="cs-sub">Manage the books and materials for each level. Changes are saved immediately and reflected across the dashboard. 원장 access only.</div>
+    <div id="cs-levels-list"></div>
+    <div class="cs-save-bar">
+      <span class="cs-save-note" id="cs-save-note">Changes save automatically.</span>
+      <button class="cs-save-btn" onclick="csSaveAll()">💾 Save All Changes</button>
+    </div>
+  </div>
+</div>
 
 <!-- ══════════ API KEY SETUP MODAL ══════════ -->
 <div class="apikey-modal" id="apikey-modal">
@@ -1776,6 +1853,42 @@ select.lp-input{cursor:pointer}
 </div><!-- /app -->
 
 <script>
+// ══ STORAGE (must be first — used by all async init functions) ══
+const useWS = typeof window !== 'undefined' && window.storage;
+async function stGet(k) {
+  if (useWS) { try { const r = await window.storage.get(k); return r ? r.value : null; } catch(e){ return null; } }
+  try { return localStorage.getItem(k); } catch(e){ return null; }
+}
+async function stSet(k, v) {
+  if (useWS) { try { await window.storage.set(k, v); } catch(e){} return; }
+  try { localStorage.setItem(k, v); } catch(e){}
+}
+
+// ── Add to Home Screen banner ──
+function a2hsInit() {
+  // Only show on mobile, only once
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  const dismissed = localStorage.getItem('kiw_a2hs_dismissed');
+  const isStandalone = window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches;
+  if (!isMobile || dismissed || isStandalone) return;
+  // Detect iOS vs Android for correct instructions
+  const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+  const banner = document.getElementById('a2hs-banner');
+  const instr = document.getElementById('a2hs-instructions');
+  if (!banner) return;
+  if (isIOS) {
+    instr.innerHTML = 'Tap the <strong>Share</strong> button (□↑) then <strong>Add to Home Screen</strong> for quick access.';
+  } else {
+    instr.innerHTML = 'Tap the <strong>⋮ menu</strong> then <strong>Add to Home Screen</strong> for quick access.';
+  }
+  setTimeout(() => { banner.style.display = 'flex'; }, 2000);
+}
+function a2hsClose() {
+  document.getElementById('a2hs-banner').style.display = 'none';
+  try { localStorage.setItem('kiw_a2hs_dismissed', '1'); } catch(e){}
+}
+window.addEventListener('load', a2hsInit);
+
 // ══════════════════════════════════════════════════
 // PIN LOGIC
 // ══════════════════════════════════════════════════
@@ -1823,6 +1936,282 @@ document.addEventListener('keydown', e => {
 // ══════════════════════════════════════════════════
 // MODULE / LEVEL / SUB NAVIGATION
 // ══════════════════════════════════════════════════
+
+// ══════════════════════════════════════════════════
+// MODULE 5 — CURRICULUM SETTINGS
+// ══════════════════════════════════════════════════
+
+const CS_PIN = '1234'; // 원장 Settings PIN — change this value to set your PIN
+const CS_LEVELS = [
+  { id:'starters', label:'Starters 1 & 2', color:'#C89A2A' },
+  { id:'lv1',      label:'Level 1',         color:'#C0672A' },
+  { id:'lv2',      label:'Level 2',         color:'#C0672A' },
+  { id:'phonics',  label:'Phonics Bridge',  color:'#C0672A' },
+  { id:'lv3',      label:'Level 3',         color:'#C0672A' },
+  { id:'gs1',      label:'G&S 1',           color:'#2F5DAD' },
+  { id:'gs2',      label:'G&S 2',           color:'#2D8A58' },
+  { id:'gs3',      label:'G&S 3',           color:'#7048A8' },
+  { id:'gs4',      label:'G&S 4',           color:'#B8521A' },
+];
+
+const CS_DEFAULT_BOOKS = {
+  starters: [
+    { name:'Jolly English 1', note:'Starters 1' },
+    { name:'Jolly English 2', note:'Starters 2' },
+    { name:'Spotlight on Literacy', note:'Supplementary — comprehension & vocabulary' },
+  ],
+  lv1: [
+    { name:'Jolly Phonics 1', note:'Core phonics' },
+    { name:'Jolly Phonics 2', note:'Core phonics' },
+    { name:'Spotlight on Literacy', note:'Supplementary — comprehension & vocabulary' },
+  ],
+  lv2: [
+    { name:'Jolly Phonics 3', note:'Core phonics' },
+    { name:'Jolly Readers (Word level)', note:'Reading fluency — start here' },
+    { name:'Jolly Readers (Orange level)', note:'Reading fluency — progress to here' },
+  ],
+  phonics: [
+    { name:'Jolly Phonics 2', note:'Transition cohort only — phases out' },
+  ],
+  lv3: [
+    { name:'Jolly Grammar 1', note:'Primary grammar text' },
+    { name:'Bricks First Grammar 1', note:'Primary grammar text (BFG 2 pending)' },
+    { name:'Jolly Readers (Red → Green)', note:'Reading progression' },
+    { name:'Reading A to Z', note:'Bridge support — supplementary' },
+  ],
+  gs1: [
+    { name:'Grammar in Use Basic (U1–21)', note:'Grammar track — MWF' },
+    { name:"Reader's Bank 1", note:'R&C track — T/Th' },
+    { name:"Reader's Bank 2", note:'R&C track — T/Th' },
+  ],
+  gs2: [
+    { name:'Grammar in Use Basic (U22–39)', note:'Grammar track — MWF' },
+    { name:"Reader's Bank 3", note:'R&C track — T/Th' },
+    { name:"Reader's Bank 4", note:'R&C track — T/Th' },
+  ],
+  gs3: [
+    { name:'Grammar in Use Intermediate (U1–66)', note:'Grammar track — T/Th' },
+    { name:"Reader's Bank 5", note:'R&C track — MWF (priority)' },
+    { name:"Reader's Bank 6", note:'R&C track — MWF (priority)' },
+  ],
+  gs4: [
+    { name:'Grammar in Use Intermediate (U67–138)', note:'Grammar track — T/Th' },
+    { name:"Reader's Bank 7", note:'R&C track — MWF (priority)' },
+    { name:"Reader's Bank 8", note:'R&C track — MWF (priority)' },
+  ],
+};
+
+let csBooks = {}; // loaded from storage or defaults
+let csUnlocked = false;
+
+async function csLoadBooks() {
+  const saved = await stGet('kiw_cs_books');
+  csBooks = saved ? JSON.parse(saved) : JSON.parse(JSON.stringify(CS_DEFAULT_BOOKS));
+}
+
+async function csSaveAll() {
+  await stSet('kiw_cs_books', JSON.stringify(csBooks));
+  document.getElementById('cs-save-note').textContent = '✅ Saved — ' + new Date().toLocaleTimeString();
+  setTimeout(() => { document.getElementById('cs-save-note').textContent = 'Changes save automatically.'; }, 3000);
+}
+
+function csOpen(btn) {
+  // Switch to m5 visually
+  document.querySelectorAll('.mod-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.mod-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('m5').classList.add('active');
+  if (btn) btn.classList.add('active');
+  // Show PIN or content
+  if (csUnlocked) {
+    csRender();
+  } else {
+    document.getElementById('cs-pin-overlay').style.display = 'flex';
+    document.getElementById('cs-content').style.display = 'none';
+    document.getElementById('cs-pin-input').value = '';
+    document.getElementById('cs-pin-err').textContent = '';
+    setTimeout(() => document.getElementById('cs-pin-input').focus(), 100);
+  }
+}
+
+function csCheckPin() {
+  const val = document.getElementById('cs-pin-input').value.trim();
+  if (val === CS_PIN) {
+    csUnlocked = true;
+    document.getElementById('cs-pin-overlay').style.display = 'none';
+    document.getElementById('cs-content').style.display = 'block';
+    csRender();
+  } else {
+    document.getElementById('cs-pin-err').textContent = 'Incorrect PIN. Try again.';
+    document.getElementById('cs-pin-input').value = '';
+  }
+}
+
+function csRender() {
+  const container = document.getElementById('cs-levels-list');
+  container.innerHTML = '';
+  CS_LEVELS.forEach(lvl => {
+    const books = csBooks[lvl.id] || [];
+    const block = document.createElement('div');
+    block.className = 'cs-level-block';
+    block.innerHTML = `
+      <div class="cs-level-hdr" onclick="csToggleLevel('${lvl.id}')">
+        <div class="cs-level-hdr-left">
+          <div class="cs-level-dot" style="background:${lvl.color}"></div>
+          <span class="cs-level-name">${lvl.label}</span>
+          <span class="cs-level-count" id="cs-count-${lvl.id}">${books.length} book${books.length!==1?'s':''}</span>
+        </div>
+        <span class="cs-level-chevron" id="cs-chev-${lvl.id}">▾</span>
+      </div>
+      <div class="cs-level-body" id="cs-body-${lvl.id}">
+        <div id="cs-book-list-${lvl.id}"></div>
+        <div class="cs-add-row">
+          <input type="text" class="cs-add-input" id="cs-add-name-${lvl.id}" placeholder="Book name">
+          <input type="text" class="cs-add-input" id="cs-add-note-${lvl.id}" placeholder="Note (optional)" style="max-width:200px">
+          <button class="cs-add-btn" onclick="csAddBook('${lvl.id}')">+ Add</button>
+        </div>
+      </div>`;
+    container.appendChild(block);
+    csRenderBooks(lvl.id);
+  });
+}
+
+function csToggleLevel(id) {
+  const body = document.getElementById('cs-body-' + id);
+  const chev = document.getElementById('cs-chev-' + id);
+  const open = body.classList.toggle('open');
+  chev.style.transform = open ? 'rotate(180deg)' : '';
+}
+
+function csRenderBooks(lvlId) {
+  const list = document.getElementById('cs-book-list-' + lvlId);
+  const books = csBooks[lvlId] || [];
+  list.innerHTML = '';
+  books.forEach((book, i) => {
+    const row = document.createElement('div');
+    row.className = 'cs-book-row';
+    row.draggable = true;
+    row.dataset.idx = i;
+    row.dataset.lvl = lvlId;
+    row.innerHTML = `
+      <span class="cs-book-drag" title="Drag to reorder">&#8801;</span>
+      <span class="cs-book-name">${escHtml(book.name)}</span>
+      <span class="cs-book-note">${escHtml(book.note||'')}</span>
+      <button class="cs-book-del" onclick="csDeleteBook('${lvlId}',${i})" title="Remove">✕</button>`;
+    // Drag events
+    row.addEventListener('dragstart', e => { e.dataTransfer.setData('text/plain', i + '|' + lvlId); });
+    row.addEventListener('dragover', e => { e.preventDefault(); row.style.opacity='.5'; });
+    row.addEventListener('dragleave', () => { row.style.opacity=''; });
+    row.addEventListener('drop', e => {
+      e.preventDefault(); row.style.opacity='';
+      const [fromIdx, fromLvl] = e.dataTransfer.getData('text/plain').split('|');
+      if (fromLvl !== lvlId) return;
+      const books2 = csBooks[lvlId];
+      const item = books2.splice(parseInt(fromIdx), 1)[0];
+      books2.splice(i, 0, item);
+      csRenderBooks(lvlId);
+    });
+    list.appendChild(row);
+  });
+  const countEl = document.getElementById('cs-count-' + lvlId);
+  if (countEl) countEl.textContent = books.length + ' book' + (books.length!==1?'s':'');
+}
+
+function csAddBook(lvlId) {
+  const nameEl = document.getElementById('cs-add-name-' + lvlId);
+  const noteEl = document.getElementById('cs-add-note-' + lvlId);
+  const name = nameEl.value.trim();
+  if (!name) { nameEl.focus(); return; }
+  if (!csBooks[lvlId]) csBooks[lvlId] = [];
+  csBooks[lvlId].push({ name, note: noteEl.value.trim() });
+  nameEl.value = ''; noteEl.value = '';
+  csRenderBooks(lvlId);
+  csSaveAll();
+}
+
+function csDeleteBook(lvlId, idx) {
+  if (!confirm('Remove "' + csBooks[lvlId][idx].name + '"?')) return;
+  csBooks[lvlId].splice(idx, 1);
+  csRenderBooks(lvlId);
+  csSaveAll();
+}
+
+
+// ══════════════════════════════════════════════════
+// TEACHER NOTES
+// ══════════════════════════════════════════════════
+let notesData = {}; // { 'gs1-b1-c0': 'note text', 'gs1-rc-RB1-U01': 'note', 'gs1-er-1': 'note' }
+
+async function notesLoad() {
+  const raw = await stGet('kiw_notes');
+  notesData = raw ? JSON.parse(raw) : {};
+}
+
+async function notesSave() {
+  await stSet('kiw_notes', JSON.stringify(notesData));
+}
+
+function notesToggle(id) {
+  const panel = document.getElementById('note-panel-' + id);
+  if (!panel) return;
+  const isOpen = panel.classList.toggle('open');
+  if (isOpen) {
+    const ta = panel.querySelector('textarea');
+    if (ta) { ta.value = notesData[id] || ''; ta.focus(); }
+  }
+}
+
+async function notesSaveOne(id) {
+  const ta = document.getElementById('note-ta-' + id);
+  if (!ta) return;
+  const val = ta.value.trim();
+  if (val) {
+    notesData[id] = val;
+  } else {
+    delete notesData[id];
+  }
+  await notesSave();
+  // Update button state and display
+  const btn = document.getElementById('note-btn-' + id);
+  if (btn) {
+    btn.classList.toggle('has-note', !!val);
+    btn.textContent = val ? '📝 Note ✓' : '📝 Note';
+  }
+  const display = document.getElementById('note-display-' + id);
+  if (display) {
+    display.textContent = val;
+    display.style.display = val ? '' : 'none';
+  }
+  // Close panel
+  const panel = document.getElementById('note-panel-' + id);
+  if (panel) panel.classList.remove('open');
+}
+
+async function notesDelete(id) {
+  delete notesData[id];
+  await notesSave();
+  const btn = document.getElementById('note-btn-' + id);
+  if (btn) { btn.classList.remove('has-note'); btn.textContent = '📝 Note'; }
+  const display = document.getElementById('note-display-' + id);
+  if (display) { display.textContent = ''; display.style.display = 'none'; }
+  const panel = document.getElementById('note-panel-' + id);
+  if (panel) { panel.classList.remove('open'); }
+}
+
+function notesWidget(id) {
+  const existing = notesData[id] || '';
+  const hasNote = existing ? ' has-note' : '';
+  const btnLabel = existing ? '📝 Note ✓' : '📝 Note';
+  const displayStyle = existing ? '' : ' style="display:none"';
+  return '<button class="note-btn' + hasNote + '" id="note-btn-' + id + '" onclick="notesToggle(\'' + id + '\')">' + btnLabel + '</button>' +
+    '<div class="note-panel" id="note-panel-' + id + '">' +
+    '<textarea class="note-textarea" id="note-ta-' + id + '" placeholder="Add a note visible to all teachers\u2026">' + existing + '</textarea>' +
+    '<div class="note-actions">' +
+    '<button class="note-del-btn" onclick="notesDelete(\'' + id + '\')">Clear</button>' +
+    '<button class="note-save-btn" onclick="notesSaveOne(\'' + id + '\')">Save note</button>' +
+    '</div></div>' +
+    '<div class="note-display" id="note-display-' + id + '"' + displayStyle + '>' + existing + '</div>';
+}
+
 function switchModule(id, btn) {
   document.querySelectorAll('.mod-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.mod-btn').forEach(b => b.classList.remove('active'));
@@ -1843,27 +2232,19 @@ function switchSub(lvl, sub, btn) {
   btn.classList.add('active');
 }
 function switchBlock(lvl, blockNum, clickedNode) {
-  const arcNodes = Array.from(document.querySelectorAll('#arc-' + lvl + ' .arc-node'));
+  const arcEl = document.getElementById(lvl + '-arc');
+  const arcNodes = arcEl ? Array.from(arcEl.querySelectorAll('.arc-node')) : [];
   const idx = arcNodes.indexOf(clickedNode);
   arcNodes.forEach((n, i) => { n.classList.remove('active','done'); if (i < idx) n.classList.add('done'); });
   clickedNode.classList.add('active');
   document.querySelectorAll('#' + lvl + '-blocks .block-panel').forEach(p => p.classList.remove('active'));
-  document.getElementById(lvl + '-b' + blockNum).classList.add('active');
+  const target = document.getElementById(lvl + '-b' + blockNum);
+  if (target) target.classList.add('active');
 }
 
 // ══════════════════════════════════════════════════
 // STORAGE
 // ══════════════════════════════════════════════════
-const useWS = typeof window !== 'undefined' && window.storage;
-async function stGet(k) {
-  if (useWS) { try { const r = await window.storage.get(k); return r ? r.value : null; } catch(e){ return null; } }
-  return localStorage.getItem(k);
-}
-async function stSet(k, v) {
-  if (useWS) { try { await window.storage.set(k, v); } catch(e){} }
-  else localStorage.setItem(k, v);
-}
-
 // ══════════════════════════════════════════════════
 // GRAMMAR BLOCKS DATA
 // ══════════════════════════════════════════════════
@@ -2161,23 +2542,6 @@ let progState = {}; // { gs1: {cb_id: bool}, ... }
 let rcState = {};   // { gs1: ['RB1-U01-T01', ...], ... }
 let erState = {};   // { gs1: [1,3,...], ... } — ER sessions checked off
 
-async function initApp() {
-  // Load persisted state
-  for (const lvl of ['gs1','gs2','gs3','gs4']) {
-    const pg = await stGet('kiw_prog_' + lvl);
-    progState[lvl] = pg ? JSON.parse(pg) : {};
-    const rc = await stGet('kiw_rc_' + lvl);
-    rcState[lvl] = rc ? JSON.parse(rc) : [];
-    const er = await stGet('kiw_er_' + lvl);
-    erState[lvl] = er ? JSON.parse(er) : [];
-  }
-  // Build all grammar block UIs
-  for (const lvl of ['gs1','gs2','gs3','gs4']) {
-    buildGrammarBlocks(lvl);
-    buildRcUnits(lvl);
-  }
-}
-
 function buildGrammarBlocks(lvl) {
   const blocks = BLOCKS[lvl];
   const arcEl = document.getElementById(lvl + '-arc');
@@ -2216,6 +2580,7 @@ function buildGrammarBlocks(lvl) {
             <input type="checkbox" id="${cbId}"${checked?' checked':''} onclick="event.stopPropagation()">
             <label for="${cbId}">Mark as taught</label>
           </div>
+          <div style="padding:0 14px 10px">${notesWidget(cbId)}</div>
         </div>`;
     }).join('');
 
@@ -2302,6 +2667,44 @@ const WRITING_GUIDE = {
 // ER marker intervals (every Nth unit, 1-indexed)
 const ER_INTERVALS = { gs1: 6, gs2: 6, gs3: 12, gs4: 12 };
 
+const ER_NOTES = {
+  gs1: {
+    1: "Retell stories from recent units. \"What happened? Who was it about?\"",
+    2: "Vocabulary review — match words to definitions. Pair discussion: favourite text.",
+    3: "Compare two topics across texts. Use: Both\u2026 / But\u2026 / I think\u2026",
+    4: "Opinion sharing: \"Which character would you want to meet?\" Use evidence.",
+    5: "Extended discussion: explain one text to a partner who forgot it.",
+    6: "Full review: favourite text. Write 2 sentences + share with class.",
+  },
+  gs2: {
+    1: "Summarise: \"What was the main idea?\" 2 sentences per text, then share.",
+    2: "Compare texts: \"Which topic was most important / most surprising?\"",
+    3: "Vocabulary consolidation: pull 10 words, students write sentences.",
+    4: "Discussion: \"Which text changed how you think about something?\"",
+    5: "Comparison writing prep: list 3 similarities and 3 differences across texts.",
+    6: "End of half: pick the most interesting thing you read. 3 sentences to class.",
+  },
+  gs3: {
+    1: "Paraphrase practice: restate the main argument of each text in own words.",
+    2: "Grammar spotlight: find relative clauses and participial phrases in texts.",
+    3: "Evidence-based discussion: \"Which text made the strongest argument?\"",
+    4: "Persuasive writing prep: choose a position from a text, write 3 supporting points.",
+    5: "Vocabulary in context: find 5 academic words, write sentences showing meaning.",
+    6: "Cross-text analysis: \"How do two authors approach the same topic differently?\"",
+    7: "Full consolidation: best argument from any text \u2014 present position + 2 reasons.",
+  },
+  gs4: {
+    1: "Evaluative discussion: \"How strong is this argument? What evidence would improve it?\"",
+    2: "Synthesis: find a connecting idea across 3 texts. Write a claim linking all three.",
+    3: "Counter-argument: take a text position and argue the opposite.",
+    4: "Academic vocabulary: build a class glossary. Students define and exemplify.",
+    5: "Personal voice: connect a text argument to your own experience or opinion.",
+    6: "Debate: divide class by text position. Each side summarises their argument.",
+    7: "Portfolio selection: choose one text that most influenced your thinking.",
+    8: "Final consolidation: present your most developed argument to the group.",
+  },
+};
+
 
 function buildRcUnits(lvl) {
   const container = document.getElementById(lvl + '-rc-units');
@@ -2321,7 +2724,13 @@ function buildRcUnits(lvl) {
         ${book.units.map(u => {
           unitCount++;
           const isEr = (unitCount % erInterval === 0);
-          const erBadge = isEr ? `<div style="background:var(--lc);color:#fff;font-size:10px;font-weight:700;letter-spacing:.06em;padding:3px 10px;border-radius:20px;text-align:center;margin-bottom:8px">📋 EXTENDED REVIEW after this unit</div>` : '';
+          const erNum = isEr ? Math.floor(unitCount / erInterval) : 0;
+          const erNoteMap = ER_NOTES[lvl] || {};
+          const erNote = erNoteMap[erNum] || '';
+          const erBadge = isEr ? `<div style="background:var(--lc);color:#fff;border-radius:10px;padding:8px 14px;margin-bottom:8px">
+            <div style="font-size:10px;font-weight:700;letter-spacing:.06em;margin-bottom:3px">📋 EXTENDED REVIEW — Session ${erNum}</div>
+            <div style="font-size:11.5px;font-weight:400;opacity:.92">${erNote}</div>
+          </div>` : '';
           return `
           ${erBadge}
           <div class="unit-card">
@@ -2343,6 +2752,7 @@ function buildRcUnits(lvl) {
                 </div>`;
               }).join('')}
             </div>
+            <div style="padding:6px 0 4px">${notesWidget(book.code + '-' + u.num)}</div>
             ${wg.skill ? `<div style="border-top:1px dashed var(--border);margin-top:10px;padding-top:10px">
               <div style="font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--lc);margin-bottom:4px">✍️ Writing Task</div>
               <div style="font-size:12px;font-weight:600;color:var(--txt);margin-bottom:3px">${wg.skill}</div>
@@ -2648,7 +3058,7 @@ function lpBuildPrompt({ lvl, cfg, classType, focus, book, activity, dateStr, no
   if (isStarters) extraContext = 'Starters: no formal reading/writing. Total immersion. Never directly correct — model naturally. Language goal: children hear and absorb. Reading card must be picture-based.';
   if (lvl === 'low1-lv1') extraContext = 'Level 1: first phonics. Jolly Phonics 1 & 2. Celebrate every successful decode. Reading card: picture + word/short phrase.';
   if (lvl === 'low1-lv2') extraContext = 'Level 2: JP3 phonics. Both old-system (Phonics Bridge graduates) and new-system students in same class from now. Reading card: pattern card with blank.';
-  if (isLow1Lv3 && classType === 'grammar-rc') extraContext = 'Level 3 MWF: Jolly Grammar 1&2 + JP Readers. Begin gentle recasting for error correction. Reading always leads to discussion. Writing is collaborative in class first.';
+  if (isLow1Lv3 && classType === 'grammar-rc') extraContext = 'Level 3 MWF: Jolly Grammar 1 + Bricks First Grammar 1 + Jolly Readers (Red→Green). Begin gentle recasting for error correction. Reading always leads to discussion. Writing is collaborative in class first.';
   if (isLow1Lv3 && classType === 'pbl') extraContext = 'Level 3 PBL (T/Th): student-driven social issue project. Teacher = language coach ONLY. Give vocabulary when needed, never take over the idea. Students decide everything.';
   if (isGS && classType === 'grammar') extraContext = `G&S grammar class. ${cfg.label}. Use GiU as a speaking driver — not a workbook. Grammar point goes straight into spoken production. If assigning Grammar In homework, include 5–10 min in-class orientation (2–3 exercises together) before assigning.`;
   if (isGS && classType === 'rc') extraContext = `G&S R&C class. ${cfg.label}. R&C flow: vocabulary activity → first read with teacher → comprehension (literal → inferential → personal) → grammar spotlight (reinforcement mode if RB grammar matches current GiU block; exposure mode if not) → writing task intro (homework). Writing focus for this level: ${isGS ? ({gs1:'Main idea (1–2 sentences)',gs2:'Summarising (3–5 sentences in own words)',gs3:'Paraphrasing + persuasive with evidence',gs4:'Personal voice — opinion, argument, personal experience'}[lvl] || '') : ''}.`;
@@ -2809,11 +3219,13 @@ function apikeySkip() { document.getElementById('apikey-modal').style.display='n
 function apikeyPrompt() { document.getElementById('apikey-modal').style.display='flex'; }
 
 // ══════════════════════════════════════════════════
-// OVERRIDE initApp to add API key check + rpInit
 // ══════════════════════════════════════════════════
-const _origInitApp = window.initApp || initApp;
+// INIT
+// ══════════════════════════════════════════════════
 async function initApp() {
   // Load persisted state
+  await csLoadBooks();
+  await notesLoad();
   for (const lvl of ['gs1','gs2','gs3','gs4']) {
     const pg = await stGet('kiw_prog_' + lvl);
     progState[lvl] = pg ? JSON.parse(pg) : {};
@@ -2832,6 +3244,12 @@ async function initApp() {
         if (cb) cb.checked = true;
       });
     }
+    // Inject note widgets into ER session placeholders
+    const erCounts = {gs1:6,gs2:6,gs3:7,gs4:8};
+    for (let n = 1; n <= (erCounts[lvl]||8); n++) {
+      const wrap = document.getElementById('note-er-wrap-' + lvl + '-er-' + n);
+      if (wrap) wrap.innerHTML = notesWidget(lvl + '-er-' + n);
+    }
   }
   rpInit();
   if (!getApiKey()) document.getElementById('apikey-modal').style.display='flex';
@@ -2846,13 +3264,11 @@ let wsLastRequest = null, wsLastResponse = null, wsCurrentLvl = null;
 function wsLevelChange() {
   const lvl = document.getElementById('ws-level').value;
   wsCurrentLvl = lvl;
-  const show = (id, v) => { const el=document.getElementById(id); if(el) el.style.display=v?'':'none'; };
-  const isGS = ['gs1','gs2','gs3','gs4','low1lv3'].includes(lvl);
-  show('ws-wordlist-field', isGS);
-  show('ws-phonics-field', lvl==='phonics');
-  show('ws-topic-field', lvl==='starters'||lvl==='phonics');
-  show('ws-instructions-field', !!lvl);
-  show('ws-generate-btn', !!lvl);
+  const showEl = (id, v) => { const el=document.getElementById(id); if(el) el.style.display=v?'':'none'; };
+  showEl('ws-topic-field', !!lvl);
+  showEl('ws-wordlist-field', !!lvl);
+  showEl('ws-instructions-field', !!lvl);
+  showEl('ws-generate-btn', !!lvl);
   document.getElementById('ws-output-empty').style.display='flex';
   document.getElementById('ws-loading').style.display='none';
   document.getElementById('ws-result').style.display='none';
@@ -2867,27 +3283,39 @@ async function wsGenerate(refinement) {
   if (!apiKey) { apikeyPrompt(); return; }
 
   const wordlist = (document.getElementById('ws-wordlist')||{}).value||'';
-  const phonics  = (document.getElementById('ws-phonics')||{}).value||'';
   const topic    = (document.getElementById('ws-topic')||{}).value||'';
   const instr    = (document.getElementById('ws-instructions')||{}).value||'';
-  const lvlLabel = {starters:'Starters 1 & 2',phonics:'Phonics Bridge',low1lv3:'Level 3',gs1:'G&S 1',gs2:'G&S 2',gs3:'G&S 3',gs4:'G&S 4'}[lvl];
+  const lvlLabel = {'low1-lv1':'Level 1','low1-lv2':'Level 2',starters:'Starters 1 & 2',phonics:'Phonics Bridge',low1lv3:'Level 3',gs1:'G&S 1',gs2:'G&S 2',gs3:'G&S 3',gs4:'G&S 4'}[lvl] || lvl;
+
+  if (!topic.trim()) {
+    errEl.textContent = 'Please describe what this worksheet is about.';
+    errEl.style.display = 'block';
+    return;
+  }
 
   let userMsg = `Level: ${lvlLabel}\n`;
-  if (wordlist.trim()) userMsg += `Word list: ${wordlist.trim()}\n`;
-  if (phonics.trim())  userMsg += `Phonics focus: ${phonics.trim()}\n`;
-  if (topic.trim())    userMsg += `Topic / theme: ${topic.trim()}\n`;
-  if (instr.trim())    userMsg += `Special instructions: ${instr.trim()}\n`;
+  userMsg += `Worksheet topic / instruction: ${topic.trim()}\n`;
+  if (wordlist.trim()) {
+    userMsg += `Word list (use these exact words): ${wordlist.trim()}\n`;
+  } else {
+    userMsg += `Word list: not provided — choose 8-12 appropriate words for the topic and level yourself.\n`;
+  }
+  if (instr.trim()) userMsg += `Special instructions: ${instr.trim()}\n`;
   userMsg += '\nGenerate the worksheet now.';
 
-  const sys = `You are a worksheet generator for Kids in Wonder (키즈인원더), an English academy in South Korea. Generate a complete print-ready worksheet for the level provided.
+  const sys = `You are a worksheet generator for Kids in Wonder (키즈인원더), an English academy in South Korea. Generate a complete, print-ready worksheet based on the teacher's topic/instruction and level.
+
+IMPORTANT: If no word list is provided, choose 8-12 words yourself that are appropriate for the topic and level. For phonics topics (e.g. "short a sound"), choose CVC words with that pattern. For grammar topics (e.g. "GiU page 7"), choose vocabulary and sentence structures that match. For content topics (e.g. "animals"), choose level-appropriate vocabulary.
 
 Include: student name/date field at top, clear instructions per exercise, age-appropriate content, full answer key at bottom.
 
 Difficulty by level:
-- Starters: picture-match (emoji to word), first-letter (fill first letter), bingo (4x4 emoji grid with FREE square)
-- Phonics Bridge: sound-sort, blend-draw (CVC words + drawing box), circle correct starting sound
-- Level 3 / G&S 1-2: simple definitions, guided sentence frames, 3-letter scrambles, 3 MC options
-- G&S 3-4: contextual clues, free sentences, longer scrambles, 4 MC options
+- Starters 1 & 2: picture-match (emoji to word), first-letter (fill first letter), bingo (4x4 emoji grid with FREE square), very simple
+- Level 1 & 2 (phonics): sound-sort, blend-draw (CVC words + drawing box), circle the correct word, short sentences
+- Phonics Bridge: sound-sort, blend-draw, circle correct starting sound, simple matching
+- Level 3: simple definitions, guided sentence frames, 3-letter scrambles, 3 MC options
+- G&S 1 & 2: definitions, fill-in-the-blank with word bank, scrambles, guided sentence frames, 3 MC options
+- G&S 3 & 4: contextual clues, free sentence construction, longer scrambles, 4 MC options, paragraph-level tasks
 
 Choose 4-5 exercise types appropriate for the level from: matching, fitb, scramble, sentence, mc, picture-match, first-letter, bingo, sound-sort, blend-draw
 
@@ -3028,21 +3456,72 @@ async function rpInit() {
 function rpRenderStudentList() {
   const list = document.getElementById('rp-student-list');
   const noMsg = document.getElementById('rp-no-students');
-  if (!rpStudents.length) {
-    noMsg.style.display = '';
-    list.querySelectorAll('.rp-student-item').forEach(el => el.remove());
-    return;
-  }
-  noMsg.style.display = 'none';
-  list.querySelectorAll('.rp-student-item').forEach(el => el.remove());
+  if (noMsg) noMsg.style.display = 'none';
+
+  const levelOrder = ['Starters 1','Starters 2','Level 1','Level 2','Phonics Bridge','Level 3','G&S 1','G&S 2','G&S 3','G&S 4'];
+
+  // Group existing students
+  const grouped = {};
   rpStudents.forEach(s => {
-    const el = document.createElement('div');
-    el.className = 'rp-student-item' + (rpCurrentStudent && rpCurrentStudent.id === s.id ? ' active' : '');
-    el.dataset.id = s.id;
-    el.innerHTML = `<div class="rp-student-name">${escHtml(s.name)}</div><div class="rp-student-meta">${escHtml(s.level)}</div>`;
-    el.onclick = () => rpSelectStudent(s.id);
-    list.appendChild(el);
+    const lvl = s.level || 'Other';
+    if (!grouped[lvl]) grouped[lvl] = [];
+    grouped[lvl].push(s);
   });
+
+  list.innerHTML = '';
+
+  // Always show ALL levels, even if empty
+  levelOrder.forEach(lvl => {
+    const students = grouped[lvl] || [];
+
+    const hdr = document.createElement('div');
+    hdr.className = 'rp-level-group-hdr';
+    hdr.innerHTML = `<span>${lvl}</span><span class="rp-lvl-count">${students.length ? students.length + ' student' + (students.length > 1 ? 's' : '') : 'empty'}</span>`;
+    hdr.onclick = () => {
+      const body = document.getElementById('rp-group-body-' + lvl.replace(/[^a-z0-9]/gi,'_'));
+      const collapsed = body.style.display === 'none';
+      body.style.display = collapsed ? '' : 'none';
+      hdr.classList.toggle('collapsed', !collapsed);
+    };
+    list.appendChild(hdr);
+
+    const body = document.createElement('div');
+    body.id = 'rp-group-body-' + lvl.replace(/[^a-z0-9]/gi,'_');
+    body.className = 'rp-level-group-body';
+
+    // Student items
+    students.forEach(s => {
+      const el = document.createElement('div');
+      el.className = 'rp-student-item' + (rpCurrentStudent && rpCurrentStudent.id === s.id ? ' active' : '');
+      el.dataset.id = s.id;
+      el.innerHTML = `<div class="rp-student-name">${escHtml(s.name)}</div>`;
+      el.onclick = () => rpSelectStudent(s.id);
+      body.appendChild(el);
+    });
+
+    // Quick-add row per level
+    const addRow = document.createElement('div');
+    addRow.style.cssText = 'display:flex;gap:6px;padding:6px 8px';
+    addRow.innerHTML = `
+      <input type="text" class="rp-quick-add-input" placeholder="Add student name…" id="rp-qa-${lvl.replace(/[^a-z0-9]/gi,'_')}"
+        style="flex:1;padding:5px 8px;border:1px solid var(--border);border-radius:6px;font-size:12px;font-family:'DM Sans',sans-serif"
+        onkeydown="if(event.key==='Enter')rpQuickAdd('${lvl}',this)">
+      <button onclick="rpQuickAdd('${lvl}',this.previousElementSibling)"
+        style="padding:5px 10px;background:var(--teal);color:#fff;border:none;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer">+</button>`;
+    body.appendChild(addRow);
+
+    list.appendChild(body);
+  });
+}
+
+async function rpQuickAdd(level, inputEl) {
+  const name = inputEl.value.trim();
+  if (!name) { inputEl.focus(); return; }
+  const student = { id: Date.now().toString(), name, level, teacher:'', createdAt: new Date().toISOString() };
+  rpStudents.push(student);
+  await stSet('kiw_students', JSON.stringify(rpStudents));
+  inputEl.value = '';
+  rpRenderStudentList();
 }
 
 function rpSelectStudent(id) {
