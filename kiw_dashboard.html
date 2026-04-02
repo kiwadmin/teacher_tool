@@ -3258,8 +3258,7 @@ function voiceToField(fieldId, btnId) {
 // ══════════════════════════════════════════════════
 // API KEY MODAL
 // ══════════════════════════════════════════════════
-function getApiKey() { return localStorage.getItem('kiw_api_key') || ''; } && ANTHROPIC_API_KEY !== "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" ? ANTHROPIC_API_KEY : null; }
-function apikeyToggleVis() { const i = document.getElementById('apikey-input'); i.type = i.type==='password'?'text':'password'; }
+function getApiKey() { return localStorage.getItem('kiw_api_key') || ''; }
 function apikeySave() {
   const val = document.getElementById('apikey-input').value.trim();
   const st = document.getElementById('apikey-status');
