@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Operation Macaroni — Transmission</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Lexend:wght@400;500;600&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --green:#2BB673; --green-deep:#0E5C3A;
+    --purple:#8B5CF6; --purple-deep:#4C2A86;
+    --teal:#14B8A6; --ink:#0B1220; --paper:#F4F7F6;
+    --accent:var(--teal);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;height:100%}
+  body{
+    font-family:'Lexend',system-ui,sans-serif;
+    background:var(--ink); color:var(--paper);
+    min-height:100%; overflow-x:hidden;
+    display:flex; flex-direction:column; align-items:center;
+    padding:22px 18px 40px; text-align:center;
+  }
+  .badge{
+    font-family:'Space Mono',monospace; font-weight:700; letter-spacing:.18em;
+    font-size:13px; padding:6px 14px; border-radius:999px;
+    border:1.5px solid var(--accent); color:var(--accent);
+    text-transform:uppercase; margin-top:4px;
+  }
+  h1{font-family:'Fredoka',sans-serif; font-weight:700; font-size:clamp(26px,7vw,36px);
+     margin:14px 0 2px; line-height:1.05}
+  .sub{font-size:15px; opacity:.85; max-width:30ch; margin:0 auto 6px}
+  /* The flashing stage */
+  #stage{
+    position:relative; width:min(86vw,360px); height:min(86vw,360px);
+    max-height:46vh; border-radius:28px; margin:18px 0 10px;
+    background:#060912; border:3px solid rgba(255,255,255,.10);
+    display:flex; align-items:center; justify-content:center; overflow:hidden;
+    transition:background .04s linear, box-shadow .04s linear;
+  }
+  #stage.on{ background:#FFFFFF; box-shadow:0 0 60px 12px var(--accent), inset 0 0 0 3px var(--accent); }
+  #stageText{font-family:'Space Mono',monospace; font-weight:700; font-size:54px; color:rgba(255,255,255,.16)}
+  #stage.on #stageText{color:rgba(0,0,0,.10)}
+  .live{font-family:'Space Mono',monospace; font-size:34px; letter-spacing:.12em;
+        min-height:46px; margin:2px 0 4px; color:var(--accent)}
+  button{
+    font-family:'Fredoka',sans-serif; font-weight:600; font-size:20px;
+    color:#06121C; background:var(--accent); border:none; border-radius:16px;
+    padding:16px 30px; margin-top:8px; cursor:pointer; box-shadow:0 6px 0 rgba(0,0,0,.25);
+    transition:transform .06s, box-shadow .06s;
+  }
+  button:active{transform:translateY(4px); box-shadow:0 2px 0 rgba(0,0,0,.25)}
+  button.ghost{background:transparent; color:var(--accent); border:2px solid var(--accent);
+               box-shadow:none; font-size:16px; padding:12px 22px}
+  .how{font-size:14px; opacity:.8; max-width:32ch; line-height:1.5; margin:10px auto 0}
+  .how b{color:var(--accent)}
+  .next{
+    margin-top:26px; width:min(92vw,420px); background:rgba(255,255,255,.05);
+    border:1.5px dashed rgba(255,255,255,.25); border-radius:18px; padding:18px 20px;
+  }
+  .next .lbl{font-family:'Space Mono',monospace; font-size:12px; letter-spacing:.2em;
+             color:var(--accent); text-transform:uppercase}
+  .next p{font-size:16px; line-height:1.55; margin:8px 0 0}
+  .foot{margin-top:24px; font-size:12px; opacity:.5; font-family:'Space Mono',monospace; letter-spacing:.1em}
+  .err{max-width:30ch;margin:30px auto}
+</style>
+</head>
+<body>
+  <div id="app"></div>
+
+<script>
+const TEAMS = {
+  green: {
+    name:"FROG", color:"#2BB673", word:"FISH",
+    next:`Letter #1 done! ✔ &nbsp; <b>Mission 2 →</b><br>
+          Go back <b>inside</b> to the room with music.<br>
+          Lift the lid of the thing with black-and-white keys —<br>
+          your number code is waiting on the <b>piano</b>.`
+  },
+  purple: {
+    name:"PLUM", color:"#8B5CF6", word:"PARK",
+    next:`Letter #1 done! ✔ &nbsp; <b>Mission 3 →</b><br>
+          Go back to the <b>front door</b>.<br>
+          Look in the tall round stand where <b>umbrellas</b> wait for rain —<br>
+          a secret QR is hiding inside!`
+  }
+};
+const params = new URLSearchParams(location.search);
+const key = (params.get('team')||'').toLowerCase();
+const T = TEAMS[key];
+
+if(!T){
+  document.getElementById('app').innerHTML =
+    `<div class="err"><h1>Transmission error</h1>
+     <p class="sub">This link is missing its team. Ask Teacher Maria to check the QR code.</p></div>`;
+} else {
+  document.documentElement.style.setProperty('--accent', T.color);
+  document.getElementById('app').innerHTML = `
+    <div class="badge">▌ Encrypted transmission</div>
+    <h1>Agent ${T.name}</h1>
+    <p class="sub">Someone is sending you a secret code in light and sound. Watch and listen — then decode it!</p>
+    <div id="stage"><span id="stageText">?</span></div>
+    <div class="live" id="live">— · — ·</div>
+    <button id="play">▶ Start transmission</button>
+    <button id="replay" class="ghost" style="display:none">↻ Send it again</button>
+    <p class="how">A short flash + short beep = <b>dot ( · )</b>.<br>
+       A long flash + long beep = <b>dash ( — )</b>.<br>
+       Write down the dots and dashes, then use your <b>Morse Key card</b> to find the word.</p>
+    <div class="next"><span class="lbl">▶ Next step</span><p>Decode the word and write <b>Letter #1</b> on your Agent Record.<br>Then <b>fix the grammar sentence</b> on your clue card and bring it to <b>Agent Nicollette</b> to earn your next hint!</p></div>
+    <div class="foot">OPERATION MACARONI // KiW NIGHT OPS</div>`;
+  setupPlayer(T.word);
+}
+
+function setupPlayer(word){
+  const MORSE={A:".-",B:"-...",C:"-.-.",D:"-..",E:".",F:"..-.",G:"--.",H:"....",
+    I:"..",J:".---",K:"-.-",L:".-..",M:"--",N:"-.",O:"---",P:".--.",Q:"--.-",
+    R:".-.",S:"...",T:"-",U:"..-",V:"...-",W:".--",X:"-..-",Y:"-.--",Z:"--.."};
+  const U=230; // unit ms — slow enough for kids
+  const stage=document.getElementById('stage');
+  const live=document.getElementById('live');
+  const playBtn=document.getElementById('play');
+  const replayBtn=document.getElementById('replay');
+  let actx=null, playing=false;
+
+  // build event list: {on:bool, ms:int, sym?:'.'/'-'}
+  const seq=[];
+  const letters=word.toUpperCase().split('');
+  letters.forEach((ch,li)=>{
+    const code=MORSE[ch]||'';
+    code.split('').forEach((s,si)=>{
+      seq.push({on:true, ms:(s==='.'?U:U*3), sym:s});
+      if(si<code.length-1) seq.push({on:false, ms:U});      // intra-char gap
+    });
+    if(li<letters.length-1) seq.push({on:false, ms:U*3});    // inter-letter gap
+  });
+
+  function beep(dur){
+    try{
+      if(!actx) actx=new (window.AudioContext||window.webkitAudioContext)();
+      const o=actx.createOscillator(), g=actx.createGain();
+      o.type='sine'; o.frequency.value=620;
+      g.gain.setValueAtTime(0.0001, actx.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.32, actx.currentTime+0.01);
+      o.connect(g).connect(actx.destination); o.start();
+      g.gain.setTargetAtTime(0.0001, actx.currentTime+dur/1000, 0.02);
+      o.stop(actx.currentTime+dur/1000+0.08);
+    }catch(e){}
+  }
+  const wait=ms=>new Promise(r=>setTimeout(r,ms));
+
+  async function run(){
+    if(playing) return; playing=true;
+    playBtn.style.display='none'; replayBtn.style.display='none';
+    live.textContent='';
+    for(let rep=0; rep<3; rep++){            // send 3 times so kids can catch it
+      let line='';
+      for(const ev of seq){
+        if(ev.on){ stage.classList.add('on'); beep(ev.ms); line+=(ev.sym==='.'?'·':'—'); live.textContent=line; }
+        else stage.classList.remove('on');
+        await wait(ev.ms);
+        stage.classList.remove('on');
+        await wait(U);                        // small gap after every element
+      }
+      if(rep<2){ live.textContent='…'; await wait(U*7); }   // word gap between repeats
+    }
+    playing=false;
+    stage.classList.remove('on');
+    live.textContent='▶ play again?';
+    replayBtn.style.display='inline-block';
+  }
+  playBtn.addEventListener('click', run);
+  replayBtn.addEventListener('click', run);
+}
+</script>
+</body>
+</html>

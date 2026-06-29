@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Operation Macaroni — The Vault</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Lexend:wght@400;500;600&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
+<style>
+  /* ====== EDIT YOUR PRIZE HERE ====== */
+  /* (numbers are set in JS below: PRIZE_FIRST and PRIZE_SECOND) */
+  :root{
+    --green:#2BB673; --purple:#8B5CF6; --teal:#14B8A6;
+    --ink:#070C16; --ink2:#0E1626; --paper:#EAF2F0; --accent:var(--teal);
+    --gold:#F6C453;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;height:100%}
+  body{
+    font-family:'Lexend',system-ui,sans-serif; color:var(--paper);
+    background:radial-gradient(120% 80% at 50% 0%, var(--ink2), var(--ink) 70%);
+    min-height:100%; overflow-x:hidden;
+    display:flex; flex-direction:column; align-items:center; justify-content:flex-start;
+    padding:30px 18px 60px; text-align:center;
+  }
+  .badge{font-family:'Space Mono',monospace; font-weight:700; letter-spacing:.2em; font-size:12px;
+    padding:6px 14px; border-radius:999px; border:1.5px solid var(--accent); color:var(--accent);
+    text-transform:uppercase}
+  .vaultArt{font-size:62px; margin:18px 0 2px; filter:drop-shadow(0 6px 18px rgba(0,0,0,.5))}
+  h1{font-family:'Fredoka',sans-serif; font-weight:700; font-size:clamp(28px,8vw,40px); margin:6px 0 2px}
+  .sub{font-size:15px; opacity:.85; max-width:30ch; margin:0 auto 18px}
+
+  .panel{width:min(94vw,440px); background:rgba(255,255,255,.04);
+    border:1.5px solid rgba(255,255,255,.10); border-radius:24px; padding:24px 22px 26px;
+    box-shadow:0 20px 50px rgba(0,0,0,.45)}
+  .q{font-family:'Fredoka',sans-serif; font-size:18px; margin:0 0 14px}
+  .teamRow{display:flex; gap:12px; justify-content:center}
+  .teamBtn{flex:1; font-family:'Fredoka',sans-serif; font-weight:600; font-size:19px; color:#06121C;
+    border:none; border-radius:16px; padding:18px 10px; cursor:pointer; box-shadow:0 6px 0 rgba(0,0,0,.3);
+    transition:transform .06s, box-shadow .06s}
+  .teamBtn:active{transform:translateY(4px); box-shadow:0 2px 0 rgba(0,0,0,.3)}
+  .teamBtn.green{background:var(--green)} .teamBtn.purple{background:var(--purple); color:#fff}
+
+  input[type=text]{width:100%; font-family:'Space Mono',monospace; font-weight:700;
+    font-size:30px; text-align:center; letter-spacing:.34em; text-transform:uppercase;
+    color:var(--paper); background:#05080F; border:2px solid var(--accent); border-radius:14px;
+    padding:16px 10px; outline:none; margin:4px 0 14px}
+  input::placeholder{color:rgba(255,255,255,.22); letter-spacing:.18em}
+  .go{width:100%; font-family:'Fredoka',sans-serif; font-weight:600; font-size:21px; color:#06121C;
+    background:var(--accent); border:none; border-radius:16px; padding:16px; cursor:pointer;
+    box-shadow:0 6px 0 rgba(0,0,0,.3); transition:transform .06s, box-shadow .06s}
+  .go:active{transform:translateY(4px); box-shadow:0 2px 0 rgba(0,0,0,.3)}
+  .msg{min-height:24px; font-family:'Space Mono',monospace; font-size:15px; margin-top:14px; letter-spacing:.04em}
+  .msg.bad{color:#FF6B6B}
+  .hint{font-size:13px; opacity:.6; margin-top:16px; line-height:1.5}
+  .back{margin-top:18px; font-size:14px; color:var(--accent); background:none; border:none;
+    cursor:pointer; text-decoration:underline; font-family:'Lexend',sans-serif}
+
+  /* WIN screen */
+  #win{display:none; width:min(94vw,460px)}
+  #win.show{display:block; animation:pop .5s cubic-bezier(.2,1.3,.4,1)}
+  @keyframes pop{from{transform:scale(.85);opacity:0}to{transform:scale(1);opacity:1}}
+  .openVault{font-size:74px; margin:6px 0 4px}
+  .winTitle{font-family:'Fredoka',sans-serif; font-weight:700; font-size:clamp(30px,9vw,46px);
+    margin:4px 0; line-height:1.05}
+  .prizeCard{margin:18px auto 0; background:linear-gradient(160deg, rgba(246,196,83,.16), rgba(255,255,255,.04));
+    border:1.5px solid var(--gold); border-radius:22px; padding:22px 20px}
+  .prizeCard .place{display:flex; align-items:center; justify-content:space-between; gap:10px;
+    padding:12px 6px; font-size:18px}
+  .prizeCard .place + .place{border-top:1px dashed rgba(255,255,255,.18)}
+  .prizeCard .num{font-family:'Space Mono',monospace; font-weight:700; font-size:26px; color:var(--gold)}
+  .prizeCard .num small{font-size:13px; opacity:.8; font-weight:400}
+  .claim{margin-top:18px; font-size:16px; line-height:1.5}
+  .claim b{color:var(--accent)}
+
+  /* macaroni rain */
+  .noodle{position:fixed; top:-40px; font-size:26px; pointer-events:none; will-change:transform;
+    animation:fall linear forwards; z-index:5}
+  @keyframes fall{to{transform:translateY(108vh) rotate(540deg)}}
+  .foot{margin-top:30px; font-size:12px; opacity:.45; font-family:'Space Mono',monospace; letter-spacing:.1em}
+  @media (prefers-reduced-motion: reduce){ .noodle{animation:none; display:none} }
+</style>
+</head>
+<body>
+  <div class="badge">▌ HQ — Secure Vault</div>
+  <div class="vaultArt" id="lockArt">🔒</div>
+  <h1>The Macaroni Vault</h1>
+  <p class="sub">Agents, enter your secret codeword to open the vault.</p>
+
+  <!-- STEP 1: team -->
+  <div class="panel" id="step1">
+    <p class="q">Which squad are you?</p>
+    <div class="teamRow">
+      <button class="teamBtn green"  onclick="pick('green')">🐸 GREEN</button>
+      <button class="teamBtn purple" onclick="pick('purple')">🍇 PURPLE</button>
+    </div>
+  </div>
+
+  <!-- STEP 2: code -->
+  <div class="panel" id="step2" style="display:none">
+    <p class="q" id="teamLabel"></p>
+    <input id="code" type="text" maxlength="4" placeholder="• • • •"
+           autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false"
+           inputmode="latin">
+    <button class="go" onclick="check()">⚡ Open the vault</button>
+    <div class="msg" id="msg"></div>
+    <button class="back" onclick="reset()">← wrong squad? go back</button>
+    <div class="hint">Spell the word from your 4 letters: box 1 → box 2 → box 3 → box 4.</div>
+  </div>
+
+  <!-- WIN -->
+  <div id="win">
+    <div class="openVault">🗝️</div>
+    <div class="winTitle" id="winTitle">VAULT OPEN!</div>
+    <p class="sub" id="winSub" style="opacity:1">You cracked the code, agents!</p>
+    <div class="prizeCard">
+      <div class="place"><span>🥇 1st squad to reach HQ</span>
+        <span class="num" id="p1">1,000<br><small>macaronis each</small></span></div>
+      <div class="place"><span>🥈 2nd squad to reach HQ</span>
+        <span class="num" id="p2">750<br><small>macaronis each</small></span></div>
+    </div>
+    <p class="claim">🏁 <b>Show Teacher Maria</b> to lock in your place and collect your macaronis!</p>
+  </div>
+
+  <div class="foot">OPERATION MACARONI // KiW NIGHT OPS</div>
+
+<script>
+  /* ====== EDIT PRIZE AMOUNTS HERE ====== */
+  const PRIZE_FIRST  = 1000;   // macaronis each — 1st squad to crack the vault
+  const PRIZE_SECOND = 750;    // macaronis each — 2nd squad
+  /* ===================================== */
+
+  const CODES = { green:"FROG", purple:"PLUM" };
+  const NAMES = { green:"🐸 Agents GREEN", purple:"🍇 Agents PURPLE" };
+  const COLOR = { green:"var(--green)", purple:"var(--purple)" };
+  let team=null;
+
+  // apply editable prize numbers to the win card
+  document.getElementById('p1').innerHTML = PRIZE_FIRST.toLocaleString()+'<br><small>macaronis each</small>';
+  document.getElementById('p2').innerHTML = PRIZE_SECOND.toLocaleString()+'<br><small>macaronis each</small>';
+
+  function pick(t){
+    team=t;
+    document.documentElement.style.setProperty('--accent', t==='green'?'#2BB673':'#8B5CF6');
+    document.getElementById('teamLabel').textContent = NAMES[t]+' — enter your codeword:';
+    document.getElementById('step1').style.display='none';
+    document.getElementById('step2').style.display='block';
+    document.getElementById('code').focus();
+  }
+  function reset(){
+    team=null;
+    document.getElementById('step2').style.display='none';
+    document.getElementById('step1').style.display='block';
+    document.getElementById('code').value='';
+    document.getElementById('msg').textContent='';
+    document.documentElement.style.setProperty('--accent','#14B8A6');
+  }
+  function check(){
+    const val=(document.getElementById('code').value||'').trim().toUpperCase();
+    const msg=document.getElementById('msg');
+    if(val.length<4){ msg.className='msg bad'; msg.textContent='⛔ Enter all 4 letters, agent.'; return; }
+    if(val===CODES[team]){ win(); }
+    else { msg.className='msg bad'; msg.textContent='⛔ ACCESS DENIED — check your letters and try again.';
+           document.getElementById('code').value=''; }
+  }
+  document.addEventListener('keydown',e=>{ if(e.key==='Enter' && team) check(); });
+
+  function win(){
+    document.getElementById('step2').style.display='none';
+    document.getElementById('lockArt').textContent='🔓';
+    document.getElementById('winTitle').textContent='VAULT OPEN!';
+    document.getElementById('winSub').textContent = NAMES[team].replace('Agents','Squad')+' cracked the code! 🎉';
+    const w=document.getElementById('win'); w.classList.add('show');
+    rainMacaroni();
+  }
+  function rainMacaroni(){
+    const noodles=['🍝','🌽','🟡','🍜','🥖'];
+    let n=0; const id=setInterval(()=>{
+      const el=document.createElement('div'); el.className='noodle';
+      el.textContent=noodles[Math.floor(Math.random()*noodles.length)];
+      el.style.left=Math.random()*100+'vw';
+      el.style.fontSize=(18+Math.random()*22)+'px';
+      el.style.animationDuration=(2.6+Math.random()*2.4)+'s';
+      document.body.appendChild(el);
+      setTimeout(()=>el.remove(),5200);
+      if(++n>70) clearInterval(id);
+    },90);
+  }
+</script>
+</body>
+</html>
